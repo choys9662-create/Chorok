@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Book } from '../App';
+import { Book, SessionChoseo, SessionData } from '../App';
 import { mockBooks } from '../data/mockData';
 import { Camera, PenTool, FileText, Pause, Play, Lock, ArrowLeft, Plus, Check, Trees, Sparkles } from 'lucide-react';
+import { ExceptionalType } from './ExceptionalChoseoToast';
 
 interface TimerScreenProps {
   book: Book | null;
-  onComplete: () => void;
+  onComplete: (data: SessionData) => void;
   onBack: () => void;
   onBookSelect: (book: Book) => void;
 }
@@ -16,12 +17,20 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
   const [isPaused, setIsPaused] = useState(false);
   const [showChosuModal, setShowChosuModal] = useState(false);
   const [chosuText, setChosuText] = useState('');
+  const [chosuThought, setChosuThought] = useState('');
   const [sliderPosition, setSliderPosition] = useState(0);
   
   // Session Summary State
   const [showSummary, setShowSummary] = useState(false);
   const [pagesRead, setPagesRead] = useState(0);
-  const [chosuCount, setChosuCount] = useState(0);
+  const [sessionChoseos, setSessionChoseos] = useState<SessionChoseo[]>([]);
+  
+  // Exceptional Choseo Toast State
+  const [exceptionalToast, setExceptionalToast] = useState<{
+    show: boolean;
+    type: ExceptionalType;
+    count?: number;
+  } | null>(null);
 
   useEffect(() => {
     let interval: number;
@@ -101,9 +110,16 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleSliderEnd = () => {
-    if (sliderPosition > 80) {
-      setShowSummary(true); // Show summary instead of completing immediately
+  const handleSliderComplete = () => {
+    if (sliderPosition >= 85) {
+      setIsRunning(false);
+      // 바로 SessionChoseoSummary로 이동
+      onComplete({ 
+        book, 
+        choseos: sessionChoseos, 
+        sessionTime: seconds, 
+        pagesRead 
+      });
     } else {
       setSliderPosition(0);
     }
@@ -115,9 +131,45 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
 
   const handleChosuSubmit = () => {
     if (chosuText.trim()) {
-      setChosuCount(prev => prev + 1);
+      // Simulate exceptional moment detection (in real app, this would be backend logic)
+      const randomValue = Math.random();
+      let exceptionalType: ExceptionalType | null = null;
+      let exceptionalCount: number | undefined = undefined;
+      
+      if (randomValue < 0.25) {
+        // 25% chance: Hidden sentence
+        exceptionalType = 'hidden-sentence';
+      } else if (randomValue < 0.50) {
+        // 25% chance: Chorus highlight
+        exceptionalType = 'chorus-highlight';
+        exceptionalCount = Math.floor(Math.random() * 50) + 10; // Random count 10-60
+      } else if (randomValue < 0.70 && chosuThought.trim()) {
+        // 20% chance: Aligned reflection (only if thought exists)
+        exceptionalType = 'aligned-reflection';
+      } else if (randomValue < 0.85 && chosuThought.trim()) {
+        // 15% chance: Unique perspective (only if thought exists)
+        exceptionalType = 'unique-perspective';
+      }
+      
+      const newChoseo: SessionChoseo = {
+        id: `choseo-${Date.now()}`,
+        text: chosuText,
+        thought: chosuThought,
+        timestamp: new Date(),
+        ...(exceptionalType && {
+          exceptional: {
+            type: exceptionalType,
+            count: exceptionalCount
+          }
+        })
+      };
+      
+      setSessionChoseos(prev => [...prev, newChoseo]);
       setChosuText('');
+      setChosuThought('');
       setShowChosuModal(false);
+      
+      // 토스트는 타이머 종료 시 SessionChoseoSummary에서 표시되므로 여기서는 표시하지 않음
     }
   };
 
@@ -142,7 +194,7 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
             <div className="flex justify-between items-center border-b border-stone-100 pb-4">
               <span className="text-slate-500">기록한 초서</span>
               <span className="text-xl font-medium text-slate-800 flex items-center gap-2">
-                {chosuCount} <span className="text-xs text-slate-400 font-normal">개</span>
+                {sessionChoseos.length} <span className="text-xs text-slate-400 font-normal">개</span>
               </span>
             </div>
 
@@ -173,7 +225,12 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
         </div>
 
         <button
-          onClick={onComplete}
+          onClick={() => onComplete({ 
+            book, 
+            choseos: sessionChoseos, 
+            sessionTime: seconds, 
+            pagesRead 
+          })}
           className="w-full bg-emerald-600 text-white py-4 rounded-xl font-medium shadow-lg shadow-emerald-200 active:scale-[0.98] transition-all"
         >
           확인
@@ -282,8 +339,8 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
             max="100"
             value={sliderPosition}
             onChange={handleSliderChange}
-            onMouseUp={handleSliderEnd}
-            onTouchEnd={handleSliderEnd}
+            onMouseUp={handleSliderComplete}
+            onTouchEnd={handleSliderComplete}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
           />
         </div>
@@ -303,11 +360,18 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
               placeholder="책 속의 문장을 기록하세요..."
               className="w-full bg-white border border-stone-200 rounded-xl p-4 mb-6 min-h-40 resize-none text-lg font-serif leading-relaxed focus:outline-none focus:border-stone-400 focus:ring-0"
             />
+            <textarea
+              value={chosuThought}
+              onChange={(e) => setChosuThought(e.target.value)}
+              placeholder="이해한 내용을 간단히 적어보세요..."
+              className="w-full bg-white border border-stone-200 rounded-xl p-4 mb-6 min-h-40 resize-none text-lg font-serif leading-relaxed focus:outline-none focus:border-stone-400 focus:ring-0"
+            />
             <div className="flex gap-3">
               <button
                 onClick={() => {
                   setShowChosuModal(false);
                   setChosuText('');
+                  setChosuThought('');
                 }}
                 className="flex-1 py-4 bg-stone-200 text-stone-600 rounded-xl font-medium"
               >
@@ -322,6 +386,15 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
             </div>
           </div>
         </div>
+      )}
+      
+      {/* Exceptional Choseo Toast */}
+      {exceptionalToast?.show && (
+        <ExceptionalChoseoToast
+          type={exceptionalToast.type}
+          count={exceptionalToast.count}
+          onClose={() => setExceptionalToast(null)}
+        />
       )}
     </div>
   );

@@ -140,36 +140,7 @@ export function Search({ onBookSelect, onBack }: SearchProps) {
             </div>
 
             {/* Challenges */}
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border border-orange-200">
-              <h3 className="text-lg mb-3 flex items-center gap-2">
-                <span className="text-2xl">🏆</span>
-                <span>진행 중인 챌린지</span>
-              </h3>
-              <div className="space-y-3">
-                <div className="bg-white rounded-lg p-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm">30일 연속 독서</span>
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                      7일째
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full" style={{ width: '23%' }} />
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm">이번 달 10권 읽기</span>
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                      4/10
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full" style={{ width: '40%' }} />
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         )}
 

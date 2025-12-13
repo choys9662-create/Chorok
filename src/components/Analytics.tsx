@@ -1,10 +1,57 @@
 import { useState } from 'react';
-import { ArrowLeft, Calendar, TrendingUp, Book, Clock, Flame, Target, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calendar, TrendingUp, Book, Clock, Flame, Target, ChevronRight, Sparkles } from 'lucide-react';
 import { mockSessions, mockBooks } from '../data/mockData';
+import { ExceptionalBadge } from './ExceptionalBadge';
+import { ExceptionalType } from './ExceptionalChoseoToast';
 
 interface AnalyticsProps {
   onBack: () => void;
 }
+
+// Mock exceptional choseos for analytics display
+const mockExceptionalChoseos = [
+  {
+    id: 'exc1',
+    bookTitle: '데미안',
+    text: '새는 알에서 나오려고 투쟁한다. 알은 세계이다.',
+    thought: '성장통 없이는 새로운 세계로 나아갈 수 없다. 지금의 힘듦도 결국 알을 깨는 과정이겠지.',
+    exceptional: {
+      type: 'chorus-highlight' as ExceptionalType,
+      count: 47
+    },
+    date: '2025-11-26'
+  },
+  {
+    id: 'exc2',
+    bookTitle: '아몬드',
+    text: '감정이란 결국 나를 지키기 위한 도구일 뿐이다.',
+    thought: '감정에 휘둘리지 말자. 그것은 도구일 뿐, 내 주인이 아니다.',
+    exceptional: {
+      type: 'aligned-reflection' as ExceptionalType
+    },
+    date: '2025-11-24'
+  },
+  {
+    id: 'exc3',
+    bookTitle: '데미안',
+    text: '우리는 자신의 안에서 싹트려는 것, 그것만을 경험해야 한다.',
+    thought: '내면의 목소리에 더 귀 기울여야겠다. 외부의 소음이 너무 크다.',
+    exceptional: {
+      type: 'unique-perspective' as ExceptionalType
+    },
+    date: '2025-11-23'
+  },
+  {
+    id: 'exc4',
+    bookTitle: '데미안',
+    text: '진정한 직무는 자기 자신에게로 가는 길을 찾는 것이다.',
+    thought: '',
+    exceptional: {
+      type: 'hidden-sentence' as ExceptionalType
+    },
+    date: '2025-11-22'
+  }
+];
 
 export function Analytics({ onBack }: AnalyticsProps) {
   const [timeRange, setTimeRange] = useState<'7' | '30' | 'all'>('7');
@@ -190,6 +237,62 @@ export function Analytics({ onBack }: AnalyticsProps) {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Exceptional Choseos */}
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-100">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-600" />
+              <h2 className="text-lg font-bold text-slate-800">특별한 순간들</h2>
+            </div>
+            <span className="text-xs text-slate-400">{mockExceptionalChoseos.length}개</span>
+          </div>
+          
+          <div className="space-y-4">
+            {mockExceptionalChoseos.map((choseo) => (
+              <div 
+                key={choseo.id}
+                className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 border border-purple-100/60 hover:shadow-md transition-all cursor-pointer group relative"
+              >
+                {/* Badge */}
+                <div className="absolute top-3 right-3">
+                  <ExceptionalBadge type={choseo.exceptional.type} count={choseo.exceptional.count} />
+                </div>
+
+                {/* Header */}
+                <div className="flex items-center justify-between mb-3 pr-12">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
+                      {choseo.bookTitle}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quote */}
+                <div className="bg-white/70 rounded-xl p-4 mb-3 relative">
+                  <div className="absolute top-2 left-2 text-purple-200 text-3xl font-serif leading-none select-none">\"</div>
+                  <p className="text-slate-700 text-sm leading-relaxed font-serif italic relative z-10 pt-2 px-1">
+                    {choseo.text}
+                  </p>
+                </div>
+
+                {/* Thought */}
+                {choseo.thought && (
+                  <div className="pl-4 border-l-[3px] border-purple-300 py-1">
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {choseo.thought}
+                    </p>
+                  </div>
+                )}
+
+                {/* Date */}
+                <div className="mt-3 pt-3 border-t border-purple-100">
+                  <span className="text-xs text-slate-400">{choseo.date}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

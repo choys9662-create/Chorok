@@ -346,7 +346,7 @@ export function Forest({ onBack, onNavigate, activeTab }: ForestProps) {
       )}
       
       {/* Bottom Navigation Tabs - Only show when in Forest context */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 pb-8 pt-4 px-6 max-w-md mx-auto z-50">
+      <div className="fixed bottom-0 left-0 right-0 pb-8 pt-4 px-6 max-w-md mx-auto z-50">
         <div className="flex justify-between items-center">
           <button onClick={onBack} className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600">
             <ArrowLeft className="w-6 h-6" />

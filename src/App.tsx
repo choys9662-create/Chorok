@@ -7,9 +7,14 @@ import { Search } from './components/Search';
 import { MyPage } from './components/MyPage';
 import { Analytics } from './components/Analytics';
 import { Ranking } from './components/Ranking';
+import { ChoseoDetail } from './components/ChoseoDetail';
+import { ChoseoOverlap } from './components/ChoseoOverlap';
+import { ChoseoCluster } from './components/ChoseoCluster';
+import { SessionChoseoSummary } from './components/SessionChoseoSummary';
 import { Home, TreePine, Search as SearchIcon, User, BarChart3, ArrowLeft, MapPin, Users, TrendingUp, Compass, Timer } from 'lucide-react';
+import { ExceptionalType } from './components/ExceptionalChoseoToast';
 
-export type Screen = 'main' | 'timer' | 'book-detail' | 'forest-my' | 'forest-neighbors' | 'forest-growth' | 'forest-explore' | 'search' | 'mypage' | 'analytics' | 'ranking';
+export type Screen = 'main' | 'timer' | 'book-detail' | 'forest-my' | 'forest-neighbors' | 'forest-growth' | 'forest-explore' | 'search' | 'mypage' | 'analytics' | 'ranking' | 'choseo-detail' | 'choseo-overlap' | 'choseo-cluster' | 'session-summary';
 
 export interface Book {
   id: string;
@@ -27,9 +32,28 @@ export interface Book {
   rating?: number;
 }
 
+export interface SessionChoseo {
+  id: string;
+  text: string;
+  thought: string;
+  timestamp: Date;
+  exceptional?: {
+    type: ExceptionalType;
+    count?: number;
+  };
+}
+
+export interface SessionData {
+  book: Book;
+  choseos: SessionChoseo[];
+  sessionTime: number;
+  pagesRead: number;
+}
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('main');
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
 
   const navigateToTimer = (book: Book) => {
     setSelectedBook(book);
@@ -49,7 +73,17 @@ export default function App() {
       case 'main':
         return <MainHome onStartTimer={navigateToTimer} onNavigate={setCurrentScreen} />;
       case 'timer':
-        return <TimerScreen book={selectedBook} onComplete={() => setCurrentScreen('analytics')} onBack={() => setCurrentScreen('main')} onBookSelect={setSelectedBook} />;
+        return (
+          <TimerScreen 
+            book={selectedBook} 
+            onComplete={(data) => {
+              setSessionData(data);
+              setCurrentScreen('session-summary');
+            }} 
+            onBack={() => setCurrentScreen('main')} 
+            onBookSelect={setSelectedBook} 
+          />
+        );
       case 'book-detail':
         return <BookDetail book={selectedBook} onStartReading={navigateToTimer} onBack={() => setCurrentScreen('main')} />;
       case 'forest-my':
@@ -65,6 +99,24 @@ export default function App() {
         return <Analytics onBack={() => setCurrentScreen('main')} />;
       case 'ranking':
         return <Ranking onBookSelect={navigateToBookDetail} onBack={() => setCurrentScreen('main')} />;
+      case 'choseo-detail':
+        return <ChoseoDetail onBack={() => setCurrentScreen('main')} onViewOverlaps={() => setCurrentScreen('choseo-overlap')} />;
+      case 'choseo-overlap':
+        return <ChoseoOverlap onBack={() => setCurrentScreen('choseo-detail')} onViewCluster={() => setCurrentScreen('choseo-cluster')} />;
+      case 'choseo-cluster':
+        return <ChoseoCluster onBack={() => setCurrentScreen('choseo-detail')} onSelectChoseo={(index) => setCurrentScreen('choseo-overlap')} />;
+      case 'session-summary':
+        return sessionData ? (
+          <SessionChoseoSummary 
+            book={sessionData.book}
+            choseos={sessionData.choseos}
+            sessionTime={sessionData.sessionTime}
+            pagesRead={sessionData.pagesRead}
+            onComplete={() => setCurrentScreen('main')} 
+          />
+        ) : (
+          <MainHome onStartTimer={navigateToTimer} onNavigate={setCurrentScreen} />
+        );
       default:
         return <MainHome onStartTimer={navigateToTimer} onNavigate={setCurrentScreen} />;
     }
@@ -144,7 +196,7 @@ export default function App() {
       ) : (
         /* Main Navigation - Floating Oval Design */
         <nav className="fixed bottom-6 left-0 right-0 z-50 px-4">
-          <div className="max-w-md mx-auto bg-white/90 backdrop-blur-md rounded-full shadow-monument-lg border border-emerald-100">
+          <div className="max-w-md mx-auto bg-white/70 backdrop-blur-lg rounded-full shadow-monument-lg border border-emerald-100/60">
             <div className="grid grid-cols-5 items-center h-16 relative px-2">
               <button
                 onClick={() => setCurrentScreen('main')}
