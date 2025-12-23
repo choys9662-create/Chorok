@@ -1,40 +1,110 @@
+/* Pretendard Font Import */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
   --font-size: 16px;
   
-  /* Monument Valley inspired - Soft teal/green palette */
-  --primary-green: #10b981;
-  --soft-green: #34d399;
-  --muted-green: #6ee7b7;
-  --dark-teal: #0f766e;
-  --deep-bg: #0a1f1a;
-  --surface: #1a2e29;
+  /* ===== SEMANTIC COLOR SYSTEM - DARK THEME ===== */
   
-  --background: #f8faf9;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #10b981;
-  --primary-foreground: #ffffff;
-  --secondary: #e0f2f1;
-  --secondary-foreground: #0f766e;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #d1fae5;
-  --accent-foreground: #065f46;
+  /* Neon Green Accent */
+  --neon-green: #00FF00;
+  --neon-green-dark: #00cc00;
+  --neon-green-light: #33ff33;
+  --neon-green-glow: rgba(0, 255, 0, 0.6);
+  
+  /* Backgrounds */
+  --background: #000000;
+  --surface-1: #0a0a0a;
+  --surface-2: #141414;
+  --surface-elevated: #1a1a1a;
+  
+  /* Borders & Dividers */
+  --border-subtle: #1a1a1a;
+  --border-default: #2a2a2a;
+  --border-accent: rgba(0, 255, 0, 0.2);
+  --border-accent-strong: rgba(0, 255, 0, 0.4);
+  --divider: #1a1a1a;
+  
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #737373;
+  --text-disabled: #525252;
+  --text-accent: #00FF00;
+  
+  /* Semantic Colors */
+  --accent-bg: rgba(0, 255, 0, 0.1);
+  --accent-bg-hover: rgba(0, 255, 0, 0.15);
+  --accent-border: rgba(0, 255, 0, 0.3);
+  
+  /* Legacy Mappings */
+  --dark-bg: #000000;
+  --darker-bg: #000000;
+  --card-bg: #0a0a0a;
+  --card-hover-bg: #121212;
+  --border-glow: rgba(0, 255, 0, 0.15);
+  
+  --foreground: #ffffff;
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --popover: #0a0a0a;
+  --popover-foreground: #ffffff;
+  --primary: #00FF00;
+  --primary-foreground: #000000;
+  --secondary: #0a0a0a;
+  --secondary-foreground: #00FF00;
+  --muted: #0a0a0a;
+  --muted-foreground: #666666;
+  --accent: #00FF00;
+  --accent-foreground: #000000;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
+  --border: #1a1a1a;
   --input: transparent;
-  --input-background: #f8fafc;
-  --switch-background: #cbd5e1;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --ring: #10b981;
-  --radius: 0.5rem;
+  --input-background: #0a0a0a;
+  --switch-background: #1a1a1a;
+  --ring: #00FF00;
+  --radius: 1rem;
+  
+  /* Typography System - Pretendard */
+  /* Format: font-size/line-height weight */
+  
+  /* Display 32/40 Bold */
+  --text-display-size: 32px;
+  --text-display-line: 40px;
+  --text-display-weight: 700;
+  
+  /* H1 24/32 Bold */
+  --text-h1-size: 24px;
+  --text-h1-line: 32px;
+  --text-h1-weight: 700;
+  
+  /* H2 20/28 Semibold */
+  --text-h2-size: 20px;
+  --text-h2-line: 28px;
+  --text-h2-weight: 600;
+  
+  /* H3 18/26 Semibold */
+  --text-h3-size: 18px;
+  --text-h3-line: 26px;
+  --text-h3-weight: 600;
+  
+  /* Body M 16/26 Regular */
+  --text-body-m-size: 16px;
+  --text-body-m-line: 26px;
+  --text-body-m-weight: 400;
+  
+  /* Body S 14/22 Regular */
+  --text-body-s-size: 14px;
+  --text-body-s-line: 22px;
+  --text-body-s-weight: 400;
+  
+  /* Caption 12/18 Medium */
+  --text-caption-size: 12px;
+  --text-caption-line: 18px;
+  --text-caption-weight: 500;
 }
 
 @theme inline {
@@ -63,6 +133,11 @@
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Custom Neon Green Utilities */
+  --color-neon: #00FF00;
+  --color-neon-dark: #00cc00;
+  --color-neon-light: #33ff33;
 }
 
 @layer base {
@@ -72,7 +147,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', 'Segoe UI', sans-serif;
+    font-size: var(--text-body-m-size);
+    line-height: var(--text-body-m-line);
+    font-weight: var(--text-body-m-weight);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   /* Hide scrollbar */
@@ -96,75 +176,148 @@
   }
 }
 
-@layer base {
-  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
-    h1 {
-      font-size: var(--text-2xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-    }
+/* Typography Utility Classes */
+.text-display {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-display-size);
+  line-height: var(--text-display-line);
+  font-weight: var(--text-display-weight);
+  letter-spacing: -0.02em;
+}
 
-    h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.4;
-      letter-spacing: -0.01em;
-    }
+.text-h1 {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-h1-size);
+  line-height: var(--text-h1-line);
+  font-weight: var(--text-h1-weight);
+  letter-spacing: -0.01em;
+}
 
-    h3 {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+.text-h2 {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-h2-size);
+  line-height: var(--text-h2-line);
+  font-weight: var(--text-h2-weight);
+  letter-spacing: -0.01em;
+}
 
-    h4 {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+.text-h3 {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-h3-size);
+  line-height: var(--text-h3-line);
+  font-weight: var(--text-h3-weight);
+}
 
-    p {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.6;
-    }
+.text-body-m {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-body-m-size);
+  line-height: var(--text-body-m-line);
+  font-weight: var(--text-body-m-weight);
+}
 
-    label {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+.text-body-s {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-body-s-size);
+  line-height: var(--text-body-s-line);
+  font-weight: var(--text-body-s-weight);
+}
 
-    button {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+.text-caption {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-line);
+  font-weight: var(--text-caption-weight);
+}
 
-    input {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
-  }
+/* Default HTML element styles using typography system */
+h1 {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-h1-size);
+  line-height: var(--text-h1-line);
+  font-weight: var(--text-h1-weight);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-h2-size);
+  line-height: var(--text-h2-line);
+  font-weight: var(--text-h2-weight);
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-h3-size);
+  line-height: var(--text-h3-line);
+  font-weight: var(--text-h3-weight);
+}
+
+p {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-body-m-size);
+  line-height: var(--text-body-m-line);
+  font-weight: var(--text-body-m-weight);
+}
+
+button {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-body-s-size);
+  line-height: var(--text-body-s-line);
+  font-weight: var(--text-caption-weight);
+}
+
+input, textarea {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-body-m-size);
+  line-height: var(--text-body-m-line);
+  font-weight: var(--text-body-m-weight);
+}
+
+label {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  font-size: var(--text-body-s-size);
+  line-height: var(--text-body-s-line);
+  font-weight: var(--text-caption-weight);
 }
 
 html {
   font-size: var(--font-size);
 }
 
-/* Monument Valley inspired soft shadows */
-.shadow-monument {
+/* Pure #00FF00 Neon glow shadows */
+.shadow-neon {
   box-shadow: 
-    0 2px 8px rgba(16, 185, 129, 0.08),
-    0 8px 24px rgba(16, 185, 129, 0.12);
+    0 0 10px rgba(0, 255, 0, 0.4),
+    0 0 20px rgba(0, 255, 0, 0.3);
 }
 
-.shadow-monument-lg {
+.shadow-neon-lg {
   box-shadow: 
-    0 4px 16px rgba(16, 185, 129, 0.1),
-    0 12px 32px rgba(16, 185, 129, 0.15);
+    0 0 20px rgba(0, 255, 0, 0.5),
+    0 0 40px rgba(0, 255, 0, 0.4),
+    0 0 60px rgba(0, 255, 0, 0.3);
+}
+
+/* Text neon glow */
+.text-neon-glow {
+  color: #00FF00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+/* Border neon glow */
+.border-neon {
+  border-color: #00FF00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+/* Background neon */
+.bg-neon {
+  background-color: #00FF00;
+}
+
+.bg-neon-dark {
+  background-color: #00cc00;
 }
 
 /* Floating animation for forest elements */
@@ -179,4 +332,142 @@ html {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Slide animations for modals */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-slide-left {
+  animation: slide-left 0.3s ease-out;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Pulse glow animation for neon elements */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.4), 0 0 20px rgba(0, 255, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6), 0 0 40px rgba(0, 255, 0, 0.4);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Gradient utilities for reference match */
+.bg-gradient-neon-radial {
+  background: radial-gradient(circle at center, rgba(0, 255, 0, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.bg-gradient-neon-bottom {
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 0, 0.1) 100%);
+}
+
+.bg-gradient-dark-top {
+  background: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.bg-gradient-dark-bottom {
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+/* Card style matching reference */
+.card-minimal {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.card-minimal:hover {
+  background: #121212;
+  border-color: rgba(0, 255, 0, 0.2);
+}
+
+.card-neon {
+  background: #0a0a0a;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.15);
+}
+
+/* Button styles matching reference */
+.btn-primary-neon {
+  background: #00FF00;
+  color: #000000;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-primary-neon:hover {
+  background: #33FF33;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-secondary-neon {
+  background: transparent;
+  color: #00FF00;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-neon:hover {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: rgba(0, 255, 0, 0.5);
+}
+
+/* Badge/Chip styles */
+.badge-neon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  border-radius: 9999px;
+  color: #00FF00;
+  font-size: var(--text-caption-size);
+  font-weight: var(--text-caption-weight);
 }

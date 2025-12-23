@@ -1,376 +1,815 @@
-import { useState } from 'react';
-import { ArrowLeft, Users, UserPlus, Send, Compass, Sprout, Home, ArrowRight } from 'lucide-react';
-import { mockNeighbors } from '../data/mockData';
-import { MonumentCharacter } from './MonumentCharacter';
+import { useState, Suspense, lazy } from 'react';
+import { ArrowLeft, Users, Library, Compass, TreePine, Target, Zap, BookOpen, Sparkles, TrendingUp, UserPlus, Heart, Award } from 'lucide-react';
 import { Screen } from '../App';
+const GenerativeMountainScene = lazy(() => import('./ui/mountain-scene'));
+import BookShelfHero, { Book } from './ui/book-shelf-hero';
+import { BookDiscussionChat } from './BookDiscussionChat';
 
 interface ForestProps {
   onBack: () => void;
   onNavigate: (screen: Screen) => void;
-  activeTab: Screen;
 }
 
-export function Forest({ onBack, onNavigate, activeTab }: ForestProps) {
-  const [viewMode, setViewMode] = useState<'my' | 'group' | 'all'>('all');
-  const [selectedNeighbor, setSelectedNeighbor] = useState<string | null>(null);
+// Clan stats
+const clanStats = {
+  level: 42,
+  area: 15,
+  density: 127,
+  activeMembers: 3,
+  weeklyGoal: {
+    target: 1000,
+    current: 720,
+    title: '이번 주 목표: 1000분 달성'
+  }
+};
 
-  // Determine which content to show based on activeTab
-  const isMyArea = activeTab === 'forest-my';
-  const isNeighborsArea = activeTab === 'forest-neighbors';
-  const isGrowth = activeTab === 'forest-growth';
-  const isExplore = activeTab === 'forest-explore';
+// Books data for 서고
+const clanBooks: Book[] = [
+  {
+    id: '1',
+    title: '코스모스',
+    author: '칼 세이건',
+    cover: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&q=80',
+    participants: 2,
+    recentActivity: '5분 전'
+  },
+  {
+    id: '2',
+    title: '사피엔스',
+    author: '유발 하라리',
+    cover: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&q=80',
+    participants: 1,
+    recentActivity: '1시간 전'
+  },
+  {
+    id: '3',
+    title: '1984',
+    author: '조지 오웰',
+    cover: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&q=80',
+    participants: 1,
+    recentActivity: '2시간 전'
+  },
+  {
+    id: '4',
+    title: '총, 균, 쇠',
+    author: '재레드 다이아몬드',
+    cover: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&q=80',
+    participants: 3,
+    recentActivity: '방금 전'
+  },
+  {
+    id: '5',
+    title: '이기적 유전자',
+    author: '리처드 도킨스',
+    cover: 'https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=300&q=80',
+    participants: 2,
+    recentActivity: '10분 전'
+  },
+  {
+    id: '6',
+    title: '노인과 바다',
+    author: '어니스트 헤밍웨이',
+    cover: 'https://images.unsplash.com/photo-1476362555312-ab9e108a0b7e?w=300&q=80',
+    participants: 1,
+    recentActivity: '30분 전'
+  },
+  {
+    id: '7',
+    title: '데미안',
+    author: '헤르만 헤세',
+    cover: 'https://images.unsplash.com/photo-1592496431122-2349e0fbc666?w=300&q=80',
+    participants: 2,
+    recentActivity: '15분 전'
+  },
+  {
+    id: '8',
+    title: '멋진 신세계',
+    author: '올더스 헉슬리',
+    cover: 'https://images.unsplash.com/photo-1524578271613-d550eacf6090?w=300&q=80',
+    participants: 1,
+    recentActivity: '1시간 전'
+  }
+];
+
+export function Forest({ onBack, onNavigate }: ForestProps) {
+  const [selectedTab, setSelectedTab] = useState<'forest' | 'members' | 'explore' | 'archive'>('forest');
+  const [competitionMetric, setCompetitionMetric] = useState<'time' | 'completion' | 'quality' | 'diversity' | 'streak' | 'activity'>('time');
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const progressPercent = (clanStats.weeklyGoal.current / clanStats.weeklyGoal.target) * 100;
+
+  const handleBookSelect = (book: Book) => {
+    setSelectedBook(book);
+  };
+
+  const handleBackToShelf = () => {
+    setSelectedBook(null);
+  };
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-[#F0F9FF] relative overflow-hidden">
+    <div className="max-w-md mx-auto min-h-screen bg-gradient-to-b from-[#E0F7FA] via-[#B2EBF2] to-[#80DEEA] relative overflow-hidden">
       
-      {/* --- MY FOREST (Main Visualization) --- */}
-      {isMyArea && (
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#E0F7FA] via-[#B2EBF2] to-[#80DEEA]">
-          {/* Background Mist/Light */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
-          <div className="absolute top-20 right-10 w-32 h-32 bg-yellow-100/30 rounded-full blur-3xl" />
-
-          {/* Floating UI Elements (Overlays from image) */}
-          <div className="absolute top-24 right-8 z-40 animate-float">
-            <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg shadow-emerald-100 border border-white/60 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
-              <div className="grid grid-cols-2 gap-0.5">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                <div className="w-1.5 h-1.5 bg-emerald-300 rounded-full"></div>
-                <div className="w-1.5 h-1.5 bg-emerald-300 rounded-full"></div>
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-              </div>
-              <span className="text-xs font-bold text-slate-700">그룹 영역 보기</span>
-            </div>
+      {/* === 숲 TAB (Main 3D Mountain Scene) === */}
+      {selectedTab === 'forest' && (
+        <div className="absolute inset-0 w-full h-full">
+          {/* 3D Mountain Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#334155]">
+            <Suspense fallback={<div className="w-full h-full bg-[#0f172a]" />}>
+              <GenerativeMountainScene />
+            </Suspense>
           </div>
 
-          <div className="absolute top-[40%] right-[25%] z-40 animate-float" style={{ animationDelay: '1.2s' }}>
-            <div className="w-10 h-10 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-white/60 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
-               <UserPlus className="w-5 h-5 text-emerald-600" />
-            </div>
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-white rotate-45"></div>
-          </div>
-
-          <div className="absolute bottom-[35%] left-[20%] z-40 animate-float" style={{ animationDelay: '0.5s' }}>
-            <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-lg border border-white/60 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform">
-              <span className="text-[10px] font-bold text-slate-600">이웃 취향</span>
-            </div>
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-white rotate-45"></div>
-          </div>
-
-          {/* Main Isometric Scene */}
-          <div className="absolute inset-0 flex items-center justify-center overflow-visible pointer-events-none">
-            <svg 
-              viewBox="0 0 400 800" 
-              className="w-full h-full overflow-visible"
-              preserveAspectRatio="xMidYMid slice"
-            >
-              <defs>
-                <linearGradient id="water-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#A7F3D0" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#6EE7B7" stopOpacity="0.2" />
-                </linearGradient>
-                <linearGradient id="stone-light" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#F1F5F9" />
-                  <stop offset="100%" stopColor="#E2E8F0" />
-                </linearGradient>
-                <linearGradient id="stone-dark" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#94A3B8" />
-                  <stop offset="100%" stopColor="#64748B" />
-                </linearGradient>
-                 <filter id="glow">
-                  <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-                  <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
-
-              <g transform="translate(200, 350) scale(1.2)">
-                
-                {/* --- BACKGROUND ELEMENTS --- */}
-                
-                {/* Tall Background Trees */}
-                <g transform="translate(-120, -250)">
-                   <rect x="0" y="0" width="15" height="300" rx="2" fill="#475569" />
-                   <circle cx="7" cy="0" r="35" fill="#10B981" />
-                   <circle cx="-15" cy="20" r="25" fill="#059669" />
-                   <circle cx="25" cy="10" r="28" fill="#34D399" />
-                </g>
-                <g transform="translate(80, -280) scale(0.8)">
-                   <rect x="0" y="0" width="20" height="350" rx="2" fill="#475569" />
-                   <circle cx="10" cy="0" r="40" fill="#059669" />
-                   <circle cx="-20" cy="30" r="30" fill="#047857" />
-                   <circle cx="35" cy="20" r="32" fill="#10B981" />
-                </g>
-                <g transform="translate(0, -200) scale(0.6)">
-                   <rect x="0" y="0" width="15" height="200" rx="2" fill="#475569" />
-                   <circle cx="7" cy="0" r="35" fill="#34D399" />
-                </g>
-
-
-                {/* --- CONNECTING STREAMS (Roots/Magic) --- */}
-                <g className="animate-pulse" style={{ animationDuration: '3s' }}>
-                  {/* Stream to Left Island */}
-                  <path d="M -50 50 Q -100 150 -120 220" stroke="#6EE7B7" strokeWidth="3" fill="none" filter="url(#glow)" opacity="0.6" />
-                  <path d="M -40 50 Q -90 150 -110 220" stroke="#A7F3D0" strokeWidth="2" fill="none" opacity="0.4" />
-                  
-                  {/* Stream to Right Island */}
-                  <path d="M 50 50 Q 100 150 120 220" stroke="#6EE7B7" strokeWidth="3" fill="none" filter="url(#glow)" opacity="0.6" />
-                  <path d="M 60 50 Q 110 150 130 220" stroke="#A7F3D0" strokeWidth="2" fill="none" opacity="0.4" />
-
-                  {/* Stream to Center Bottom */}
-                  <path d="M 0 60 Q 0 150 0 250" stroke="#6EE7B7" strokeWidth="4" fill="none" filter="url(#glow)" opacity="0.5" />
-                </g>
-
-
-                {/* --- LOWER FLOATING ISLANDS --- */}
-                
-                {/* Bottom Left Island */}
-                <g transform="translate(-120, 220)">
-                   <path d="M 0 0 L 30 15 L 0 30 L -30 15 Z" fill="#86EFAC" />
-                   <path d="M -30 15 L 0 30 L 0 60 L -30 40 Z" fill="#4ADE80" />
-                   <path d="M 0 30 L 30 15 L 30 45 L 0 60 Z" fill="#22C55E" />
-                   {/* Tiny Tree */}
-                   <g transform="translate(0, -10)">
-                      <rect x="-2" y="0" width="4" height="10" fill="#5D4037" />
-                      <circle cx="0" cy="-2" r="12" fill="#15803D" />
-                   </g>
-                </g>
-
-                {/* Bottom Right Island */}
-                <g transform="translate(120, 220)">
-                   <path d="M 0 0 L 35 18 L 0 36 L -35 18 Z" fill="#86EFAC" />
-                   <path d="M -35 18 L 0 36 L 0 70 L -35 50 Z" fill="#4ADE80" />
-                   <path d="M 0 36 L 35 18 L 35 55 L 0 70 Z" fill="#22C55E" />
-                   {/* Tiny Tree */}
-                   <g transform="translate(5, -15)">
-                      <rect x="-3" y="0" width="6" height="15" fill="#5D4037" />
-                      <circle cx="0" cy="-5" r="15" fill="#166534" />
-                   </g>
-                </g>
-
-                {/* Bottom Center Island */}
-                <g transform="translate(0, 250)">
-                   <path d="M 0 0 L 25 12 L 0 24 L -25 12 Z" fill="#86EFAC" />
-                   <path d="M -25 12 L 0 24 L 0 50 L -25 35 Z" fill="#4ADE80" />
-                   <path d="M 0 24 L 25 12 L 25 40 L 0 50 Z" fill="#22C55E" />
-                   {/* Tiny Ruin */}
-                   <path d="M -8 -10 L 8 -10 L 8 0 L -8 0 Z" fill="#E2E8F0" />
-                </g>
-
-
-                {/* --- MAIN CENTRAL PLATFORM --- */}
-                <g transform="translate(0, 0)">
-                  {/* Water Pool underneath */}
-                  <path d="M -80 0 L 0 40 L 80 0 L 0 -40 Z" fill="#BAE6FD" opacity="0.8" />
-                  
-                  {/* Main Floor Block */}
-                  <g transform="translate(0, 10)">
-                    <path d="M -100 0 L 0 50 L 100 0 L 0 -50 Z" fill="url(#stone-light)" />
-                    <path d="M -100 0 L 0 50 L 0 100 L -100 50 Z" fill="#CBD5E1" />
-                    <path d="M 0 50 L 100 0 L 100 50 L 0 100 Z" fill="#94A3B8" />
-                  </g>
-
-                  {/* Waterfalls */}
-                  <path d="M -90 10 L -70 20 L -70 180 L -90 160 Z" fill="url(#water-grad)" opacity="0.6" />
-                  <path d="M 90 10 L 70 20 L 70 180 L 90 160 Z" fill="url(#water-grad)" opacity="0.6" />
-                  <path d="M -10 45 L 10 45 L 10 200 L -10 200 Z" fill="url(#water-grad)" opacity="0.8" />
-
-                  {/* Stone Arches / Ruins (Left) */}
-                  <g transform="translate(-60, -40)">
-                    {/* Pillar 1 */}
-                    <path d="M -10 0 L 10 0 L 10 60 L -10 60 Z" fill="#E2E8F0" />
-                    <path d="M -10 60 L 10 60 L 0 70 L -20 70 Z" fill="#94A3B8" transform="translate(0, -10) skewX(30)" /> {/* Fake 3D side */}
-                    
-                    {/* Pillar 2 */}
-                    <g transform="translate(30, 15)">
-                       <path d="M -10 0 L 10 0 L 10 50 L -10 50 Z" fill="#E2E8F0" />
-                    </g>
-
-                    {/* Arch Top */}
-                    <path d="M -10 0 L 40 15 L 40 5 L -10 -10 Z" fill="#F1F5F9" />
-                  </g>
-
-                  {/* Stone Bridge/Walkway */}
-                  <g transform="translate(0, -10)">
-                     <path d="M -40 20 L 0 40 L 40 20 L 0 0 Z" fill="#F8FAFC" />
-                     <path d="M -40 20 L 0 40 L 0 45 L -40 25 Z" fill="#CBD5E1" />
-                     <path d="M 0 40 L 40 20 L 40 25 L 0 45 Z" fill="#94A3B8" />
-                  </g>
-
-                  {/* Grass Patches */}
-                  <path d="M 30 15 L 50 25 L 70 15 L 50 5 Z" fill="#4ADE80" opacity="0.9" />
-                  <path d="M -70 5 L -50 15 L -30 5 L -50 -5 Z" fill="#4ADE80" opacity="0.9" />
-
-                  {/* The Character (Red Cloak) */}
-                  <g transform="translate(0, 15)">
-                     <circle cx="0" cy="0" r="8" fill="rgba(0,0,0,0.2)" />
-                     <g className="animate-bounce-gentle">
-                        <path d="M -6 -15 L 0 -25 L 6 -15 L 8 0 L -8 0 Z" fill="#EF4444" /> {/* Cloak Body */}
-                        <circle cx="0" cy="-22" r="5" fill="#EF4444" /> {/* Hood Head */}
-                        <path d="M -3 0 L -3 6" stroke="#333" strokeWidth="2" /> {/* Leg */}
-                        <path d="M 3 0 L 3 6" stroke="#333" strokeWidth="2" /> {/* Leg */}
-                     </g>
-                  </g>
-                </g>
-
-              </g>
-            </svg>
-          </div>
-        </div>
-      )}
-
-      {/* Header for other views */}
-      {!isMyArea && (
-        <header className="p-6 bg-white border-b border-slate-100 sticky top-0 z-50">
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={onBack} className="p-2 -ml-2 hover:bg-slate-50 rounded-full transition-colors">
-              <ArrowLeft className="w-6 h-6 text-slate-600" />
-            </button>
-            <span className="font-bold text-lg text-slate-800">숲</span>
-            <div className="w-8" /> {/* Spacer */}
-          </div>
+          {/* Atmospheric overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-emerald-900/20 via-transparent to-emerald-950/30 pointer-events-none" />
           
-          {/* View Mode Toggle */}
-          <div className="bg-slate-100 p-1 rounded-xl flex">
-            <button
-              onClick={() => setViewMode('my')}
-              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                viewMode === 'my' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-              }`}
-            >
-              내 영역
-            </button>
-            <button
-              onClick={() => setViewMode('group')}
-              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                viewMode === 'group' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-              }`}
-            >
-              그룹
-            </button>
-            <button
-              onClick={() => setViewMode('all')}
-              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                viewMode === 'all' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-              }`}
-            >
-              전체
+          {/* Floating UI chips */}
+          <div className="absolute top-20 right-6 z-40 animate-float">
+            <button className="backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border hover:scale-105 transition-transform active:scale-95" style={{ background: 'var(--surface-elevated)', borderColor: 'var(--border-subtle)', boxShadow: '0 0 20px rgba(0, 255, 0, 0.2)' }}>
+              <div className="grid grid-cols-2 gap-0.5">
+                <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#00FF00' }}></div>
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.5)' }}></div>
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.5)' }}></div>
+                <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#00FF00', animationDelay: '0.3s' }}></div>
+              </div>
+              <span className="text-xs font-bold text-white">그룹 영역 보기</span>
             </button>
           </div>
-        </header>
-      )}
 
-      {/* Content for other tabs (Group/All) */}
-      {!isMyArea && (
-        <div className="p-6 pb-24">
-          {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-3 mb-8">
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center">
-              <span className="text-emerald-600 font-bold text-xl mb-1">42</span>
-              <span className="text-xs text-slate-500">레벨</span>
+          <div className="absolute top-48 left-6 z-40 animate-float" style={{ animationDelay: '1s' }}>
+            <button className="backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border hover:scale-105 transition-transform active:scale-95 flex items-center gap-2" style={{ background: 'var(--surface-elevated)', borderColor: 'var(--border-subtle)', boxShadow: '0 0 15px rgba(255, 0, 255, 0.2)' }}>
+              <Target className="w-4 h-4" style={{ color: '#FF00FF' }} />
+              <div className="text-left">
+                <div className="text-[10px] font-medium" style={{ color: 'var(--text-secondary)' }}>이번 주 목표</div>
+                <div className="text-xs font-bold" style={{ color: '#FF00FF' }}>{progressPercent.toFixed(0)}%</div>
+              </div>
+            </button>
+          </div>
+
+          <div className="absolute bottom-40 right-8 z-40 animate-float" style={{ animationDelay: '0.5s' }}>
+            <button 
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-full shadow-lg shadow-emerald-200 border border-white/30 hover:scale-105 transition-transform active:scale-95 font-bold text-sm flex items-center gap-2"
+              onClick={() => onNavigate('timer')}
+            >
+              <Zap className="w-4 h-4" />
+              바로 초록
+            </button>
+          </div>
+
+          {/* Firefly indicators (reading members) */}
+          <div className="absolute top-32 left-1/4 z-30">
+            <div className="relative">
+              <div className="w-3 h-3 bg-yellow-300 rounded-full animate-ping opacity-75"></div>
+              <div className="absolute top-0 left-0 w-3 h-3 bg-yellow-400 rounded-full blur-sm"></div>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center">
-              <span className="text-emerald-600 font-bold text-xl mb-1">89</span>
-              <span className="text-xs text-slate-500">나이테</span>
+          </div>
+          <div className="absolute top-60 right-1/3 z-30 animate-float" style={{ animationDelay: '1.5s' }}>
+            <div className="relative">
+              <div className="w-2.5 h-2.5 bg-yellow-200 rounded-full animate-ping opacity-75" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute top-0 left-0 w-2.5 h-2.5 bg-yellow-300 rounded-full blur-sm"></div>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center">
-              <span className="text-emerald-600 font-bold text-xl mb-1">24</span>
-              <span className="text-xs text-slate-500">이웃</span>
+          </div>
+          <div className="absolute bottom-52 left-1/2 z-30 animate-float" style={{ animationDelay: '2s' }}>
+            <div className="relative">
+              <div className="w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-75"></div>
+              <div className="absolute top-0 left-0 w-2 h-2 bg-yellow-500 rounded-full blur-sm"></div>
             </div>
           </div>
 
-          {/* Neighbors List */}
-          {isNeighborsArea && (
-            <div className="space-y-6">
-               <div className="flex items-center justify-between">
-                 <h3 className="font-bold text-slate-800">서로이웃</h3>
-                 <button className="text-xs text-emerald-600 font-medium">전체보기</button>
-               </div>
-               <div className="space-y-3">
-                 {mockNeighbors.map(neighbor => (
-                   <div key={neighbor.id} className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                     <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-xl border border-emerald-100">
-                        {neighbor.avatar}
-                     </div>
-                     <div className="flex-1">
-                       <div className="flex items-center gap-2 mb-0.5">
-                         <span className="font-bold text-slate-800 text-sm">{neighbor.name}</span>
-                         <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">Lv.{neighbor.level}</span>
-                       </div>
-                       <p className="text-xs text-slate-500 line-clamp-1">{neighbor.currentBook || '휴식 중'}</p>
-                     </div>
-                     {neighbor.isReading && (
-                       <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                     )}
-                   </div>
-                 ))}
-               </div>
-            </div>
-          )}
+          {/* Clan stats overlay card */}
+          <div className="absolute bottom-32 left-6 right-6 z-40">
+            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-xl border border-white/60">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <TreePine className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-slate-800">책벌레 클랜</h3>
+                  <p className="text-xs text-slate-500">Lv.{clanStats.level} • {clanStats.activeMembers}명 독서중</p>
+                </div>
+                <button className="p-2 hover:bg-slate-50 rounded-full transition-colors">
+                  <Sparkles className="w-5 h-5 text-amber-500" />
+                </button>
+              </div>
 
-          {/* Guild/Explore */}
-          {isExplore && (
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 border border-amber-100">
-                 <div className="flex items-center gap-3 mb-4">
-                   <div className="bg-white p-2 rounded-full shadow-sm">
-                     <Compass className="w-6 h-6 text-amber-500" />
-                   </div>
-                   <div>
-                     <h3 className="font-bold text-slate-800">길드 탐험</h3>
-                     <p className="text-xs text-slate-500">새로운 독서 모임 찾기</p>
-                   </div>
-                 </div>
-                 <div className="space-y-3">
-                   <button className="w-full bg-white p-4 rounded-2xl shadow-sm border border-amber-100/50 flex items-center justify-between group">
-                     <div className="text-left">
-                       <p className="font-bold text-slate-800 text-sm">📚 고전 문학 길드</p>
-                       <p className="text-xs text-slate-500 mt-1">248명 참여중</p>
-                     </div>
-                     <ArrowRight className="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
-                   </button>
-                   <button className="w-full bg-white p-4 rounded-2xl shadow-sm border border-amber-100/50 flex items-center justify-between group">
-                     <div className="text-left">
-                       <p className="font-bold text-slate-800 text-sm">🔬 과학 읽기 길드</p>
-                       <p className="text-xs text-slate-500 mt-1">156명 참여중</p>
-                     </div>
-                     <ArrowRight className="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
-                   </button>
-                 </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100">
+                  <div className="text-xs text-emerald-700 mb-1">레벨</div>
+                  <div className="text-xl font-bold text-emerald-600">{clanStats.level}</div>
+                  <div className="text-[10px] text-emerald-600 mt-0.5">시간</div>
+                </div>
+                <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-100">
+                  <div className="text-xs text-blue-700 mb-1">영역</div>
+                  <div className="text-xl font-bold text-blue-600">{clanStats.area}</div>
+                  <div className="text-[10px] text-blue-600 mt-0.5">완독</div>
+                </div>
+                <div className="text-center p-3 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
+                  <div className="text-xs text-purple-700 mb-1">밀도</div>
+                  <div className="text-xl font-bold text-purple-600">{clanStats.density}</div>
+                  <div className="text-[10px] text-purple-600 mt-0.5">초서</div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* === 숲지기 TAB (Members) === */}
+      {selectedTab === 'members' && (
+        <div className="p-6 pb-32 space-y-4">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-slate-800">숲지기</h2>
+            <button className="px-4 py-2 bg-emerald-500 text-white rounded-full text-sm font-medium shadow-lg shadow-emerald-200 hover:scale-105 transition-transform active:scale-95">
+              <div className="flex items-center gap-2">
+                <UserPlus className="w-4 h-4" />
+                초대하기
+              </div>
+            </button>
+          </div>
+
+          {/* Clan Introduction */}
+          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 border border-emerald-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <h3 className="text-sm font-bold text-emerald-900">클랜 소개</h3>
+            </div>
+            <p className="text-xs text-slate-700 leading-relaxed">
+              "책을 사랑하는 사람들이 모여 함께 성장하는 공간입니다. 매주 다양한 분야의 책을 읽고 생각을 나눕니다."
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              <span className="px-2.5 py-1 bg-white/80 rounded-full text-[10px] font-medium text-emerald-700">주 3회 이상 독서</span>
+              <span className="px-2.5 py-1 bg-white/80 rounded-full text-[10px] font-medium text-emerald-700">장르 다양성</span>
+              <span className="px-2.5 py-1 bg-white/80 rounded-full text-[10px] font-medium text-emerald-700">서로 존중</span>
+            </div>
+          </div>
+
+          {/* Weekly Stats Summary */}
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4 border border-purple-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <Target className="w-4 h-4 text-purple-600" />
+              <h3 className="text-sm font-bold text-purple-900">이번 주 클랜 통계</h3>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-white/70 rounded-xl p-3 text-center">
+                <div className="text-xs text-slate-600 mb-1">총 독서</div>
+                <div className="text-lg font-bold text-purple-600">720분</div>
+                <div className="text-[10px] text-emerald-600 mt-0.5">목표 72%</div>
+              </div>
+              <div className="bg-white/70 rounded-xl p-3 text-center">
+                <div className="text-xs text-slate-600 mb-1">완독</div>
+                <div className="text-lg font-bold text-blue-600">12권</div>
+                <div className="text-[10px] text-slate-500 mt-0.5">평균 4권/인</div>
+              </div>
+              <div className="bg-white/70 rounded-xl p-3 text-center">
+                <div className="text-xs text-slate-600 mb-1">초서</div>
+                <div className="text-lg font-bold text-amber-600">89개</div>
+                <div className="text-[10px] text-slate-500 mt-0.5">☀️ 2,234</div>
+              </div>
+            </div>
+          </div>
+
+          {/* MVP of the Week */}
+          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-4 border border-amber-100 shadow-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <Award className="w-5 h-5 text-amber-600" />
+              <h3 className="text-sm font-bold text-amber-900">이번 주 MVP</h3>
+            </div>
+            <div className="bg-white/80 rounded-xl p-3">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-md relative">
+                  👑
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center text-xs">
+                    🌟
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-slate-800">책벌레민수</div>
+                  <div className="text-xs text-amber-600 font-medium">가장 많은 시간을 독서했어요!</div>
+                </div>
+              </div>
+              <div className="text-[10px] text-slate-500 bg-slate-50 rounded-lg p-2 mt-2">
+                340분 독서 • 12개 초서 작성 • 🔥7일 연속
+              </div>
+            </div>
+          </div>
+
+          {/* Members */}
+          <div>
+            <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              클랜원 ({3}명)
+            </h3>
+            <div className="space-y-3">
+              {/* Leader */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-emerald-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                    👑
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold text-slate-800">책벌레민수</span>
+                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">숲지기</span>
+                    </div>
+                    <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                      <BookOpen className="w-3 h-3" />
+                      코스모스 읽는 중
+                    </p>
+                  </div>
+                  <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                </div>
+                <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-slate-500">이번 주 기여</span>
+                  <span className="font-bold text-emerald-600">340분 • 12초서</span>
+                </div>
+              </div>
+
+              {/* Members */}
+              {[
+                { name: '독서왕지수', book: '1984', reading: false, contribution: '180분 • 8초서', level: 38 },
+                { name: '책사랑수지', book: '사피엔스', reading: true, contribution: '200분 • 15초서', level: 51 }
+              ].map((member, idx) => (
+                <div key={idx} className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                      {member.name[0]}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-bold text-slate-800">{member.name}</span>
+                        <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">Lv.{member.level}</span>
+                      </div>
+                      <p className={`text-xs font-medium flex items-center gap-1 ${member.reading ? 'text-emerald-600' : 'text-slate-400'}`}>
+                        <BookOpen className="w-3 h-3" />
+                        {member.book} {member.reading ? '읽는 중' : ''}
+                      </p>
+                    </div>
+                    {member.reading && (
+                      <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                    )}
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="text-slate-500">이번 주 기여</span>
+                    <span className="font-bold text-slate-700">{member.contribution}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Books Being Read Together */}
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-4 border border-blue-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <BookOpen className="w-4 h-4 text-blue-600" />
+              <h3 className="text-sm font-bold text-blue-900">함께 읽는 책</h3>
+            </div>
+            <div className="space-y-2">
+              {[
+                { title: '코스모스', readers: 2, color: 'from-purple-400 to-pink-500' },
+                { title: '사피엔스', readers: 1, color: 'from-blue-400 to-cyan-500' },
+                { title: '1984', readers: 1, color: 'from-amber-400 to-orange-500' }
+              ].map((book, idx) => (
+                <div key={idx} className="bg-white/70 rounded-xl p-3 flex items-center gap-3">
+                  <div className={`w-8 h-10 bg-gradient-to-br ${book.color} rounded-md shadow-sm flex items-center justify-center text-white text-xs font-bold`}>
+                    📖
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-bold text-slate-800 text-sm">{book.title}</div>
+                    <div className="text-xs text-slate-500">{book.readers}명이 읽는 중</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Completions */}
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 border border-green-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-4 h-4 text-green-600" />
+              <h3 className="text-sm font-bold text-green-900">최근 완독 책들</h3>
+            </div>
+            <div className="space-y-2">
+              {[
+                { user: '책사랑수지', book: '총, 균, 쇠', time: '2시간 전', pages: 634 },
+                { user: '책벌레민수', book: '코스모스', time: '5시간 전', pages: 512 },
+                { user: '독서왕지수', book: '이기적 유전자', time: '어제', pages: 478 }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-white/70 rounded-xl p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-slate-800">{item.user}</span>
+                    <span className="text-xs text-green-600">님이 완독했어요! 🎉</span>
+                  </div>
+                  <div className="text-sm font-bold text-slate-700">{item.book}</div>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-[10px] text-slate-500">{item.pages}페이지</span>
+                    <span className="text-[10px] text-slate-400">{item.time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Clan Achievements */}
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border border-indigo-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <Award className="w-4 h-4 text-indigo-600" />
+              <h3 className="text-sm font-bold text-indigo-900">클랜 업적</h3>
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { emoji: '📚', label: '완독 100권', unlocked: true },
+                { emoji: '🔥', label: '30일 연속', unlocked: true },
+                { emoji: '🌟', label: '레벨 40', unlocked: true },
+                { emoji: '👥', label: '멤버 10명', unlocked: false },
+                { emoji: '✨', label: '초서 500개', unlocked: true },
+                { emoji: '🏆', label: '순위 1위', unlocked: true },
+                { emoji: '🌈', label: '모든 장르', unlocked: false },
+                { emoji: '💎', label: '레벨 50', unlocked: false }
+              ].map((badge, idx) => (
+                <div key={idx} className={`aspect-square rounded-xl flex flex-col items-center justify-center gap-1 ${
+                  badge.unlocked 
+                    ? 'bg-gradient-to-br from-indigo-100 to-purple-100 border border-indigo-200' 
+                    : 'bg-slate-50 border border-slate-200 opacity-40'
+                }`}>
+                  <div className="text-2xl">{badge.emoji}</div>
+                  <div className="text-[9px] text-center text-slate-600 font-medium px-1">{badge.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Activity Timeline */}
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 border border-slate-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="w-4 h-4 text-slate-600" />
+              <h3 className="text-sm font-bold text-slate-800">최근 활동</h3>
+            </div>
+            <div className="space-y-3">
+              {[
+                { user: '책사랑수지', action: '초서를 작성', time: '30분 전', icon: '✍️', color: 'text-purple-600' },
+                { user: '책벌레민수', action: '독서 시작', time: '1시간 전', icon: '📖', color: 'text-emerald-600' },
+                { user: '독서왕지수', action: '햇살 5개 받음', time: '2시간 전', icon: '☀️', color: 'text-amber-600' },
+                { user: '책사랑수지', action: '완독 달성', time: '2시간 전', icon: '🎉', color: 'text-blue-600' },
+                { user: '책벌레민수', action: '서고에 메시지', time: '3시간 전', icon: '💬', color: 'text-slate-600' }
+              ].map((activity, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center text-sm flex-shrink-0">
+                    {activity.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs">
+                      <span className="font-bold text-slate-800">{activity.user}</span>
+                      <span className={`${activity.color} font-medium ml-1`}>님이 {activity.action}했어요</span>
+                    </div>
+                    <div className="text-[10px] text-slate-400 mt-0.5">{activity.time}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* === 탐험 TAB (Explore/Competition) === */}
+      {selectedTab === 'explore' && (
+        <div className="p-6 pb-32 space-y-6">
+          <h2 className="text-xl font-bold text-slate-800">탐험</h2>
+
+          {/* Leaderboard */}
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 border border-amber-100 shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-amber-600" />
+                <h3 className="font-bold text-amber-900">이번 주 클랜 순위</h3>
+              </div>
+              <div className="text-xs text-amber-600 font-medium">매주 월요일 초기화</div>
+            </div>
+            
+            {/* Competition Metric Tabs */}
+            <div className="flex gap-1.5 overflow-x-auto pb-3 mb-4 hide-scrollbar">
+              {[
+                { key: 'time', label: '시간', icon: '⏱️' },
+                { key: 'completion', label: '완독', icon: '📚' },
+                { key: 'quality', label: '품질', icon: '✨' },
+                { key: 'diversity', label: '다양성', icon: '🌈' },
+                { key: 'streak', label: '연속성', icon: '🔥' },
+                { key: 'activity', label: '활성도', icon: '⚡' }
+              ].map((metric) => (
+                <button
+                  key={metric.key}
+                  onClick={() => setCompetitionMetric(metric.key as any)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                    competitionMetric === metric.key
+                      ? 'bg-amber-500 text-white shadow-md'
+                      : 'bg-white/70 text-amber-700 hover:bg-white'
+                  }`}
+                >
+                  <span className="mr-1">{metric.icon}</span>
+                  {metric.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-3">
+              {competitionMetric === 'time' && [
+                { rank: 1, name: '책벌레 클랜', score: '1,450분', extra: '완독 12권 • 🔥7일', isMe: true, trend: '↑2', growth: '+18%', mvp: '책사랑민수', mvpTime: '450분', level: 'Lv.12', speed: '1.8p/분' },
+                { rank: 2, name: '고전 독서회', score: '1,380분', extra: '완독 15권 • 🔥12일', isMe: false, trend: '↓1', growth: '+12%', mvp: '철학자영희', mvpTime: '420분', level: 'Lv.14', speed: '2.1p/분', gap: '-70분' },
+                { rank: 3, name: '과학 읽기 모임', score: '1,220분', extra: '완독 9권 • 🔥5일', isMe: false, trend: '↑1', growth: '+25%', mvp: '과학덕후', mvpTime: '380분', level: 'Lv.9', speed: '1.6p/분', gap: '-230분' }
+              ].map((clan) => (
+                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
+                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
+                      'bg-orange-300 text-white'
+                    }`}>
+                      {clan.rank}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                        {clan.name}
+                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
+                        <span className={`text-xs ${clan.trend.startsWith('↑') ? 'text-green-600' : 'text-red-600'}`}>{clan.trend}</span>
+                        <span className="text-xs text-amber-600">{clan.level}</span>
+                      </div>
+                      <div className="text-sm text-amber-600 font-bold flex items-center gap-2">
+                        {clan.score}
+                        <span className="text-xs text-green-600 font-medium">{clan.growth}</span>
+                        {clan.gap && <span className="text-xs text-slate-500">(1위 {clan.gap})</span>}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
+                      <div className="text-[10px] text-purple-600 mt-1 font-medium">MVP: {clan.mvp} ({clan.mvpTime}) • 평균 {clan.speed}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {competitionMetric === 'completion' && [
+                { rank: 1, name: '고전 독서회', score: '15권', extra: '1,380분 • 평균 453p', isMe: false, trend: '→', avgPages: '453p', speed: '2.1p/분', level: 'Lv.14', fastest: '92분' },
+                { rank: 2, name: '책벌레 클랜', score: '12권', extra: '1,450분 • 평균 521p', isMe: true, trend: '↑1', avgPages: '521p', speed: '1.8p/분', level: 'Lv.12', fastest: '85분', gap: '-3권' },
+                { rank: 3, name: '과학 읽기 모임', score: '9권', extra: '1,220분 • 평균 398p', isMe: false, trend: '↓1', avgPages: '398p', speed: '1.6p/분', level: 'Lv.9', fastest: '102분', gap: '-6권' }
+              ].map((clan) => (
+                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
+                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
+                      'bg-orange-300 text-white'
+                    }`}>
+                      {clan.rank}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                        {clan.name}
+                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
+                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
+                        <span className="text-xs text-amber-600">{clan.level}</span>
+                      </div>
+                      <div className="text-sm text-blue-600 font-bold flex items-center gap-2">
+                        {clan.score}
+                        {clan.gap && <span className="text-xs text-slate-500">(1위까지 {clan.gap})</span>}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
+                      <div className="text-[10px] text-purple-600 mt-1 font-medium">평균 속도 {clan.speed} • 최단 완독 {clan.fastest}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {competitionMetric === 'quality' && [
+                { rank: 1, name: '책벌레 클랜', score: '2,850점', extra: '127초서 • ☀️햇살 2,234', isMe: true, trend: '↑1', level: 'Lv.12', choseoQuality: '17.6', badges: ['🔥', '💎', '🏆'], discussion: '94%' },
+                { rank: 2, name: '시와 산문 클랜', score: '2,640점', extra: '156초서 • ☀️햇살 1,892', isMe: false, trend: '↓1', level: 'Lv.11', choseoQuality: '12.1', badges: ['✨', '📖'], discussion: '87%', gap: '-210점' },
+                { rank: 3, name: '고전 독서회', score: '2,420점', extra: '98초서 • ☀️햇살 1,988', isMe: false, trend: '→', level: 'Lv.14', choseoQuality: '20.3', badges: ['🎯', '💡'], discussion: '91%', gap: '-430점' }
+              ].map((clan) => (
+                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
+                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
+                      'bg-orange-300 text-white'
+                    }`}>
+                      {clan.rank}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                        {clan.name}
+                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
+                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
+                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.badges.map((badge, idx) => <span key={idx} className="text-xs">{badge}</span>)}
+                      </div>
+                      <div className="text-sm text-purple-600 font-bold flex items-center gap-2">
+                        {clan.score}
+                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
+                      <div className="text-[10px] text-purple-600 mt-1 font-medium">초서당 ♥{clan.choseoQuality}개 • 토론 참여율 {clan.discussion}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {competitionMetric === 'diversity' && [
+                { rank: 1, name: '과학 읽기 모임', score: '8 장르', extra: '과학•역사•철학•예술•소설...', isMe: false, trend: '→', level: 'Lv.9', growth: '+2 장르', newGenres: ['예술', '경제'], exploration: '89%' },
+                { rank: 2, name: '책벌레 클랜', score: '7 장르', extra: '과학•역사•소설•에세이•경제...', isMe: true, trend: '↑1', level: 'Lv.12', growth: '+1 장르', newGenres: ['경제'], exploration: '78%', gap: '-1 장르' },
+                { rank: 3, name: '고전 독서회', score: '5 장르', extra: '문학•철학•역사•예술•시', isMe: false, trend: '↓1', level: 'Lv.14', growth: '→', newGenres: [], exploration: '56%', gap: '-3 장르' }
+              ].map((clan) => (
+                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
+                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
+                      'bg-orange-300 text-white'
+                    }`}>
+                      {clan.rank}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                        {clan.name}
+                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
+                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
+                        <span className="text-xs text-amber-600">{clan.level}</span>
+                      </div>
+                      <div className="text-sm text-pink-600 font-bold flex items-center gap-2">
+                        {clan.score}
+                        <span className="text-xs text-green-600 font-medium">{clan.growth}</span>
+                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
+                      <div className="text-[10px] text-purple-600 mt-1 font-medium">
+                        {clan.newGenres.length > 0 ? `신규: ${clan.newGenres.join(', ')} • ` : ''}탐험도 {clan.exploration}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {competitionMetric === 'streak' && [
+                { rank: 1, name: '고전 독서회', score: '🔥 12일 연속', extra: '평균 독서시간 92분/일', isMe: false, trend: '↑1', level: 'Lv.14', maxStreak: '18일', achievement: '87%', todayReaders: '8/12명' },
+                { rank: 2, name: '과학 읽기 모임', score: '🔥 8일 연속', extra: '평균 독서시간 78분/일', isMe: false, trend: '↓1', level: 'Lv.9', maxStreak: '10일', achievement: '78%', todayReaders: '6/9명', gap: '-4일' },
+                { rank: 3, name: '책벌레 클랜', score: '🔥 7일 연속', extra: '평균 독서시간 103분/일', isMe: true, trend: '→', level: 'Lv.12', maxStreak: '14일', achievement: '92%', todayReaders: '11/15명', gap: '-5일' }
+              ].map((clan) => (
+                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
+                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
+                      'bg-orange-300 text-white'
+                    }`}>
+                      {clan.rank}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                        {clan.name}
+                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
+                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
+                        <span className="text-xs text-amber-600">{clan.level}</span>
+                      </div>
+                      <div className="text-sm text-orange-600 font-bold flex items-center gap-2">
+                        {clan.score}
+                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
+                      <div className="text-[10px] text-purple-600 mt-1 font-medium">최장 {clan.maxStreak} • 달성률 {clan.achievement} • 오늘 {clan.todayReaders}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {competitionMetric === 'activity' && [
+                { rank: 1, name: '책벌레 클랜', score: '985점', extra: '독서 720분 • 채팅 127 • 초서 89', isMe: true, trend: '↑2', level: 'Lv.12', discussion: '94%', likes: '234개', newMembers: '+3명', dailyActive: '12/15명' },
+                { rank: 2, name: '시와 산문 클랜', score: '892점', extra: '독서 680분 • 채팅 156 • 초서 92', isMe: false, trend: '↓1', level: 'Lv.11', discussion: '87%', likes: '198개', newMembers: '+1명', dailyActive: '9/14명', gap: '-93점' },
+                { rank: 3, name: '고전 독서회', score: '856점', extra: '독서 750분 • 채팅 78 • 초서 76', isMe: false, trend: '↑1', level: 'Lv.14', discussion: '91%', likes: '267개', newMembers: '+2명', dailyActive: '10/12명', gap: '-129점' }
+              ].map((clan) => (
+                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
+                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
+                      'bg-orange-300 text-white'
+                    }`}>
+                      {clan.rank}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                        {clan.name}
+                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
+                        <span className={`text-xs ${clan.trend.startsWith('↑') ? 'text-green-600' : 'text-red-600'}`}>{clan.trend}</span>
+                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.newMembers !== '+0명' && <span className="text-xs text-green-600">{clan.newMembers}</span>}
+                      </div>
+                      <div className="text-sm text-emerald-600 font-bold flex items-center gap-2">
+                        {clan.score}
+                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
+                      <div className="text-[10px] text-purple-600 mt-1 font-medium">토론 {clan.discussion} • ♥{clan.likes} • 일일 활성 {clan.dailyActive}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Other clans */}
+          <div>
+            <h3 className="font-bold text-slate-800 mb-3">다른 클랜 둘러보기</h3>
+            <div className="space-y-3">
+              <button className="w-full bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-white text-xl">
+                    🌸
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="font-bold text-slate-800">시와 산문 클랜</div>
+                    <div className="text-xs text-slate-500">24명 • Lv.35 • 문학 중심</div>
+                  </div>
+                  <div className="text-xs text-slate-400">→</div>
+                </div>
+              </button>
+              <button className="w-full bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center text-white text-xl">
+                    🔬
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="font-bold text-slate-800">과학독서 클랜</div>
+                    <div className="text-xs text-slate-500">18명 • Lv.29 • 과학 중심</div>
+                  </div>
+                  <div className="text-xs text-slate-400">→</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* === 서고 TAB (Archive/Messenger) === */}
+      {selectedTab === 'archive' && (
+        <div className="absolute inset-0 w-full h-full">
+          {!selectedBook ? (
+            <BookShelfHero books={clanBooks} onBookSelect={handleBookSelect} />
+          ) : (
+            <BookDiscussionChat book={selectedBook} onBack={handleBackToShelf} />
           )}
         </div>
       )}
-      
-      {/* Bottom Navigation Tabs - Only show when in Forest context */}
-      <div className="fixed bottom-0 left-0 right-0 pb-8 pt-4 px-6 max-w-md mx-auto z-50">
-        <div className="flex justify-between items-center">
-          <button onClick={onBack} className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600">
-            <ArrowLeft className="w-6 h-6" />
-            <span className="text-[10px] font-medium">뒤로</span>
-          </button>
-          <button onClick={() => onNavigate('forest-my')} className={`flex flex-col items-center gap-1 ${isMyArea ? 'text-emerald-600' : 'text-slate-400'}`}>
-            <Home className="w-6 h-6" />
-            <span className="text-[10px] font-medium">내 숲</span>
-          </button>
-          <button onClick={() => onNavigate('forest-neighbors')} className={`flex flex-col items-center gap-1 ${isNeighborsArea ? 'text-emerald-600' : 'text-slate-400'}`}>
-            <Users className="w-6 h-6" />
-            <span className="text-[10px] font-medium">친구</span>
-          </button>
-          <button onClick={() => onNavigate('forest-explore')} className={`flex flex-col items-center gap-1 ${isExplore ? 'text-emerald-600' : 'text-slate-400'}`}>
-            <Compass className="w-6 h-6" />
-            <span className="text-[10px] font-medium">탐험</span>
-          </button>
-          <button onClick={() => onNavigate('forest-growth')} className={`flex flex-col items-center gap-1 ${isGrowth ? 'text-emerald-600' : 'text-slate-400'}`}>
-            <Sprout className="w-6 h-6" />
-            <span className="text-[10px] font-medium">성장</span>
-          </button>
+
+      {/* Bottom Navigation - 5 Tabs */}
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
+        <div className="bg-white/95 backdrop-blur-lg border-t border-slate-200 pb-8 pt-3 px-4 shadow-2xl rounded-t-3xl">
+          <div className="flex justify-between items-center">
+            <button 
+              onClick={onBack}
+              className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors px-2"
+            >
+              <ArrowLeft className="w-6 h-6" />
+              <span className="text-[10px] font-medium">나가기</span>
+            </button>
+            
+            <button 
+              onClick={() => setSelectedTab('forest')}
+              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
+                selectedTab === 'forest' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
+              }`}
+            >
+              <TreePine className="w-6 h-6" />
+              <span className="text-[10px] font-medium">숲</span>
+            </button>
+            
+            <button 
+              onClick={() => setSelectedTab('members')}
+              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
+                selectedTab === 'members' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
+              }`}
+            >
+              <Users className="w-6 h-6" />
+              <span className="text-[10px] font-medium">숲지기</span>
+            </button>
+            
+            <button 
+              onClick={() => setSelectedTab('explore')}
+              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
+                selectedTab === 'explore' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
+              }`}
+            >
+              <Compass className="w-6 h-6" />
+              <span className="text-[10px] font-medium">탐험</span>
+            </button>
+            
+            <button 
+              onClick={() => setSelectedTab('archive')}
+              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
+                selectedTab === 'archive' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
+              }`}
+            >
+              <Library className="w-6 h-6" />
+              <span className="text-[10px] font-medium">서고</span>
+            </button>
+          </div>
         </div>
       </div>
 
     </div>
   );
 }
+
+export default Forest;

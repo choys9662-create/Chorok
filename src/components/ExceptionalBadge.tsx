@@ -14,37 +14,33 @@ export function ExceptionalBadge({ type, count, size = 'small' }: ExceptionalBad
         return {
           icon: Eye,
           label: 'Rare pick',
-          bg: 'bg-purple-50',
-          text: 'text-purple-700',
-          border: 'border-purple-200',
-          iconColor: 'text-purple-600'
+          bg: 'rgba(0, 255, 0, 0.1)',
+          text: '#00FF00',
+          border: 'rgba(0, 255, 0, 0.3)'
         };
       case 'chorus-highlight':
         return {
           icon: Users,
           label: count ? `${count} readers` : 'Popular line',
-          bg: 'bg-orange-50',
-          text: 'text-orange-700',
-          border: 'border-orange-200',
-          iconColor: 'text-orange-600'
+          bg: 'rgba(0, 255, 0, 0.1)',
+          text: '#00FF00',
+          border: 'rgba(0, 255, 0, 0.3)'
         };
       case 'aligned-reflection':
         return {
           icon: Zap,
           label: 'Similar minds',
-          bg: 'bg-teal-50',
-          text: 'text-teal-700',
-          border: 'border-teal-200',
-          iconColor: 'text-teal-600'
+          bg: 'rgba(0, 255, 0, 0.1)',
+          text: '#00FF00',
+          border: 'rgba(0, 255, 0, 0.3)'
         };
       case 'unique-perspective':
         return {
           icon: Star,
           label: 'Unique perspective',
-          bg: 'bg-indigo-50',
-          text: 'text-indigo-700',
-          border: 'border-indigo-200',
-          iconColor: 'text-indigo-600'
+          bg: 'rgba(0, 255, 0, 0.1)',
+          text: '#00FF00',
+          border: 'rgba(0, 255, 0, 0.3)'
         };
     }
   };
@@ -55,12 +51,17 @@ export function ExceptionalBadge({ type, count, size = 'small' }: ExceptionalBad
 
   return (
     <div 
-      className={`inline-flex items-center gap-1.5 ${config.bg} ${config.text} border ${config.border} rounded-full ${
+      className={`inline-flex items-center gap-1.5 rounded-full ${
         isSmall ? 'px-2 py-0.5' : 'px-3 py-1'
       }`}
+      style={{
+        background: config.bg,
+        color: config.text,
+        border: `1px solid ${config.border}`
+      }}
     >
-      <IconComponent className={`${isSmall ? 'w-3 h-3' : 'w-3.5 h-3.5'} ${config.iconColor}`} />
-      <span className={`${isSmall ? 'text-[10px]' : 'text-xs'} font-bold`}>
+      <IconComponent className={isSmall ? 'w-3 h-3' : 'w-3.5 h-3.5'} />
+      <span className={`${isSmall ? 'text-caption' : 'text-caption'} font-bold`}>
         {config.label}
       </span>
     </div>

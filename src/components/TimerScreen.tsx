@@ -1,8 +1,36 @@
 import { useState, useEffect } from 'react';
 import { Book, SessionChoseo, SessionData } from '../App';
 import { mockBooks } from '../data/mockData';
-import { Camera, PenTool, FileText, Pause, Play, Lock, ArrowLeft, Plus, Check, Trees, Sparkles } from 'lucide-react';
+import { Camera, PenTool, FileText, Pause, Play, Lock, ArrowLeft, Plus, Check, Trees, Sparkles, Users } from 'lucide-react';
 import { ExceptionalType } from './ExceptionalChoseoToast';
+
+// Live reading activity data
+interface LiveReader {
+  id: string;
+  name: string;
+  book: string;
+  position: { x: number; y: number };
+  delay: number;
+}
+
+const generateLiveReaders = (): LiveReader[] => {
+  const clanMembers = [
+    { name: '민수', book: '코스모스' },
+    { name: '수지', book: '사피엔스' },
+    { name: '지수', book: '1984' }
+  ];
+  
+  return clanMembers.map((member, idx) => ({
+    id: `reader-${idx}`,
+    name: member.name,
+    book: member.book,
+    position: {
+      x: 20 + Math.random() * 60,
+      y: 30 + Math.random() * 40
+    },
+    delay: idx * 0.5
+  }));
+};
 
 interface TimerScreenProps {
   book: Book | null;
@@ -32,6 +60,12 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
     count?: number;
   } | null>(null);
 
+  // Live activity state
+  const [liveReaders] = useState<LiveReader[]>(generateLiveReaders());
+  const [showLiveActivity, setShowLiveActivity] = useState(false);
+  const [selectedFirefly, setSelectedFirefly] = useState<LiveReader | null>(null);
+  const totalReaders = 127; // Total readers nationwide
+
   useEffect(() => {
     let interval: number;
     if (book && isRunning && !isPaused && !showSummary) {
@@ -47,53 +81,86 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
     const readingBooks = mockBooks.filter(b => b.status === 'reading');
 
     return (
-      <div className="max-w-md mx-auto min-h-screen h-screen flex flex-col bg-gradient-to-b from-green-900 to-emerald-950 text-white relative overflow-hidden">
+      <div className="max-w-md mx-auto min-h-screen h-screen flex flex-col bg-[#0a0a0a] text-white relative overflow-hidden">
+        {/* Ambient background effects */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-20 left-10 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(0, 255, 0, 0.2)' }}></div>
+          <div className="absolute bottom-40 right-10 w-80 h-80 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(0, 255, 0, 0.1)', animationDelay: '1s' }}></div>
+        </div>
+
         {/* Header */}
-        <header className="p-6 flex items-center">
+        <header className="p-6 flex items-center relative z-10">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-            <ArrowLeft className="w-6 h-6 text-green-100" />
+            <ArrowLeft className="w-6 h-6 text-neutral-200" />
           </button>
-          <h1 className="text-lg font-medium ml-4">읽을 책 선택</h1>
+          <div className="flex-1 text-center -ml-10">
+            <h1 className="text-h2 text-white mb-1">CHO_LOCK 시작</h1>
+            <p className="text-caption text-neutral-400">집중 독서 모드</p>
+          </div>
         </header>
 
         {/* Selection Content */}
-        <div className="flex-1 px-6 overflow-y-auto pb-10">
-          <p className="text-green-200/70 text-sm mb-6 text-center">
-            집중 모드를 시작할 책을 선택해주세요
-          </p>
+        <div className="flex-1 px-6 overflow-y-auto pb-10 relative z-10">
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 bg-[#1a1a1a] border rounded-full flex items-center justify-center mx-auto mb-4 shadow-neon" style={{ borderColor: 'rgba(0, 255, 0, 0.3)' }}>
+              <Lock className="w-10 h-10" style={{ color: '#00FF00' }} />
+            </div>
+            <p className="text-body-s text-neutral-300 leading-relaxed">
+              집중 모드를 시작할 책을 선택해주세요<br/>
+              <span className="text-caption text-neutral-500">방해 요소 없이 오롯이 독서에만 집중할 수 있어요</span>
+            </p>
+          </div>
 
           {/* Current Reading List */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4 mb-6">
+            <h2 className="text-body-s font-medium text-neutral-400 mb-3">읽고 있는 책</h2>
             {readingBooks.map((b) => (
               <button
                 key={b.id}
                 onClick={() => onBookSelect(b)}
-                className="flex flex-col items-center bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 hover:border-emerald-500/50 transition-all active:scale-95"
+                className="w-full flex items-center gap-4 bg-[#1a1a1a] border border-neutral-800 rounded-xl p-4 hover:bg-[#222222] transition-all active:scale-[0.98]"
+                style={{
+                  borderColor: 'rgb(38, 38, 38)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.5)'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgb(38, 38, 38)'}
               >
                 <img
                   src={b.cover}
                   alt={b.title}
-                  className="w-24 h-36 object-cover rounded-lg shadow-lg mb-3"
+                  className="w-16 h-24 object-cover rounded-lg shadow-lg"
                 />
-                <h3 className="text-sm font-medium text-center truncate w-full">{b.title}</h3>
-                <p className="text-xs text-green-200/60 text-center truncate w-full">{b.author}</p>
-                <div className="mt-2 w-full bg-white/10 rounded-full h-1">
-                  <div 
-                    className="bg-emerald-500 h-1 rounded-full" 
-                    style={{ width: `${(b.currentPage / b.totalPages) * 100}%` }}
-                  />
+                <div className="flex-1 text-left">
+                  <h3 className="text-body-s font-bold text-white mb-1">{b.title}</h3>
+                  <p className="text-caption text-neutral-400 mb-2">{b.author}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 bg-neutral-800 rounded-full h-1.5">
+                      <div 
+                        className="h-1.5 rounded-full" 
+                        style={{ 
+                          width: `${(b.currentPage / b.totalPages) * 100}%`,
+                          background: '#00FF00'
+                        }}
+                      />
+                    </div>
+                    <span className="text-caption text-neutral-500">{Math.round((b.currentPage / b.totalPages) * 100)}%</span>
+                  </div>
                 </div>
+                <div style={{ color: '#00FF00' }}>→</div>
               </button>
             ))}
             
             {/* Add New Book Placeholder */}
             <button
-              className="flex flex-col items-center justify-center bg-white/5 border border-white/10 border-dashed rounded-xl p-4 hover:bg-white/10 transition-all min-h-[200px]"
+              className="w-full flex items-center justify-center gap-3 bg-[#1a1a1a] border border-neutral-800 border-dashed rounded-xl p-6 hover:bg-[#222222] transition-all"
+              style={{ borderColor: 'rgb(38, 38, 38)' }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.3)'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgb(38, 38, 38)'}
             >
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-2">
-                <Plus className="w-6 h-6 text-green-200" />
+              <div className="w-12 h-12 rounded-full bg-[#121212] border border-neutral-700 flex items-center justify-center">
+                <Plus className="w-6 h-6 text-neutral-400" />
               </div>
-              <span className="text-sm text-green-200/80">새 책 읽기</span>
+              <span className="text-body-s text-neutral-400">새 책 추가하기</span>
             </button>
           </div>
         </div>
@@ -240,20 +307,104 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
   }
 
   return (
-    <div className="max-w-md mx-auto min-h-screen h-screen flex flex-col bg-gradient-to-b from-green-900 to-emerald-950 text-white relative overflow-hidden">
+    <div className="max-w-md mx-auto min-h-screen h-screen flex flex-col bg-[#0a0a0a] text-white relative overflow-hidden">
+      {/* Fireflies - Live Readers */}
+      <div className="absolute inset-0 pointer-events-none z-20">
+        {liveReaders.map((reader) => (
+          <div
+            key={reader.id}
+            className="absolute pointer-events-auto cursor-pointer"
+            style={{
+              left: `${reader.position.x}%`,
+              top: `${reader.position.y}%`,
+              animation: `float ${3 + reader.delay}s ease-in-out infinite`,
+              animationDelay: `${reader.delay}s`
+            }}
+            onClick={() => setSelectedFirefly(reader)}
+          >
+            {/* Firefly glow */}
+            <div className="relative">
+              <div className="w-3 h-3 rounded-full animate-ping opacity-75" style={{ background: '#00FF00' }}></div>
+              <div className="absolute top-0 left-0 w-3 h-3 rounded-full blur-sm shadow-lg" style={{ background: '#00FF00', boxShadow: '0 0 20px rgba(0, 255, 0, 0.5)' }}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Live Activity Info Panel */}
+      {selectedFirefly && (
+        <div 
+          className="absolute top-24 left-6 right-6 z-30 bg-[#1a1a1a]/90 backdrop-blur-lg rounded-2xl p-4 border shadow-neon animate-fade-in"
+          style={{ borderColor: 'rgba(0, 255, 0, 0.3)' }}
+          onClick={() => setSelectedFirefly(null)}
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-black font-bold shadow-lg" style={{ background: 'linear-gradient(to bottom right, #00FF00, #00cc00)' }}>
+              {selectedFirefly.name[0]}
+            </div>
+            <div className="flex-1">
+              <div className="text-body-s font-medium text-white">{selectedFirefly.name}님</div>
+              <div className="text-caption" style={{ color: '#00FF00' }}>📖 {selectedFirefly.book} 읽는 중</div>
+            </div>
+            <div className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: '#00FF00' }}></div>
+          </div>
+          <div className="text-caption text-neutral-400 mt-2">탭하여 닫기</div>
+        </div>
+      )}
+
+      {/* Bottom Live Activity Summary */}
+      <button
+        onClick={() => setShowLiveActivity(!showLiveActivity)}
+        className="absolute bottom-40 left-6 right-6 z-30 bg-[#1a1a1a]/80 backdrop-blur-md border rounded-2xl p-3 transition-all hover:bg-[#222222]/80"
+        style={{ borderColor: 'rgba(0, 255, 0, 0.2)' }}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(0, 255, 0, 0.2)' }}>
+              <Users className="w-4 h-4" style={{ color: '#00FF00' }} />
+            </div>
+            <div className="text-left">
+              <div className="text-caption text-white font-medium">
+                지금 클랜원 {liveReaders.length}명이 함께 읽고 있어요
+              </div>
+              <div className="text-caption text-neutral-500">
+                전국 {totalReaders}명 독서 중
+              </div>
+            </div>
+          </div>
+          <div style={{ color: '#00FF00' }}>
+            {showLiveActivity ? '▼' : '▲'}
+          </div>
+        </div>
+
+        {showLiveActivity && (
+          <div className="mt-3 pt-3 border-t space-y-2" style={{ borderColor: 'rgba(0, 255, 0, 0.2)' }}>
+            {liveReaders.map((reader) => (
+              <div key={reader.id} className="flex items-center gap-2 text-left">
+                <div className="w-2 h-2 rounded-full animate-pulse flex-shrink-0" style={{ background: '#00FF00' }}></div>
+                <div className="flex-1">
+                  <span className="text-caption text-white">{reader.name}님</span>
+                  <span className="text-caption text-neutral-400 ml-1.5">· {reader.book}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </button>
+
       {/* Lock Status Header */}
       <header className="pt-8 pb-4 flex flex-col items-center justify-center animate-pulse">
-        <div className="bg-white/10 p-2 rounded-full mb-2">
-          <Lock className="w-6 h-6 text-green-300" />
+        <div className="p-2 rounded-full mb-2 border" style={{ background: 'rgba(0, 255, 0, 0.1)', borderColor: 'rgba(0, 255, 0, 0.2)' }}>
+          <Lock className="w-6 h-6" style={{ color: '#00FF00' }} />
         </div>
-        <span className="text-xs text-green-300 tracking-widest uppercase">CHO_LOCK Mode</span>
+        <span className="text-caption tracking-widest uppercase" style={{ color: '#00FF00' }}>CHO_LOCK Mode</span>
       </header>
 
       {/* Main Content Area - Centered */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 -mt-10">
         {/* Book Cover (Dimmed) */}
         <div className="relative mb-8">
-          <div className="absolute inset-0 bg-green-900/40 rounded-lg z-10" />
+          <div className="absolute inset-0 bg-black/40 rounded-lg z-10" />
           <img
             src={book.cover}
             alt={book.title}
@@ -263,40 +414,22 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
 
         {/* Timer Display */}
         <div className="text-center mb-12">
-          <div className="text-7xl font-mono tracking-wider font-light mb-2 text-white drop-shadow-lg">
+          <div className="text-7xl font-mono tracking-wider font-light mb-2 drop-shadow-lg text-neon-glow" style={{ color: '#00FF00', textShadow: '0 0 20px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 0, 0.5)' }}>
             {formatTime(seconds)}
           </div>
-          <p className="text-green-200/70 text-sm">{book.title} 읽는 중...</p>
+          <p className="text-body-s text-neutral-400">{book.title} 읽는 중...</p>
         </div>
 
         {/* Allowed Actions - The ONLY things you can do */}
-        <div className="grid grid-cols-3 gap-6 w-full max-w-xs">
+        <div className="flex justify-center w-full max-w-xs">
           <button
             onClick={() => setShowChosuModal(true)}
             className="flex flex-col items-center gap-3 group"
           >
-            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur flex items-center justify-center group-active:bg-white/20 transition-all border border-white/10">
-              <PenTool className="w-7 h-7 text-white" />
+            <div className="w-16 h-16 rounded-full bg-[#1a1a1a] border backdrop-blur flex items-center justify-center group-active:bg-[#222222] transition-all shadow-neon" style={{ borderColor: 'rgba(0, 255, 0, 0.3)' }}>
+              <PenTool className="w-7 h-7" style={{ color: '#00FF00' }} />
             </div>
-            <span className="text-xs text-green-100/80">초서</span>
-          </button>
-          
-          <button
-            className="flex flex-col items-center gap-3 group"
-          >
-            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur flex items-center justify-center group-active:bg-white/20 transition-all border border-white/10">
-              <Camera className="w-7 h-7 text-white" />
-            </div>
-            <span className="text-xs text-green-100/80">사진</span>
-          </button>
-
-          <button
-            className="flex flex-col items-center gap-3 group"
-          >
-            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur flex items-center justify-center group-active:bg-white/20 transition-all border border-white/10">
-              <FileText className="w-7 h-7 text-white" />
-            </div>
-            <span className="text-xs text-green-100/80">글쓰기</span>
+            <span className="text-caption text-neutral-400">초서</span>
           </button>
         </div>
       </div>
@@ -307,7 +440,10 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setIsPaused(!isPaused)}
-            className="flex items-center gap-2 text-green-200/60 hover:text-white text-sm px-4 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-body-s flex items-center gap-2 px-4 py-2 rounded-full hover:bg-white/5 transition-colors"
+            style={{ color: 'rgb(115, 115, 115)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#00FF00'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgb(115, 115, 115)'}
           >
             {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
             <span>{isPaused ? '독서 재개' : '잠시 멈춤'}</span>
@@ -315,21 +451,27 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
         </div>
 
         {/* Slide to Unlock - Always visible at bottom */}
-        <div className="relative w-full max-w-xs mx-auto h-14 bg-white/10 backdrop-blur-md rounded-full overflow-hidden border border-white/10 shadow-inner">
+        <div className="relative w-full max-w-xs mx-auto h-14 bg-[#1a1a1a] border rounded-full overflow-hidden shadow-inner" style={{ borderColor: 'rgba(0, 255, 0, 0.2)' }}>
           <div 
-            className="absolute left-0 top-0 h-full bg-gradient-to-r from-green-500/80 to-emerald-500/80 transition-all duration-100"
-            style={{ width: `${Math.max(15, sliderPosition)}%` }} // Min width for handle visibility
+            className="absolute left-0 top-0 h-full transition-all duration-100"
+            style={{ 
+              width: `${Math.max(15, sliderPosition)}%`,
+              background: 'linear-gradient(to right, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0.6))'
+            }}
           />
           
           {/* Slider Handle Icon */}
           <div 
-            className="absolute top-1 bottom-1 w-12 bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-100 pointer-events-none z-10"
-            style={{ left: `calc(${sliderPosition}% - ${sliderPosition * 0.5}px)` }} // Approximate centering adjustment
+            className="absolute top-1 bottom-1 w-12 rounded-full shadow-neon flex items-center justify-center transition-all duration-100 pointer-events-none z-10"
+            style={{ 
+              left: `calc(${sliderPosition}% - ${sliderPosition * 0.5}px)`,
+              background: '#00FF00'
+            }}
           >
-            <span className="text-emerald-600">››</span>
+            <span className="text-black font-bold">››</span>
           </div>
 
-          <div className="absolute inset-0 flex items-center justify-center text-white/40 text-sm font-medium pointer-events-none pl-8">
+          <div className="text-body-s absolute inset-0 flex items-center justify-center text-neutral-500 font-medium pointer-events-none pl-8">
             밀어서 독서 완료
           </div>
           
@@ -349,22 +491,27 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
       {/* Chosu Modal */}
       {showChosuModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-end justify-center z-50">
-          <div className="bg-stone-100 text-gray-900 rounded-t-3xl w-full max-w-md p-6 animate-slide-up shadow-2xl">
+          <div className="bg-[#1a1a1a] text-white rounded-t-3xl w-full max-w-md p-6 animate-slide-up shadow-2xl border-t" style={{ borderColor: 'rgba(0, 255, 0, 0.2)' }}>
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-serif">초서 남기기</h3>
-              <button onClick={() => setShowChosuModal(false)} className="text-gray-500">✕</button>
+              <h3 className="text-h2" style={{ color: '#00FF00' }}>초서 남기기</h3>
+              <button onClick={() => setShowChosuModal(false)} className="text-neutral-500 hover:text-white">✕</button>
             </div>
             <textarea
               value={chosuText}
               onChange={(e) => setChosuText(e.target.value)}
               placeholder="책 속의 문장을 기록하세요..."
-              className="w-full bg-white border border-stone-200 rounded-xl p-4 mb-6 min-h-40 resize-none text-lg font-serif leading-relaxed focus:outline-none focus:border-stone-400 focus:ring-0"
+              className="text-body-m w-full bg-[#121212] border border-neutral-800 rounded-xl p-4 mb-6 min-h-40 resize-none leading-relaxed focus:outline-none focus:ring-0 text-neutral-200 placeholder:text-neutral-600"
+              style={{}}
+              onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.5)'}
+              onBlur={(e) => e.currentTarget.style.borderColor = 'rgb(38, 38, 38)'}
             />
             <textarea
               value={chosuThought}
               onChange={(e) => setChosuThought(e.target.value)}
               placeholder="이해한 내용을 간단히 적어보세요..."
-              className="w-full bg-white border border-stone-200 rounded-xl p-4 mb-6 min-h-40 resize-none text-lg font-serif leading-relaxed focus:outline-none focus:border-stone-400 focus:ring-0"
+              className="text-body-m w-full bg-[#121212] border border-neutral-800 rounded-xl p-4 mb-6 min-h-40 resize-none leading-relaxed focus:outline-none focus:ring-0 text-neutral-200 placeholder:text-neutral-600"
+              onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.5)'}
+              onBlur={(e) => e.currentTarget.style.borderColor = 'rgb(38, 38, 38)'}
             />
             <div className="flex gap-3">
               <button
@@ -373,13 +520,16 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
                   setChosuText('');
                   setChosuThought('');
                 }}
-                className="flex-1 py-4 bg-stone-200 text-stone-600 rounded-xl font-medium"
+                className="text-body-s flex-1 py-4 bg-[#121212] border border-neutral-800 text-neutral-400 rounded-xl font-medium hover:bg-[#222222] transition-colors"
               >
                 취소
               </button>
               <button
                 onClick={handleChosuSubmit}
-                className="flex-1 py-4 bg-emerald-700 text-white rounded-xl font-medium hover:bg-emerald-800 transition-colors"
+                className="text-body-s flex-1 py-4 text-black rounded-xl font-medium transition-colors shadow-neon"
+                style={{ background: '#00FF00' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = '#33FF33'}
+                onMouseLeave={(e) => e.currentTarget.style.background = '#00FF00'}
               >
                 기록하기
               </button>

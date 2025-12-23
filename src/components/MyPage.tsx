@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, BookMarked, Star, Heart, Settings, Share2, Award } from 'lucide-react';
+import { ArrowLeft, BookMarked, Star, Heart, Settings, Share2, Award, Brain } from 'lucide-react';
 import { Book, Screen } from '../App';
 import { mockBooks } from '../data/mockData';
 
@@ -253,6 +253,16 @@ export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
 
         {/* Actions */}
         <div className="space-y-3">
+          <button 
+            onClick={() => onNavigate('choseo-insights')}
+            className="w-full bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-xl p-4 flex items-center justify-between hover:shadow-lg transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <Brain className="w-5 h-5" />
+              <span className="text-sm font-bold">초서 인사이트 보기 ✨</span>
+            </div>
+            <span className="text-white/80">›</span>
+          </button>
           <button className="w-full bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
             <div className="flex items-center gap-3">
               <Heart className="w-5 h-5 text-gray-600" />

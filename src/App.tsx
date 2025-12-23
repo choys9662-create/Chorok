@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
 import { MainHome } from './components/MainHome';
 import { TimerScreen } from './components/TimerScreen';
 import { BookDetail } from './components/BookDetail';
-import { Forest } from './components/Forest';
+const Forest = lazy(() => import('./components/Forest').then(m => ({ default: m.Forest })));
 import { Search } from './components/Search';
 import { MyPage } from './components/MyPage';
 import { Analytics } from './components/Analytics';
@@ -11,10 +11,12 @@ import { ChoseoDetail } from './components/ChoseoDetail';
 import { ChoseoOverlap } from './components/ChoseoOverlap';
 import { ChoseoCluster } from './components/ChoseoCluster';
 import { SessionChoseoSummary } from './components/SessionChoseoSummary';
+import { ChoseoInsights } from './components/ChoseoInsights';
 import { Home, TreePine, Search as SearchIcon, User, BarChart3, ArrowLeft, MapPin, Users, TrendingUp, Compass, Timer } from 'lucide-react';
 import { ExceptionalType } from './components/ExceptionalChoseoToast';
+import { loadThree } from './components/ui/three-loader';
 
-export type Screen = 'main' | 'timer' | 'book-detail' | 'forest-my' | 'forest-neighbors' | 'forest-growth' | 'forest-explore' | 'search' | 'mypage' | 'analytics' | 'ranking' | 'choseo-detail' | 'choseo-overlap' | 'choseo-cluster' | 'session-summary';
+export type Screen = 'main' | 'timer' | 'book-detail' | 'forest' | 'search' | 'mypage' | 'analytics' | 'ranking' | 'choseo-detail' | 'choseo-overlap' | 'choseo-cluster' | 'session-summary' | 'choseo-insights';
 
 export interface Book {
   id: string;
@@ -66,7 +68,7 @@ export default function App() {
   };
 
   // Check if we're in the Forest section
-  const isInForestSection = currentScreen === 'forest-my' || currentScreen === 'forest-neighbors' || currentScreen === 'forest-growth' || currentScreen === 'forest-explore';
+  const isInForestSection = currentScreen === 'forest';
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -86,11 +88,10 @@ export default function App() {
         );
       case 'book-detail':
         return <BookDetail book={selectedBook} onStartReading={navigateToTimer} onBack={() => setCurrentScreen('main')} />;
-      case 'forest-my':
-      case 'forest-neighbors':
-      case 'forest-growth':
-      case 'forest-explore':
-        return <Forest onBack={() => setCurrentScreen('main')} onNavigate={setCurrentScreen} activeTab={currentScreen} />;
+      case 'forest':
+        return <Suspense fallback={<div>Loading...</div>}>
+          <Forest onBack={() => setCurrentScreen('main')} onNavigate={setCurrentScreen} />
+        </Suspense>;
       case 'search':
         return <Search onBookSelect={navigateToBookDetail} onBack={() => setCurrentScreen('main')} />;
       case 'mypage':
@@ -117,21 +118,33 @@ export default function App() {
         ) : (
           <MainHome onStartTimer={navigateToTimer} onNavigate={setCurrentScreen} />
         );
+      case 'choseo-insights':
+        return <ChoseoInsights onBack={() => setCurrentScreen('main')} />;
       default:
         return <MainHome onStartTimer={navigateToTimer} onNavigate={setCurrentScreen} />;
     }
   };
 
+  useEffect(() => {
+    // Preload Three.js early to ensure singleton pattern
+    loadThree().catch(err => {
+      console.error('[App] Failed to preload Three.js:', err);
+    });
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-emerald-50">
+    <div className="min-h-screen bg-black">
       {/* Top Search Button - Show only when not in Forest section and not in Main (Main has its own header) */}
       {!isInForestSection && currentScreen !== 'search' && currentScreen !== 'main' && (
         <div className="fixed top-6 right-6 z-40">
           <button
             onClick={() => setCurrentScreen('search')}
-            className="w-12 h-12 bg-white rounded-full shadow-monument flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:shadow-monument-lg transition-all active:scale-95"
+            className="w-12 h-12 rounded-full shadow-neon flex items-center justify-center hover:shadow-neon-lg transition-all active:scale-95"
+            style={{ background: 'rgba(0, 255, 0, 0.1)', border: '1px solid rgba(0, 255, 0, 0.3)' }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.6)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.3)'}
           >
-            <SearchIcon className="w-6 h-6" strokeWidth={2} />
+            <SearchIcon className="w-6 h-6" style={{ color: '#00FF00' }} strokeWidth={2} />
           </button>
         </div>
       )}
@@ -142,117 +155,67 @@ export default function App() {
       </div>
 
       {/* Bottom Navigation - Changes based on section */}
-      {currentScreen !== 'timer' && (isInForestSection ? (
-        /* Forest Section Navigation - Floating pill shape */
+      {currentScreen !== 'timer' && currentScreen !== 'forest' && (
+        /* Main Navigation - Neon Black Theme */
         <nav className="fixed bottom-6 left-0 right-0 z-50 px-4">
-          <div className="max-w-md mx-auto bg-white/90 backdrop-blur-md rounded-full shadow-monument-lg border border-emerald-200/50">
-            <div className="flex justify-around items-center h-16 px-3">
-              <button
-                onClick={() => setCurrentScreen('main')}
-                className="flex flex-col items-center gap-0.5 text-slate-600 hover:text-emerald-600 transition-colors px-2"
-              >
-                <ArrowLeft className="w-5 h-5" strokeWidth={2} />
-                <span className="text-[9px]">나가기</span>
-              </button>
-              <button
-                onClick={() => setCurrentScreen('forest-my')}
-                className={`flex flex-col items-center gap-0.5 transition-colors px-2 ${
-                  currentScreen === 'forest-my' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-                }`}
-              >
-                <MapPin className="w-5 h-5" strokeWidth={2} />
-                <span className="text-[9px]">나의 영역</span>
-              </button>
-              <button
-                onClick={() => setCurrentScreen('forest-neighbors')}
-                className={`flex flex-col items-center gap-0.5 transition-colors px-2 ${
-                  currentScreen === 'forest-neighbors' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-                }`}
-              >
-                <Users className="w-5 h-5" strokeWidth={2} />
-                <span className="text-[9px]">이웃 영역</span>
-              </button>
-              <button
-                onClick={() => setCurrentScreen('forest-growth')}
-                className={`flex flex-col items-center gap-0.5 transition-colors px-2 ${
-                  currentScreen === 'forest-growth' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-                }`}
-              >
-                <TrendingUp className="w-5 h-5" strokeWidth={2} />
-                <span className="text-[9px]">성장</span>
-              </button>
-              <button
-                onClick={() => setCurrentScreen('forest-explore')}
-                className={`flex flex-col items-center gap-0.5 transition-colors px-2 ${
-                  currentScreen === 'forest-explore' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-                }`}
-              >
-                <Compass className="w-5 h-5" strokeWidth={2} />
-                <span className="text-[9px]">탐험</span>
-              </button>
-            </div>
-          </div>
-        </nav>
-      ) : (
-        /* Main Navigation - Floating Oval Design */
-        <nav className="fixed bottom-6 left-0 right-0 z-50 px-4">
-          <div className="max-w-md mx-auto bg-white/70 backdrop-blur-lg rounded-full shadow-monument-lg border border-emerald-100/60">
+          <div className="max-w-md mx-auto backdrop-blur-lg rounded-full shadow-neon" style={{ background: 'rgba(10, 10, 10, 0.9)', border: '1px solid rgba(0, 255, 0, 0.2)' }}>
             <div className="grid grid-cols-5 items-center h-16 relative px-2">
               <button
                 onClick={() => setCurrentScreen('main')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'main' ? 'text-emerald-600' : 'text-gray-400 hover:text-emerald-600'
+                  currentScreen === 'main' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
                 }`}
               >
                 <Home className="w-6 h-6" strokeWidth={2} />
-                <span className="text-[10px] font-medium">홈</span>
+                <span className="text-caption">홈</span>
               </button>
               <button
-                onClick={() => setCurrentScreen('forest-my')}
+                onClick={() => setCurrentScreen('forest')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  isInForestSection ? 'text-emerald-600' : 'text-gray-400 hover:text-emerald-600'
+                  currentScreen === 'forest' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
                 }`}
               >
                 <TreePine className="w-6 h-6" strokeWidth={2} />
-                <span className="text-[10px] font-medium">숲</span>
+                <span className="text-caption">숲</span>
               </button>
               
               {/* Center placeholder for CHOLOCK button */}
               <div className="flex justify-center relative">
                 {/* CHOLOCK - Protruding circular button */}
-                <div className="absolute -top-8 bg-white rounded-full p-1.5 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
+                <div className="absolute -top-8 rounded-full p-1.5 shadow-neon-lg" style={{ background: '#0a0a0a', border: '2px solid rgba(0, 255, 0, 0.3)' }}>
                   <button
                     onClick={() => setCurrentScreen('timer')}
-                    className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-xl hover:scale-105 transition-all active:scale-95"
+                    className="w-14 h-14 rounded-full shadow-neon-lg flex items-center justify-center text-black hover:shadow-neon-lg hover:scale-105 transition-all active:scale-95"
+                    style={{ background: '#00FF00' }}
                   >
                     <Timer className="w-7 h-7" strokeWidth={2.5} />
                   </button>
                 </div>
-                <span className="text-[10px] font-medium text-emerald-700 mt-8 opacity-0">.</span>
+                <span className="text-caption text-[#00FF00] mt-8 opacity-0">.</span>
               </div>
               
               <button
                 onClick={() => setCurrentScreen('analytics')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'analytics' ? 'text-emerald-600' : 'text-gray-400 hover:text-emerald-600'
+                  currentScreen === 'analytics' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
                 }`}
               >
                 <BarChart3 className="w-6 h-6" strokeWidth={2} />
-                <span className="text-[10px] font-medium">분석</span>
+                <span className="text-caption">분석</span>
               </button>
               <button
                 onClick={() => setCurrentScreen('mypage')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'mypage' ? 'text-emerald-600' : 'text-gray-400 hover:text-emerald-600'
+                  currentScreen === 'mypage' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
                 }`}
               >
                 <User className="w-6 h-6" strokeWidth={2} />
-                <span className="text-[10px] font-medium">MY</span>
+                <span className="text-caption">MY</span>
               </button>
             </div>
           </div>
         </nav>
-      ))}
+      )}
     </div>
   );
 }
