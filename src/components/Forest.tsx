@@ -106,7 +106,7 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
   };
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-gradient-to-b from-[#E0F7FA] via-[#B2EBF2] to-[#80DEEA] relative overflow-hidden">
+    <div className="max-w-md mx-auto min-h-screen bg-black relative overflow-hidden">
       
       {/* === 숲 TAB (Main 3D Mountain Scene) === */}
       {selectedTab === 'forest' && (
@@ -123,7 +123,7 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           
           {/* Floating UI chips */}
           <div className="absolute top-20 right-6 z-40 animate-float">
-            <button className="backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border hover:scale-105 transition-transform active:scale-95" style={{ background: 'var(--surface-elevated)', borderColor: 'var(--border-subtle)', boxShadow: '0 0 20px rgba(0, 255, 0, 0.2)' }}>
+            <button className="backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border hover:scale-105 transition-transform active:scale-95 flex items-center gap-2" style={{ background: 'var(--surface-elevated)', borderColor: 'var(--border-subtle)', boxShadow: '0 0 20px rgba(0, 255, 0, 0.2)' }}>
               <div className="grid grid-cols-2 gap-0.5">
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#00FF00' }}></div>
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.5)' }}></div>
@@ -146,8 +146,9 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
 
           <div className="absolute bottom-40 right-8 z-40 animate-float" style={{ animationDelay: '0.5s' }}>
             <button 
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-full shadow-lg shadow-emerald-200 border border-white/30 hover:scale-105 transition-transform active:scale-95 font-bold text-sm flex items-center gap-2"
+              className="px-5 py-2.5 rounded-full shadow-lg border hover:scale-105 transition-transform active:scale-95 font-bold text-sm flex items-center gap-2 text-white"
               onClick={() => onNavigate('timer')}
+              style={{ background: 'linear-gradient(to right, #00FF00, #00FFFF)', borderColor: 'rgba(0, 255, 0, 0.3)', boxShadow: '0 0 20px rgba(0, 255, 0, 0.4)' }}
             >
               <Zap className="w-4 h-4" />
               바로 초록
@@ -157,54 +158,54 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           {/* Firefly indicators (reading members) */}
           <div className="absolute top-32 left-1/4 z-30">
             <div className="relative">
-              <div className="w-3 h-3 bg-yellow-300 rounded-full animate-ping opacity-75"></div>
-              <div className="absolute top-0 left-0 w-3 h-3 bg-yellow-400 rounded-full blur-sm"></div>
+              <div className="w-3 h-3 rounded-full animate-ping opacity-75" style={{ background: '#FFFF00' }}></div>
+              <div className="absolute top-0 left-0 w-3 h-3 rounded-full blur-sm" style={{ background: '#FFFF00' }}></div>
             </div>
           </div>
           <div className="absolute top-60 right-1/3 z-30 animate-float" style={{ animationDelay: '1.5s' }}>
             <div className="relative">
-              <div className="w-2.5 h-2.5 bg-yellow-200 rounded-full animate-ping opacity-75" style={{ animationDelay: '0.5s' }}></div>
-              <div className="absolute top-0 left-0 w-2.5 h-2.5 bg-yellow-300 rounded-full blur-sm"></div>
+              <div className="w-2.5 h-2.5 rounded-full animate-ping opacity-75" style={{ background: '#FFFF00', animationDelay: '0.5s' }}></div>
+              <div className="absolute top-0 left-0 w-2.5 h-2.5 rounded-full blur-sm" style={{ background: '#FFFF00' }}></div>
             </div>
           </div>
           <div className="absolute bottom-52 left-1/2 z-30 animate-float" style={{ animationDelay: '2s' }}>
             <div className="relative">
-              <div className="w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-75"></div>
-              <div className="absolute top-0 left-0 w-2 h-2 bg-yellow-500 rounded-full blur-sm"></div>
+              <div className="w-2 h-2 rounded-full animate-ping opacity-75" style={{ background: '#FFFF00' }}></div>
+              <div className="absolute top-0 left-0 w-2 h-2 rounded-full blur-sm" style={{ background: '#FFFF00' }}></div>
             </div>
           </div>
 
           {/* Clan stats overlay card */}
           <div className="absolute bottom-32 left-6 right-6 z-40">
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-xl border border-white/60">
+            <div className="backdrop-blur-md rounded-3xl p-5 shadow-xl border card-minimal" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 0 30px rgba(0, 255, 0, 0.2)' }}>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
-                  <TreePine className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(to bottom right, #00FF00, #00FFFF)' }}>
+                  <TreePine className="w-6 h-6 text-black" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-slate-800">책벌레 클랜</h3>
-                  <p className="text-xs text-slate-500">Lv.{clanStats.level} • {clanStats.activeMembers}명 독서중</p>
+                  <h3 className="font-bold text-white">책벌레 클랜</h3>
+                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Lv.{clanStats.level} • {clanStats.activeMembers}명 독서중</p>
                 </div>
-                <button className="p-2 hover:bg-slate-50 rounded-full transition-colors">
-                  <Sparkles className="w-5 h-5 text-amber-500" />
+                <button className="p-2 rounded-full transition-colors hover:bg-white/5">
+                  <Sparkles className="w-5 h-5" style={{ color: '#FFFF00' }} />
                 </button>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100">
-                  <div className="text-xs text-emerald-700 mb-1">레벨</div>
-                  <div className="text-xl font-bold text-emerald-600">{clanStats.level}</div>
-                  <div className="text-[10px] text-emerald-600 mt-0.5">시간</div>
+                <div className="text-center p-3 rounded-2xl border" style={{ background: 'rgba(0, 255, 0, 0.1)', borderColor: 'rgba(0, 255, 0, 0.3)' }}>
+                  <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>레벨</div>
+                  <div className="text-xl font-bold" style={{ color: '#00FF00' }}>{clanStats.level}</div>
+                  <div className="text-[10px] mt-0.5" style={{ color: '#00FF00' }}>시간</div>
                 </div>
-                <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-100">
-                  <div className="text-xs text-blue-700 mb-1">영역</div>
-                  <div className="text-xl font-bold text-blue-600">{clanStats.area}</div>
-                  <div className="text-[10px] text-blue-600 mt-0.5">완독</div>
+                <div className="text-center p-3 rounded-2xl border" style={{ background: 'rgba(0, 255, 255, 0.1)', borderColor: 'rgba(0, 255, 255, 0.3)' }}>
+                  <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>영역</div>
+                  <div className="text-xl font-bold" style={{ color: '#00FFFF' }}>{clanStats.area}</div>
+                  <div className="text-[10px] mt-0.5" style={{ color: '#00FFFF' }}>완독</div>
                 </div>
-                <div className="text-center p-3 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
-                  <div className="text-xs text-purple-700 mb-1">밀도</div>
-                  <div className="text-xl font-bold text-purple-600">{clanStats.density}</div>
-                  <div className="text-[10px] text-purple-600 mt-0.5">초서</div>
+                <div className="text-center p-3 rounded-2xl border" style={{ background: 'rgba(255, 0, 255, 0.1)', borderColor: 'rgba(255, 0, 255, 0.3)' }}>
+                  <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>밀도</div>
+                  <div className="text-xl font-bold" style={{ color: '#FF00FF' }}>{clanStats.density}</div>
+                  <div className="text-[10px] mt-0.5" style={{ color: '#FF00FF' }}>초서</div>
                 </div>
               </div>
             </div>
@@ -216,8 +217,8 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
       {selectedTab === 'members' && (
         <div className="p-6 pb-32 space-y-4">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-slate-800">숲지기</h2>
-            <button className="px-4 py-2 bg-emerald-500 text-white rounded-full text-sm font-medium shadow-lg shadow-emerald-200 hover:scale-105 transition-transform active:scale-95">
+            <h2 className="text-xl font-bold text-white">숲지기</h2>
+            <button className="px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:scale-105 transition-transform active:scale-95 text-black" style={{ background: '#00FF00', boxShadow: '0 0 15px rgba(0, 255, 0, 0.4)' }}>
               <div className="flex items-center gap-2">
                 <UserPlus className="w-4 h-4" />
                 초대하기
@@ -226,66 +227,66 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           </div>
 
           {/* Clan Introduction */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 border border-emerald-100 shadow-sm">
+          <div className="card-minimal rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
-              <h3 className="text-sm font-bold text-emerald-900">클랜 소개</h3>
+              <Sparkles className="w-4 h-4" style={{ color: '#00FF00' }} />
+              <h3 className="text-sm font-bold text-white">클랜 소개</h3>
             </div>
-            <p className="text-xs text-slate-700 leading-relaxed">
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               "책을 사랑하는 사람들이 모여 함께 성장하는 공간입니다. 매주 다양한 분야의 책을 읽고 생각을 나눕니다."
             </p>
             <div className="flex flex-wrap gap-1.5 mt-3">
-              <span className="px-2.5 py-1 bg-white/80 rounded-full text-[10px] font-medium text-emerald-700">주 3회 이상 독서</span>
-              <span className="px-2.5 py-1 bg-white/80 rounded-full text-[10px] font-medium text-emerald-700">장르 다양성</span>
-              <span className="px-2.5 py-1 bg-white/80 rounded-full text-[10px] font-medium text-emerald-700">서로 존중</span>
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-medium" style={{ background: 'rgba(0, 255, 0, 0.15)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>주 3회 이상 독서</span>
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-medium" style={{ background: 'rgba(0, 255, 0, 0.15)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>장르 다양성</span>
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-medium" style={{ background: 'rgba(0, 255, 0, 0.15)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>서로 존중</span>
             </div>
           </div>
 
           {/* Weekly Stats Summary */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4 border border-purple-100 shadow-sm">
+          <div className="card-minimal rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-3">
-              <Target className="w-4 h-4 text-purple-600" />
-              <h3 className="text-sm font-bold text-purple-900">이번 주 클랜 통계</h3>
+              <Target className="w-4 h-4" style={{ color: '#FF00FF' }} />
+              <h3 className="text-sm font-bold text-white">이번 주 클랜 통계</h3>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              <div className="bg-white/70 rounded-xl p-3 text-center">
-                <div className="text-xs text-slate-600 mb-1">총 독서</div>
-                <div className="text-lg font-bold text-purple-600">720분</div>
-                <div className="text-[10px] text-emerald-600 mt-0.5">목표 72%</div>
+              <div className="rounded-xl p-3 text-center" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
+                <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>총 독서</div>
+                <div className="text-lg font-bold" style={{ color: '#FF00FF' }}>720분</div>
+                <div className="text-[10px] mt-0.5" style={{ color: '#00FF00' }}>목표 72%</div>
               </div>
-              <div className="bg-white/70 rounded-xl p-3 text-center">
-                <div className="text-xs text-slate-600 mb-1">완독</div>
-                <div className="text-lg font-bold text-blue-600">12권</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">평균 4권/인</div>
+              <div className="rounded-xl p-3 text-center" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
+                <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>완독</div>
+                <div className="text-lg font-bold" style={{ color: '#00FFFF' }}>12권</div>
+                <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>평균 4권/인</div>
               </div>
-              <div className="bg-white/70 rounded-xl p-3 text-center">
-                <div className="text-xs text-slate-600 mb-1">초서</div>
-                <div className="text-lg font-bold text-amber-600">89개</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">☀️ 2,234</div>
+              <div className="rounded-xl p-3 text-center" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
+                <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>초서</div>
+                <div className="text-lg font-bold" style={{ color: '#FFFF00' }}>89개</div>
+                <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>☀️ 2,234</div>
               </div>
             </div>
           </div>
 
           {/* MVP of the Week */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-4 border border-amber-100 shadow-lg">
+          <div className="card-minimal rounded-2xl p-4 border shadow-lg" style={{ borderColor: 'rgba(255, 255, 0, 0.3)', boxShadow: '0 0 20px rgba(255, 255, 0, 0.1)' }}>
             <div className="flex items-center gap-2 mb-3">
-              <Award className="w-5 h-5 text-amber-600" />
-              <h3 className="text-sm font-bold text-amber-900">이번 주 MVP</h3>
+              <Award className="w-5 h-5" style={{ color: '#FFFF00' }} />
+              <h3 className="text-sm font-bold text-white">이번 주 MVP</h3>
             </div>
-            <div className="bg-white/80 rounded-xl p-3">
+            <div className="rounded-xl p-3" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-md relative">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md relative" style={{ background: 'linear-gradient(to bottom right, #FFFF00, #FFD700)' }}>
                   👑
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center text-xs">
+                  <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ background: '#FFFF00' }}>
                     🌟
                   </div>
                 </div>
                 <div className="flex-1">
-                  <div className="font-bold text-slate-800">책벌레민수</div>
-                  <div className="text-xs text-amber-600 font-medium">가장 많은 시간을 독서했어요!</div>
+                  <div className="font-bold text-white">책벌레민수</div>
+                  <div className="text-xs font-medium" style={{ color: '#FFFF00' }}>가장 많은 시간을 독서했어요!</div>
                 </div>
               </div>
-              <div className="text-[10px] text-slate-500 bg-slate-50 rounded-lg p-2 mt-2">
+              <div className="text-[10px] rounded-lg p-2 mt-2" style={{ color: 'var(--text-secondary)', background: 'var(--surface-elevated)' }}>
                 340분 독서 • 12개 초서 작성 • 🔥7일 연속
               </div>
             </div>
@@ -293,32 +294,32 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
 
           {/* Members */}
           <div>
-            <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
               <Users className="w-4 h-4" />
               클랜원 ({3}명)
             </h3>
             <div className="space-y-3">
               {/* Leader */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-emerald-100">
+              <div className="card-minimal backdrop-blur-md rounded-2xl p-4 shadow-lg border" style={{ borderColor: 'rgba(0, 255, 0, 0.3)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg" style={{ background: 'linear-gradient(to bottom right, #FFFF00, #FFD700)', color: '#000' }}>
                     👑
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-bold text-slate-800">책벌레민수</span>
-                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">숲지기</span>
+                      <span className="font-bold text-white">책벌레민수</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: 'rgba(255, 255, 0, 0.2)', color: '#FFFF00', border: '1px solid rgba(255, 255, 0, 0.3)' }}>숲지기</span>
                     </div>
-                    <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                    <p className="text-xs font-medium flex items-center gap-1" style={{ color: '#00FF00' }}>
                       <BookOpen className="w-3 h-3" />
                       코스모스 읽는 중
                     </p>
                   </div>
-                  <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <div className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: '#00FF00' }}></div>
                 </div>
-                <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500">이번 주 기여</span>
-                  <span className="font-bold text-emerald-600">340분 • 12초서</span>
+                <div className="mt-3 pt-3 flex items-center justify-between text-xs" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                  <span style={{ color: 'var(--text-secondary)' }}>이번 주 기여</span>
+                  <span className="font-bold" style={{ color: '#00FF00' }}>340분 • 12초서</span>
                 </div>
               </div>
 
@@ -327,28 +328,28 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { name: '독서왕지수', book: '1984', reading: false, contribution: '180분 • 8초서', level: 38 },
                 { name: '책사랑수지', book: '사피엔스', reading: true, contribution: '200분 • 15초서', level: 51 }
               ].map((member, idx) => (
-                <div key={idx} className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-100">
+                <div key={idx} className="card-minimal backdrop-blur-md rounded-2xl p-4 shadow-sm border" style={{ borderColor: 'var(--border-subtle)' }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md text-black" style={{ background: 'linear-gradient(to bottom right, #00FF00, #00FFFF)' }}>
                       {member.name[0]}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-slate-800">{member.name}</span>
-                        <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">Lv.{member.level}</span>
+                        <span className="font-bold text-white">{member.name}</span>
+                        <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'var(--surface-elevated)', color: 'var(--text-secondary)' }}>Lv.{member.level}</span>
                       </div>
-                      <p className={`text-xs font-medium flex items-center gap-1 ${member.reading ? 'text-emerald-600' : 'text-slate-400'}`}>
+                      <p className={`text-xs font-medium flex items-center gap-1`} style={{ color: member.reading ? '#00FF00' : 'var(--text-tertiary)' }}>
                         <BookOpen className="w-3 h-3" />
                         {member.book} {member.reading ? '읽는 중' : ''}
                       </p>
                     </div>
                     {member.reading && (
-                      <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                      <div className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: '#00FF00' }}></div>
                     )}
                   </div>
-                  <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-500">이번 주 기여</span>
-                    <span className="font-bold text-slate-700">{member.contribution}</span>
+                  <div className="mt-3 pt-3 flex items-center justify-between text-xs" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>이번 주 기여</span>
+                    <span className="font-bold text-white">{member.contribution}</span>
                   </div>
                 </div>
               ))}
@@ -356,24 +357,24 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           </div>
 
           {/* Books Being Read Together */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-4 border border-blue-100 shadow-sm">
+          <div className="card-minimal rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-3">
-              <BookOpen className="w-4 h-4 text-blue-600" />
-              <h3 className="text-sm font-bold text-blue-900">함께 읽는 책</h3>
+              <BookOpen className="w-4 h-4" style={{ color: '#00FFFF' }} />
+              <h3 className="text-sm font-bold text-white">함께 읽는 책</h3>
             </div>
             <div className="space-y-2">
               {[
-                { title: '코스모스', readers: 2, color: 'from-purple-400 to-pink-500' },
-                { title: '사피엔스', readers: 1, color: 'from-blue-400 to-cyan-500' },
-                { title: '1984', readers: 1, color: 'from-amber-400 to-orange-500' }
+                { title: '코스모스', readers: 2, color: '#FF00FF' },
+                { title: '사피엔스', readers: 1, color: '#00FFFF' },
+                { title: '1984', readers: 1, color: '#FFFF00' }
               ].map((book, idx) => (
-                <div key={idx} className="bg-white/70 rounded-xl p-3 flex items-center gap-3">
-                  <div className={`w-8 h-10 bg-gradient-to-br ${book.color} rounded-md shadow-sm flex items-center justify-center text-white text-xs font-bold`}>
+                <div key={idx} className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="w-8 h-10 rounded-md shadow-sm flex items-center justify-center text-xs font-bold" style={{ background: book.color, color: '#000' }}>
                     📖
                   </div>
                   <div className="flex-1">
-                    <div className="font-bold text-slate-800 text-sm">{book.title}</div>
-                    <div className="text-xs text-slate-500">{book.readers}명이 읽는 중</div>
+                    <div className="font-bold text-white text-sm">{book.title}</div>
+                    <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{book.readers}명이 읽는 중</div>
                   </div>
                 </div>
               ))}
@@ -381,10 +382,10 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           </div>
 
           {/* Recent Completions */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 border border-green-100 shadow-sm">
+          <div className="card-minimal rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-green-600" />
-              <h3 className="text-sm font-bold text-green-900">최근 완독 책들</h3>
+              <Sparkles className="w-4 h-4" style={{ color: '#00FF00' }} />
+              <h3 className="text-sm font-bold text-white">최근 완독 책들</h3>
             </div>
             <div className="space-y-2">
               {[
@@ -392,15 +393,15 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { user: '책벌레민수', book: '코스모스', time: '5시간 전', pages: 512 },
                 { user: '독서왕지수', book: '이기적 유전자', time: '어제', pages: 478 }
               ].map((item, idx) => (
-                <div key={idx} className="bg-white/70 rounded-xl p-3">
+                <div key={idx} className="rounded-xl p-3" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold text-slate-800">{item.user}</span>
-                    <span className="text-xs text-green-600">님이 완독했어요! 🎉</span>
+                    <span className="text-xs font-bold text-white">{item.user}</span>
+                    <span className="text-xs" style={{ color: '#00FF00' }}>님이 완독했어요! 🎉</span>
                   </div>
-                  <div className="text-sm font-bold text-slate-700">{item.book}</div>
+                  <div className="text-sm font-bold text-white">{item.book}</div>
                   <div className="flex items-center justify-between mt-1">
-                    <span className="text-[10px] text-slate-500">{item.pages}페이지</span>
-                    <span className="text-[10px] text-slate-400">{item.time}</span>
+                    <span className="text-[10px]" style={{ color: 'var(--text-secondary)' }}>{item.pages}페이지</span>
+                    <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{item.time}</span>
                   </div>
                 </div>
               ))}
@@ -408,10 +409,10 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           </div>
 
           {/* Clan Achievements */}
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border border-indigo-100 shadow-sm">
+          <div className="card-minimal rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-3">
-              <Award className="w-4 h-4 text-indigo-600" />
-              <h3 className="text-sm font-bold text-indigo-900">클랜 업적</h3>
+              <Award className="w-4 h-4" style={{ color: '#FF00FF' }} />
+              <h3 className="text-sm font-bold text-white">클랜 업적</h3>
             </div>
             <div className="grid grid-cols-4 gap-2">
               {[
@@ -426,40 +427,43 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
               ].map((badge, idx) => (
                 <div key={idx} className={`aspect-square rounded-xl flex flex-col items-center justify-center gap-1 ${
                   badge.unlocked 
-                    ? 'bg-gradient-to-br from-indigo-100 to-purple-100 border border-indigo-200' 
-                    : 'bg-slate-50 border border-slate-200 opacity-40'
-                }`}>
+                    ? 'border' 
+                    : 'border opacity-40'
+                }`} style={{ 
+                  background: badge.unlocked ? 'rgba(255, 0, 255, 0.1)' : 'var(--surface-2)', 
+                  borderColor: badge.unlocked ? 'rgba(255, 0, 255, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="text-2xl">{badge.emoji}</div>
-                  <div className="text-[9px] text-center text-slate-600 font-medium px-1">{badge.label}</div>
+                  <div className="text-[9px] text-center font-medium px-1" style={{ color: 'var(--text-secondary)' }}>{badge.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Activity Timeline */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 border border-slate-100 shadow-sm">
+          <div className="card-minimal backdrop-blur-md rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-3">
-              <Zap className="w-4 h-4 text-slate-600" />
-              <h3 className="text-sm font-bold text-slate-800">최근 활동</h3>
+              <Zap className="w-4 h-4" style={{ color: '#00FFFF' }} />
+              <h3 className="text-sm font-bold text-white">최근 활동</h3>
             </div>
             <div className="space-y-3">
               {[
-                { user: '책사랑수지', action: '초서를 작성', time: '30분 전', icon: '✍️', color: 'text-purple-600' },
-                { user: '책벌레민수', action: '독서 시작', time: '1시간 전', icon: '📖', color: 'text-emerald-600' },
-                { user: '독서왕지수', action: '햇살 5개 받음', time: '2시간 전', icon: '☀️', color: 'text-amber-600' },
-                { user: '책사랑수지', action: '완독 달성', time: '2시간 전', icon: '🎉', color: 'text-blue-600' },
-                { user: '책벌레민수', action: '서고에 메시지', time: '3시간 전', icon: '💬', color: 'text-slate-600' }
+                { user: '책사랑수지', action: '초서를 작성', time: '30분 전', icon: '✍️', color: '#FF00FF' },
+                { user: '책벌레민수', action: '독서 시작', time: '1시간 전', icon: '📖', color: '#00FF00' },
+                { user: '독서왕지수', action: '햇살 5개 받음', time: '2시간 전', icon: '☀️', color: '#FFFF00' },
+                { user: '책사랑수지', action: '완독 달성', time: '2시간 전', icon: '🎉', color: '#00FFFF' },
+                { user: '책벌레민수', action: '서고에 메시지', time: '3시간 전', icon: '💬', color: 'var(--text-secondary)' }
               ].map((activity, idx) => (
                 <div key={idx} className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center text-sm flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0" style={{ background: 'var(--surface-2)' }}>
                     {activity.icon}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs">
-                      <span className="font-bold text-slate-800">{activity.user}</span>
-                      <span className={`${activity.color} font-medium ml-1`}>님이 {activity.action}했어요</span>
+                      <span className="font-bold text-white">{activity.user}</span>
+                      <span className="font-medium ml-1" style={{ color: activity.color }}>님이 {activity.action}했어요</span>
                     </div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">{activity.time}</div>
+                    <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{activity.time}</div>
                   </div>
                 </div>
               ))}
@@ -471,16 +475,16 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
       {/* === 탐험 TAB (Explore/Competition) === */}
       {selectedTab === 'explore' && (
         <div className="p-6 pb-32 space-y-6">
-          <h2 className="text-xl font-bold text-slate-800">탐험</h2>
+          <h2 className="text-xl font-bold text-white">탐험</h2>
 
           {/* Leaderboard */}
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 border border-amber-100 shadow-lg">
+          <div className="card-minimal rounded-3xl p-6 border shadow-lg" style={{ borderColor: 'rgba(255, 255, 0, 0.3)', boxShadow: '0 0 30px rgba(255, 255, 0, 0.1)' }}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-amber-600" />
-                <h3 className="font-bold text-amber-900">이번 주 클랜 순위</h3>
+                <TrendingUp className="w-5 h-5" style={{ color: '#FFFF00' }} />
+                <h3 className="font-bold text-white">이번 주 클랜 순위</h3>
               </div>
-              <div className="text-xs text-amber-600 font-medium">매주 월요일 초기화</div>
+              <div className="text-xs font-medium" style={{ color: '#FFFF00' }}>매주 월요일 초기화</div>
             </div>
             
             {/* Competition Metric Tabs */}
@@ -496,11 +500,12 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 <button
                   key={metric.key}
                   onClick={() => setCompetitionMetric(metric.key as any)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
-                    competitionMetric === metric.key
-                      ? 'bg-amber-500 text-white shadow-md'
-                      : 'bg-white/70 text-amber-700 hover:bg-white'
-                  }`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all`}
+                  style={{
+                    background: competitionMetric === metric.key ? '#FFFF00' : 'var(--surface-2)',
+                    color: competitionMetric === metric.key ? '#000' : 'var(--text-secondary)',
+                    boxShadow: competitionMetric === metric.key ? '0 0 10px rgba(255, 255, 0, 0.4)' : 'none'
+                  }}
                 >
                   <span className="mr-1">{metric.icon}</span>
                   {metric.label}
@@ -514,29 +519,31 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { rank: 2, name: '고전 독서회', score: '1,380분', extra: '완독 15권 • 🔥12일', isMe: false, trend: '↓1', growth: '+12%', mvp: '철학자영희', mvpTime: '420분', level: 'Lv.14', speed: '2.1p/분', gap: '-70분' },
                 { rank: 3, name: '과학 읽기 모임', score: '1,220분', extra: '완독 9권 • 🔥5일', isMe: false, trend: '↑1', growth: '+25%', mvp: '과학덕후', mvpTime: '380분', level: 'Lv.9', speed: '1.6p/분', gap: '-230분' }
               ].map((clan) => (
-                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                <div key={clan.rank} className={`p-4 rounded-2xl border shadow-md`} style={{ 
+                  background: clan.isMe ? 'rgba(255, 255, 0, 0.1)' : 'var(--surface-2)', 
+                  borderColor: clan.isMe ? 'rgba(255, 255, 0, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
-                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
-                      'bg-orange-300 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm`} style={{
+                      background: clan.rank === 1 ? '#FFFF00' : clan.rank === 2 ? '#C0C0C0' : '#CD7F32',
+                      color: '#000'
+                    }}>
                       {clan.rank}
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                      <div className="font-bold text-white flex items-center gap-2 mb-0.5">
                         {clan.name}
-                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
-                        <span className={`text-xs ${clan.trend.startsWith('↑') ? 'text-green-600' : 'text-red-600'}`}>{clan.trend}</span>
-                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.isMe && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>우리</span>}
+                        <span className={`text-xs`} style={{ color: clan.trend.startsWith('↑') ? '#00FF00' : '#FF0077' }}>{clan.trend}</span>
+                        <span className="text-xs" style={{ color: '#FFFF00' }}>{clan.level}</span>
                       </div>
-                      <div className="text-sm text-amber-600 font-bold flex items-center gap-2">
+                      <div className="text-sm font-bold flex items-center gap-2" style={{ color: '#FFFF00' }}>
                         {clan.score}
-                        <span className="text-xs text-green-600 font-medium">{clan.growth}</span>
-                        {clan.gap && <span className="text-xs text-slate-500">(1위 {clan.gap})</span>}
+                        <span className="text-xs font-medium" style={{ color: '#00FF00' }}>{clan.growth}</span>
+                        {clan.gap && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>(1위 {clan.gap})</span>}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
-                      <div className="text-[10px] text-purple-600 mt-1 font-medium">MVP: {clan.mvp} ({clan.mvpTime}) • 평균 {clan.speed}</div>
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{clan.extra}</div>
+                      <div className="text-[10px] mt-1 font-medium" style={{ color: '#FF00FF' }}>MVP: {clan.mvp} ({clan.mvpTime}) • 평균 {clan.speed}</div>
                     </div>
                   </div>
                 </div>
@@ -547,28 +554,30 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { rank: 2, name: '책벌레 클랜', score: '12권', extra: '1,450분 • 평균 521p', isMe: true, trend: '↑1', avgPages: '521p', speed: '1.8p/분', level: 'Lv.12', fastest: '85분', gap: '-3권' },
                 { rank: 3, name: '과학 읽기 모임', score: '9권', extra: '1,220분 • 평균 398p', isMe: false, trend: '↓1', avgPages: '398p', speed: '1.6p/분', level: 'Lv.9', fastest: '102분', gap: '-6권' }
               ].map((clan) => (
-                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                <div key={clan.rank} className={`p-4 rounded-2xl border shadow-md`} style={{ 
+                  background: clan.isMe ? 'rgba(255, 255, 0, 0.1)' : 'var(--surface-2)', 
+                  borderColor: clan.isMe ? 'rgba(255, 255, 0, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
-                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
-                      'bg-orange-300 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm`} style={{
+                      background: clan.rank === 1 ? '#FFFF00' : clan.rank === 2 ? '#C0C0C0' : '#CD7F32',
+                      color: '#000'
+                    }}>
                       {clan.rank}
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                      <div className="font-bold text-white flex items-center gap-2 mb-0.5">
                         {clan.name}
-                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
-                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
-                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.isMe && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>우리</span>}
+                        <span className={`text-xs`} style={{ color: clan.trend === '↑1' ? '#00FF00' : clan.trend === '↓1' ? '#FF0077' : 'var(--text-tertiary)' }}>{clan.trend}</span>
+                        <span className="text-xs" style={{ color: '#FFFF00' }}>{clan.level}</span>
                       </div>
-                      <div className="text-sm text-blue-600 font-bold flex items-center gap-2">
+                      <div className="text-sm font-bold flex items-center gap-2" style={{ color: '#00FFFF' }}>
                         {clan.score}
-                        {clan.gap && <span className="text-xs text-slate-500">(1위까지 {clan.gap})</span>}
+                        {clan.gap && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>(1위까지 {clan.gap})</span>}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
-                      <div className="text-[10px] text-purple-600 mt-1 font-medium">평균 속도 {clan.speed} • 최단 완독 {clan.fastest}</div>
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{clan.extra}</div>
+                      <div className="text-[10px] mt-1 font-medium" style={{ color: '#FF00FF' }}>평균 속도 {clan.speed} • 최단 완독 {clan.fastest}</div>
                     </div>
                   </div>
                 </div>
@@ -579,29 +588,31 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { rank: 2, name: '시와 산문 클랜', score: '2,640점', extra: '156초서 • ☀️햇살 1,892', isMe: false, trend: '↓1', level: 'Lv.11', choseoQuality: '12.1', badges: ['✨', '📖'], discussion: '87%', gap: '-210점' },
                 { rank: 3, name: '고전 독서회', score: '2,420점', extra: '98초서 • ☀️햇살 1,988', isMe: false, trend: '→', level: 'Lv.14', choseoQuality: '20.3', badges: ['🎯', '💡'], discussion: '91%', gap: '-430점' }
               ].map((clan) => (
-                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                <div key={clan.rank} className={`p-4 rounded-2xl border shadow-md`} style={{ 
+                  background: clan.isMe ? 'rgba(255, 255, 0, 0.1)' : 'var(--surface-2)', 
+                  borderColor: clan.isMe ? 'rgba(255, 255, 0, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
-                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
-                      'bg-orange-300 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm`} style={{
+                      background: clan.rank === 1 ? '#FFFF00' : clan.rank === 2 ? '#C0C0C0' : '#CD7F32',
+                      color: '#000'
+                    }}>
                       {clan.rank}
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                      <div className="font-bold text-white flex items-center gap-2 mb-0.5">
                         {clan.name}
-                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
-                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
-                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.isMe && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>우리</span>}
+                        <span className={`text-xs`} style={{ color: clan.trend === '↑1' ? '#00FF00' : clan.trend === '↓1' ? '#FF0077' : 'var(--text-tertiary)' }}>{clan.trend}</span>
+                        <span className="text-xs" style={{ color: '#FFFF00' }}>{clan.level}</span>
                         {clan.badges.map((badge, idx) => <span key={idx} className="text-xs">{badge}</span>)}
                       </div>
-                      <div className="text-sm text-purple-600 font-bold flex items-center gap-2">
+                      <div className="text-sm font-bold flex items-center gap-2" style={{ color: '#FF00FF' }}>
                         {clan.score}
-                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                        {clan.gap && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>({clan.gap})</span>}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
-                      <div className="text-[10px] text-purple-600 mt-1 font-medium">초서당 ♥{clan.choseoQuality}개 • 토론 참여율 {clan.discussion}</div>
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{clan.extra}</div>
+                      <div className="text-[10px] mt-1 font-medium" style={{ color: '#FF00FF' }}>초서당 ♥{clan.choseoQuality}개 • 토론 참여율 {clan.discussion}</div>
                     </div>
                   </div>
                 </div>
@@ -612,29 +623,31 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { rank: 2, name: '책벌레 클랜', score: '7 장르', extra: '과학•역사•소설•에세이•경제...', isMe: true, trend: '↑1', level: 'Lv.12', growth: '+1 장르', newGenres: ['경제'], exploration: '78%', gap: '-1 장르' },
                 { rank: 3, name: '고전 독서회', score: '5 장르', extra: '문학•철학•역사•예술•시', isMe: false, trend: '↓1', level: 'Lv.14', growth: '→', newGenres: [], exploration: '56%', gap: '-3 장르' }
               ].map((clan) => (
-                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                <div key={clan.rank} className={`p-4 rounded-2xl border shadow-md`} style={{ 
+                  background: clan.isMe ? 'rgba(255, 255, 0, 0.1)' : 'var(--surface-2)', 
+                  borderColor: clan.isMe ? 'rgba(255, 255, 0, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
-                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
-                      'bg-orange-300 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm`} style={{
+                      background: clan.rank === 1 ? '#FFFF00' : clan.rank === 2 ? '#C0C0C0' : '#CD7F32',
+                      color: '#000'
+                    }}>
                       {clan.rank}
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                      <div className="font-bold text-white flex items-center gap-2 mb-0.5">
                         {clan.name}
-                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
-                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
-                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.isMe && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>우리</span>}
+                        <span className={`text-xs`} style={{ color: clan.trend === '↑1' ? '#00FF00' : clan.trend === '↓1' ? '#FF0077' : 'var(--text-tertiary)' }}>{clan.trend}</span>
+                        <span className="text-xs" style={{ color: '#FFFF00' }}>{clan.level}</span>
                       </div>
-                      <div className="text-sm text-pink-600 font-bold flex items-center gap-2">
+                      <div className="text-sm font-bold flex items-center gap-2" style={{ color: '#FF00FF' }}>
                         {clan.score}
-                        <span className="text-xs text-green-600 font-medium">{clan.growth}</span>
-                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                        <span className="text-xs font-medium" style={{ color: '#00FF00' }}>{clan.growth}</span>
+                        {clan.gap && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>({clan.gap})</span>}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
-                      <div className="text-[10px] text-purple-600 mt-1 font-medium">
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{clan.extra}</div>
+                      <div className="text-[10px] mt-1 font-medium" style={{ color: '#FF00FF' }}>
                         {clan.newGenres.length > 0 ? `신규: ${clan.newGenres.join(', ')} • ` : ''}탐험도 {clan.exploration}
                       </div>
                     </div>
@@ -647,28 +660,30 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { rank: 2, name: '과학 읽기 모임', score: '🔥 8일 연속', extra: '평균 독서시간 78분/일', isMe: false, trend: '↓1', level: 'Lv.9', maxStreak: '10일', achievement: '78%', todayReaders: '6/9명', gap: '-4일' },
                 { rank: 3, name: '책벌레 클랜', score: '🔥 7일 연속', extra: '평균 독서시간 103분/일', isMe: true, trend: '→', level: 'Lv.12', maxStreak: '14일', achievement: '92%', todayReaders: '11/15명', gap: '-5일' }
               ].map((clan) => (
-                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                <div key={clan.rank} className={`p-4 rounded-2xl border shadow-md`} style={{ 
+                  background: clan.isMe ? 'rgba(255, 255, 0, 0.1)' : 'var(--surface-2)', 
+                  borderColor: clan.isMe ? 'rgba(255, 255, 0, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
-                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
-                      'bg-orange-300 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm`} style={{
+                      background: clan.rank === 1 ? '#FFFF00' : clan.rank === 2 ? '#C0C0C0' : '#CD7F32',
+                      color: '#000'
+                    }}>
                       {clan.rank}
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                      <div className="font-bold text-white flex items-center gap-2 mb-0.5">
                         {clan.name}
-                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
-                        <span className={`text-xs ${clan.trend === '↑1' ? 'text-green-600' : clan.trend === '↓1' ? 'text-red-600' : 'text-slate-400'}`}>{clan.trend}</span>
-                        <span className="text-xs text-amber-600">{clan.level}</span>
+                        {clan.isMe && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>우리</span>}
+                        <span className={`text-xs`} style={{ color: clan.trend === '↑1' ? '#00FF00' : clan.trend === '↓1' ? '#FF0077' : 'var(--text-tertiary)' }}>{clan.trend}</span>
+                        <span className="text-xs" style={{ color: '#FFFF00' }}>{clan.level}</span>
                       </div>
-                      <div className="text-sm text-orange-600 font-bold flex items-center gap-2">
+                      <div className="text-sm font-bold flex items-center gap-2" style={{ color: '#FF6600' }}>
                         {clan.score}
-                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                        {clan.gap && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>({clan.gap})</span>}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
-                      <div className="text-[10px] text-purple-600 mt-1 font-medium">최장 {clan.maxStreak} • 달성률 {clan.achievement} • 오늘 {clan.todayReaders}</div>
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{clan.extra}</div>
+                      <div className="text-[10px] mt-1 font-medium" style={{ color: '#FF00FF' }}>최장 {clan.maxStreak} • 달성률 {clan.achievement} • 오늘 {clan.todayReaders}</div>
                     </div>
                   </div>
                 </div>
@@ -679,29 +694,31 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                 { rank: 2, name: '시와 산문 클랜', score: '892점', extra: '독서 680분 • 채팅 156 • 초서 92', isMe: false, trend: '↓1', level: 'Lv.11', discussion: '87%', likes: '198개', newMembers: '+1명', dailyActive: '9/14명', gap: '-93점' },
                 { rank: 3, name: '고전 독서회', score: '856점', extra: '독서 750분 • 채팅 78 • 초서 76', isMe: false, trend: '↑1', level: 'Lv.14', discussion: '91%', likes: '267개', newMembers: '+2명', dailyActive: '10/12명', gap: '-129점' }
               ].map((clan) => (
-                <div key={clan.rank} className={`p-4 rounded-2xl border ${clan.isMe ? 'bg-white border-amber-200 shadow-md' : 'bg-white/60 border-white/60'}`}>
+                <div key={clan.rank} className={`p-4 rounded-2xl border shadow-md`} style={{ 
+                  background: clan.isMe ? 'rgba(255, 255, 0, 0.1)' : 'var(--surface-2)', 
+                  borderColor: clan.isMe ? 'rgba(255, 255, 0, 0.3)' : 'var(--border-subtle)' 
+                }}>
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      clan.rank === 1 ? 'bg-amber-400 text-white' : 
-                      clan.rank === 2 ? 'bg-slate-300 text-white' : 
-                      'bg-orange-300 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm`} style={{
+                      background: clan.rank === 1 ? '#FFFF00' : clan.rank === 2 ? '#C0C0C0' : '#CD7F32',
+                      color: '#000'
+                    }}>
                       {clan.rank}
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-slate-800 flex items-center gap-2 mb-0.5">
+                      <div className="font-bold text-white flex items-center gap-2 mb-0.5">
                         {clan.name}
-                        {clan.isMe && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">우리</span>}
-                        <span className={`text-xs ${clan.trend.startsWith('↑') ? 'text-green-600' : 'text-red-600'}`}>{clan.trend}</span>
-                        <span className="text-xs text-amber-600">{clan.level}</span>
-                        {clan.newMembers !== '+0명' && <span className="text-xs text-green-600">{clan.newMembers}</span>}
+                        {clan.isMe && <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)' }}>우리</span>}
+                        <span className={`text-xs`} style={{ color: clan.trend.startsWith('↑') ? '#00FF00' : '#FF0077' }}>{clan.trend}</span>
+                        <span className="text-xs" style={{ color: '#FFFF00' }}>{clan.level}</span>
+                        {clan.newMembers !== '+0명' && <span className="text-xs" style={{ color: '#00FF00' }}>{clan.newMembers}</span>}
                       </div>
-                      <div className="text-sm text-emerald-600 font-bold flex items-center gap-2">
+                      <div className="text-sm font-bold flex items-center gap-2" style={{ color: '#00FF00' }}>
                         {clan.score}
-                        {clan.gap && <span className="text-xs text-slate-500">({clan.gap})</span>}
+                        {clan.gap && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>({clan.gap})</span>}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{clan.extra}</div>
-                      <div className="text-[10px] text-purple-600 mt-1 font-medium">토론 {clan.discussion} • ♥{clan.likes} • 일일 활성 {clan.dailyActive}</div>
+                      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{clan.extra}</div>
+                      <div className="text-[10px] mt-1 font-medium" style={{ color: '#FF00FF' }}>토론 {clan.discussion} • ♥{clan.likes} • 일일 활성 {clan.dailyActive}</div>
                     </div>
                   </div>
                 </div>
@@ -711,30 +728,30 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
 
           {/* Other clans */}
           <div>
-            <h3 className="font-bold text-slate-800 mb-3">다른 클랜 둘러보기</h3>
+            <h3 className="font-bold text-white mb-3">다른 클랜 둘러보기</h3>
             <div className="space-y-3">
-              <button className="w-full bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <button className="w-full card-minimal backdrop-blur-md p-4 rounded-2xl border shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: 'var(--border-subtle)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-white text-xl">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style={{ background: 'linear-gradient(to bottom right, #FF00FF, #FF77FF)' }}>
                     🌸
                   </div>
                   <div className="flex-1 text-left">
-                    <div className="font-bold text-slate-800">시와 산문 클랜</div>
-                    <div className="text-xs text-slate-500">24명 • Lv.35 • 문학 중심</div>
+                    <div className="font-bold text-white">시와 산문 클랜</div>
+                    <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>24명 • Lv.35 • 문학 중심</div>
                   </div>
-                  <div className="text-xs text-slate-400">→</div>
+                  <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>→</div>
                 </div>
               </button>
-              <button className="w-full bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <button className="w-full card-minimal backdrop-blur-md p-4 rounded-2xl border shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: 'var(--border-subtle)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center text-white text-xl">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style={{ background: 'linear-gradient(to bottom right, #00FFFF, #0088FF)' }}>
                     🔬
                   </div>
                   <div className="flex-1 text-left">
-                    <div className="font-bold text-slate-800">과학독서 클랜</div>
-                    <div className="text-xs text-slate-500">18명 • Lv.29 • 과학 중심</div>
+                    <div className="font-bold text-white">과학독서 클랜</div>
+                    <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>18명 • Lv.29 • 과학 중심</div>
                   </div>
-                  <div className="text-xs text-slate-400">→</div>
+                  <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>→</div>
                 </div>
               </button>
             </div>
@@ -755,11 +772,12 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
 
       {/* Bottom Navigation - 5 Tabs */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
-        <div className="bg-white/95 backdrop-blur-lg border-t border-slate-200 pb-8 pt-3 px-4 shadow-2xl rounded-t-3xl">
+        <div className="backdrop-blur-lg pb-8 pt-3 px-4 shadow-2xl rounded-t-3xl" style={{ background: 'var(--surface-elevated)', borderTop: '1px solid var(--border-subtle)' }}>
           <div className="flex justify-between items-center">
             <button 
               onClick={onBack}
-              className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors px-2"
+              className="flex flex-col items-center gap-1 transition-colors px-2"
+              style={{ color: 'var(--text-tertiary)' }}
             >
               <ArrowLeft className="w-6 h-6" />
               <span className="text-[10px] font-medium">나가기</span>
@@ -767,9 +785,8 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
             
             <button 
               onClick={() => setSelectedTab('forest')}
-              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
-                selectedTab === 'forest' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-              }`}
+              className={`flex flex-col items-center gap-1 transition-colors px-2`}
+              style={{ color: selectedTab === 'forest' ? '#00FF00' : 'var(--text-tertiary)' }}
             >
               <TreePine className="w-6 h-6" />
               <span className="text-[10px] font-medium">숲</span>
@@ -777,9 +794,8 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
             
             <button 
               onClick={() => setSelectedTab('members')}
-              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
-                selectedTab === 'members' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-              }`}
+              className={`flex flex-col items-center gap-1 transition-colors px-2`}
+              style={{ color: selectedTab === 'members' ? '#00FF00' : 'var(--text-tertiary)' }}
             >
               <Users className="w-6 h-6" />
               <span className="text-[10px] font-medium">숲지기</span>
@@ -787,9 +803,8 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
             
             <button 
               onClick={() => setSelectedTab('explore')}
-              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
-                selectedTab === 'explore' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-              }`}
+              className={`flex flex-col items-center gap-1 transition-colors px-2`}
+              style={{ color: selectedTab === 'explore' ? '#00FF00' : 'var(--text-tertiary)' }}
             >
               <Compass className="w-6 h-6" />
               <span className="text-[10px] font-medium">탐험</span>
@@ -797,9 +812,8 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
             
             <button 
               onClick={() => setSelectedTab('archive')}
-              className={`flex flex-col items-center gap-1 transition-colors px-2 ${
-                selectedTab === 'archive' ? 'text-emerald-600' : 'text-slate-400 hover:text-emerald-600'
-              }`}
+              className={`flex flex-col items-center gap-1 transition-colors px-2`}
+              style={{ color: selectedTab === 'archive' ? '#00FF00' : 'var(--text-tertiary)' }}
             >
               <Library className="w-6 h-6" />
               <span className="text-[10px] font-medium">서고</span>

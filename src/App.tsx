@@ -134,21 +134,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Top Search Button - Show only when not in Forest section and not in Main (Main has its own header) */}
-      {!isInForestSection && currentScreen !== 'search' && currentScreen !== 'main' && (
-        <div className="fixed top-6 right-6 z-40">
-          <button
-            onClick={() => setCurrentScreen('search')}
-            className="w-12 h-12 rounded-full shadow-neon flex items-center justify-center hover:shadow-neon-lg transition-all active:scale-95"
-            style={{ background: 'rgba(0, 255, 0, 0.1)', border: '1px solid rgba(0, 255, 0, 0.3)' }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.6)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.3)'}
-          >
-            <SearchIcon className="w-6 h-6" style={{ color: '#00FF00' }} strokeWidth={2} />
-          </button>
-        </div>
-      )}
-
       {/* Main Content */}
       <div className="pb-20">
         {renderScreen()}
@@ -210,7 +195,7 @@ export default function App() {
                 }`}
               >
                 <User className="w-6 h-6" strokeWidth={2} />
-                <span className="text-caption">MY</span>
+                <span className="text-caption">서재</span>
               </button>
             </div>
           </div>
