@@ -192,7 +192,7 @@ export function Analytics({ onBack }: AnalyticsProps) {
       <div className="p-6 space-y-6 pb-20 animate-fade-in">
         {/* Streak Card - Always Visible */}
         <div className="card-minimal rounded-3xl p-6 text-white relative overflow-hidden shadow-neon">
-          <div className="bg-gradient-neon-radial absolute inset-0"></div>
+          <div className="bg-gradient-neon-radial absolute inset-0 opacity-30"></div>
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-1">
               <Flame className="w-5 h-5" style={{ color: '#FF00FF' }} />
