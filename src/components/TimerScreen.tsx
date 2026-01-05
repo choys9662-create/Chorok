@@ -89,8 +89,8 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
         </div>
 
         {/* Header */}
-        <header className="p-6 flex items-center relative z-10">
-          <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+        <header className="p-6 flex items-center relative z-50">
+          <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-lg transition-colors relative z-50">
             <ArrowLeft className="w-6 h-6 text-neutral-200" />
           </button>
           <div className="flex-1 text-center -ml-10">
