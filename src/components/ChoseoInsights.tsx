@@ -35,35 +35,35 @@ export function ChoseoInsights({ onBack, onNavigate }: ChoseoInsightsProps) {
   const maxCount = Math.max(...insights.timeOfDay.map(t => t.count));
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-[#FDFDFD]">
+    <div className="max-w-md mx-auto min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-gradient-to-br from-purple-600 to-indigo-600 text-white p-6 pb-8 rounded-b-3xl shadow-lg">
+      <header className="text-white p-6 pb-8" style={{ background: 'linear-gradient(to bottom right, rgba(0, 255, 0, 0.15), rgba(0, 255, 255, 0.15))' }}>
         <div className="flex items-center justify-between mb-6">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-            <ArrowLeft className="w-6 h-6" />
+            <ArrowLeft className="w-6 h-6" style={{ color: '#00FF00' }} />
           </button>
           <h1 className="text-xl font-bold">초서 인사이트</h1>
           <div className="w-10" />
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+        <div className="rounded-2xl p-4" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <Brain className="w-7 h-7" />
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)' }}>
+              <Brain className="w-7 h-7" style={{ color: '#00FF00' }} />
             </div>
             <div>
-              <h2 className="font-bold text-lg">당신의 독서 성향</h2>
-              <p className="text-sm text-white/80">초서로 보는 마음의 지도</p>
+              <h2 className="font-bold text-lg text-white">당신의 독서 성향</h2>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>초서로 보는 마음의 지도</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white/10 backdrop-blur rounded-lg p-2 text-center">
-              <div className="text-2xl font-bold">{insights.totalChoseos}</div>
-              <div className="text-xs text-white/70">총 초서</div>
+            <div className="rounded-lg p-2 text-center" style={{ background: 'var(--surface-elevated)', border: '1px solid var(--border-subtle)' }}>
+              <div className="text-2xl font-bold text-white">{insights.totalChoseos}</div>
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>총 초서</div>
             </div>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-2 text-center">
-              <div className="text-2xl font-bold">{insights.averageLength}</div>
-              <div className="text-xs text-white/70">평균 길이</div>
+            <div className="rounded-lg p-2 text-center" style={{ background: 'var(--surface-elevated)', border: '1px solid var(--border-subtle)' }}>
+              <div className="text-2xl font-bold text-white">{insights.averageLength}</div>
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>평균 길이</div>
             </div>
           </div>
         </div>
@@ -71,25 +71,35 @@ export function ChoseoInsights({ onBack, onNavigate }: ChoseoInsightsProps) {
 
       <div className="p-6 space-y-6 pb-24">
         {/* Top Themes */}
-        <section className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+        <section className="card-minimal rounded-3xl shadow-neon p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Lightbulb className="w-5 h-5 text-emerald-600" />
-            <h3 className="font-bold text-slate-800">주요 주제</h3>
+            <Lightbulb className="w-5 h-5" style={{ color: '#00FF00' }} />
+            <h3 className="font-bold text-white">주요 주제</h3>
           </div>
-          <p className="text-sm text-slate-500 mb-4">
-            당신은 <span className="font-bold text-emerald-600">'성장과 변화'</span>에 관한 문장에 가장 끌려요
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+            당신은 <span className="font-bold" style={{ color: '#00FF00' }}>'성장과 변화'</span>에 관한 문장에 가장 끌려요
           </p>
           <div className="space-y-3">
             {insights.topThemes.map((theme, i) => (
               <div key={i}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-sm text-slate-700">{theme.theme}</span>
-                  <span className="text-xs font-bold text-slate-500">{theme.count}개</span>
+                  <span className="text-sm text-white">{theme.theme}</span>
+                  <span className="text-xs font-bold" style={{ color: 'var(--text-secondary)' }}>{theme.count}개</span>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div className="w-full rounded-full h-2.5 overflow-hidden" style={{ background: 'var(--surface-elevated)' }}>
                   <div
-                    className={`bg-gradient-to-r from-${theme.color}-400 to-${theme.color}-600 h-full rounded-full transition-all duration-500`}
-                    style={{ width: `${theme.percentage}%` }}
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{ 
+                      width: `${theme.percentage}%`,
+                      background: theme.color === 'emerald' ? 'linear-gradient(to right, #00FF00, #00cc00)' :
+                                  theme.color === 'blue' ? 'linear-gradient(to right, #00FFFF, #00cccc)' :
+                                  theme.color === 'purple' ? 'linear-gradient(to right, #FF00FF, #cc00cc)' :
+                                  'linear-gradient(to right, #FFFF00, #cccc00)',
+                      boxShadow: theme.color === 'emerald' ? '0 0 8px rgba(0, 255, 0, 0.4)' :
+                                 theme.color === 'blue' ? '0 0 8px rgba(0, 255, 255, 0.4)' :
+                                 theme.color === 'purple' ? '0 0 8px rgba(255, 0, 255, 0.4)' :
+                                 '0 0 8px rgba(255, 255, 0, 0.4)'
+                    }}
                   />
                 </div>
               </div>
@@ -98,30 +108,41 @@ export function ChoseoInsights({ onBack, onNavigate }: ChoseoInsightsProps) {
         </section>
 
         {/* Emotional Tone */}
-        <section className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+        <section className="card-minimal rounded-3xl shadow-neon p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Heart className="w-5 h-5 text-rose-600" />
-            <h3 className="font-bold text-slate-800">감정 톤</h3>
+            <Heart className="w-5 h-5" style={{ color: '#FF00FF' }} />
+            <h3 className="font-bold text-white">감정 톤</h3>
           </div>
-          <p className="text-sm text-slate-500 mb-4">
-            주로 <span className="font-bold text-yellow-600">'희망적'</span>이고 <span className="font-bold text-indigo-600">'성찰적'</span>인 문장을 수집해요
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+            주로 <span className="font-bold" style={{ color: '#FFFF00' }}>'희망적'</span>이고 <span className="font-bold" style={{ color: '#FF00FF' }}>'성찰적'</span>인 문장을 수집해요
           </p>
           <div className="grid grid-cols-2 gap-3">
             {insights.emotionalTone.map((tone, i) => {
-              const colorClasses = {
-                yellow: 'from-yellow-400 to-amber-500',
-                indigo: 'from-indigo-400 to-purple-500',
-                slate: 'from-slate-400 to-slate-500',
-                pink: 'from-pink-400 to-rose-500',
+              const gradients = {
+                yellow: 'linear-gradient(to bottom right, #FFFF00, #cccc00)',
+                indigo: 'linear-gradient(to bottom right, #FF00FF, #cc00cc)',
+                slate: 'linear-gradient(to bottom right, #00FFFF, #00cccc)',
+                pink: 'linear-gradient(to bottom right, #FF00FF, #FF00AA)',
+              }[tone.color];
+
+              const shadows = {
+                yellow: '0 4px 20px rgba(255, 255, 0, 0.3)',
+                indigo: '0 4px 20px rgba(255, 0, 255, 0.3)',
+                slate: '0 4px 20px rgba(0, 255, 255, 0.3)',
+                pink: '0 4px 20px rgba(255, 0, 255, 0.3)',
               }[tone.color];
 
               return (
                 <div
                   key={i}
-                  className={`bg-gradient-to-br ${colorClasses} text-white rounded-xl p-4 text-center`}
+                  className="text-black rounded-xl p-4 text-center"
+                  style={{ 
+                    background: gradients,
+                    boxShadow: shadows
+                  }}
                 >
                   <div className="text-2xl font-bold mb-1">{tone.percentage}%</div>
-                  <div className="text-xs text-white/90">{tone.emotion}</div>
+                  <div className="text-xs opacity-90">{tone.emotion}</div>
                 </div>
               );
             })}
@@ -129,13 +150,13 @@ export function ChoseoInsights({ onBack, onNavigate }: ChoseoInsightsProps) {
         </section>
 
         {/* Time of Day */}
-        <section className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+        <section className="card-minimal rounded-3xl shadow-neon p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-blue-600" />
-            <h3 className="font-bold text-slate-800">초서 시간대</h3>
+            <Clock className="w-5 h-5" style={{ color: '#00FFFF' }} />
+            <h3 className="font-bold text-white">초서 시간대</h3>
           </div>
-          <p className="text-sm text-slate-500 mb-4">
-            주로 <span className="font-bold text-blue-600">저녁 시간</span>에 마음에 드는 문장을 수집하시네요
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+            주로 <span className="font-bold" style={{ color: '#00FFFF' }}>저녁 시간</span>에 마음에 드는 문장을 수집하시네요
           </p>
           <div className="space-y-3">
             {insights.timeOfDay.map((time, i) => {
@@ -145,13 +166,17 @@ export function ChoseoInsights({ onBack, onNavigate }: ChoseoInsightsProps) {
                   <span className="text-2xl">{time.icon}</span>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm text-slate-700">{time.time}</span>
-                      <span className="text-xs font-bold text-slate-500">{time.count}개</span>
+                      <span className="text-sm text-white">{time.time}</span>
+                      <span className="text-xs font-bold" style={{ color: 'var(--text-secondary)' }}>{time.count}개</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="w-full rounded-full h-2 overflow-hidden" style={{ background: 'var(--surface-elevated)' }}>
                       <div
-                        className="bg-gradient-to-r from-blue-400 to-indigo-500 h-full rounded-full transition-all duration-500"
-                        style={{ width: `${barWidth}%` }}
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ 
+                          width: `${barWidth}%`,
+                          background: 'linear-gradient(to right, #00FFFF, #00cccc)',
+                          boxShadow: '0 0 8px rgba(0, 255, 255, 0.4)'
+                        }}
                       />
                     </div>
                   </div>
@@ -162,28 +187,33 @@ export function ChoseoInsights({ onBack, onNavigate }: ChoseoInsightsProps) {
         </section>
 
         {/* Word Cloud */}
-        <section className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+        <section className="card-minimal rounded-3xl shadow-neon p-6">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5 text-purple-600" />
-            <h3 className="font-bold text-slate-800">자주 등장하는 단어</h3>
+            <TrendingUp className="w-5 h-5" style={{ color: '#FF00FF' }} />
+            <h3 className="font-bold text-white">자주 등장하는 단어</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {insights.topWords.map((word, i) => {
               const sizes = ['text-2xl', 'text-xl', 'text-lg', 'text-base', 'text-sm'];
               const colors = [
-                'text-purple-600 bg-purple-50',
-                'text-emerald-600 bg-emerald-50',
-                'text-blue-600 bg-blue-50',
-                'text-orange-600 bg-orange-50',
-                'text-pink-600 bg-pink-50',
+                { bg: 'rgba(255, 0, 255, 0.15)', text: '#FF00FF', border: 'rgba(255, 0, 255, 0.3)' },
+                { bg: 'rgba(0, 255, 0, 0.15)', text: '#00FF00', border: 'rgba(0, 255, 0, 0.3)' },
+                { bg: 'rgba(0, 255, 255, 0.15)', text: '#00FFFF', border: 'rgba(0, 255, 255, 0.3)' },
+                { bg: 'rgba(255, 255, 0, 0.15)', text: '#FFFF00', border: 'rgba(255, 255, 0, 0.3)' },
+                { bg: 'rgba(255, 0, 255, 0.15)', text: '#FF00FF', border: 'rgba(255, 0, 255, 0.3)' },
               ];
               const sizeClass = sizes[Math.floor(i / 2)] || 'text-sm';
-              const colorClass = colors[i % colors.length];
+              const colorStyle = colors[i % colors.length];
 
               return (
                 <span
                   key={i}
-                  className={`${sizeClass} ${colorClass} font-bold px-3 py-1.5 rounded-full`}
+                  className={`${sizeClass} font-bold px-3 py-1.5 rounded-full`}
+                  style={{ 
+                    background: colorStyle.bg, 
+                    color: colorStyle.text,
+                    border: `1px solid ${colorStyle.border}`
+                  }}
                 >
                   {word}
                 </span>

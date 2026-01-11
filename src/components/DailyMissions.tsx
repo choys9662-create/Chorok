@@ -40,8 +40,8 @@ export function DailyMissions({ onClose }: DailyMissionsProps) {
     },
     {
       id: '3',
-      title: '이웃과 공감',
-      description: '이웃의 초서에 좋아요 3개 남기기',
+      title: '뿌리 얽힘',
+      description: '독서러의 초서에 좋아요 3개 남기기',
       progress: 1,
       goal: 3,
       completed: false,

@@ -102,6 +102,8 @@ const mockNotifications = [
 export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMissions, setShowMissions] = useState(false);
+  const [showTimeCapsule, setShowTimeCapsule] = useState(false);
+  const [showBuddyMatch, setShowBuddyMatch] = useState(false);
 
   const readingBooks = mockBooks.filter(b => b.status === 'reading');
   const primaryBook = readingBooks[0];

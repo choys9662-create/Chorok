@@ -14,9 +14,9 @@ export function ChoseoDetail({ onBack, onViewOverlaps }: ChoseoDetailProps) {
   const book = mockBooks.find(b => b.id === '1'); // 데미안
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-[#FDFCFA]">
+    <div className="max-w-md mx-auto min-h-screen bg-black">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FDFCFA]/95 backdrop-blur-md z-40 border-b border-stone-200/50">
+      <header className="sticky top-0 backdrop-blur-md z-40" style={{ background: 'rgba(0, 0, 0, 0.95)', borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="px-6 py-4 flex items-center justify-between">
           <button
             onClick={onBack}

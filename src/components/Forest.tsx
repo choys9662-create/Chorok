@@ -359,7 +359,7 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           <div className="card-minimal rounded-2xl p-4 border shadow-sm" style={{ borderColor: 'var(--border-subtle)' }}>
             <div className="flex items-center gap-2 mb-3">
               <BookOpen className="w-4 h-4" style={{ color: '#00FFFF' }} />
-              <h3 className="text-sm font-bold text-white">함께 읽는 책</h3>
+              <h3 className="text-sm font-bold text-white">뿌리가 얽힌 책</h3>
             </div>
             <div className="space-y-2">
               {[
@@ -373,7 +373,7 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
                   </div>
                   <div className="flex-1">
                     <div className="font-bold text-white text-sm">{book.title}</div>
-                    <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{book.readers}명이 읽는 중</div>
+                    <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{book.readers}명의 뿌리가 얽힘</div>
                   </div>
                 </div>
               ))}

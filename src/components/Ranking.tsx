@@ -22,24 +22,24 @@ export function Ranking({ onBookSelect, onBack }: RankingProps) {
   };
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-gradient-to-b from-yellow-50 to-amber-50">
+    <div className="max-w-md mx-auto min-h-screen bg-black">
       {/* Header */}
-      <header className="p-6 bg-gradient-to-r from-yellow-500 to-amber-500 text-white">
+      <header className="p-6 text-white" style={{ background: 'linear-gradient(to right, rgba(255, 255, 0, 0.15), rgba(255, 200, 0, 0.15))' }}>
         <div className="flex items-center justify-between mb-6">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-            <ArrowLeft className="w-6 h-6" />
+            <ArrowLeft className="w-6 h-6" style={{ color: '#FFFF00' }} />
           </button>
           <h1 className="text-xl flex items-center gap-2">
-            <Crown className="w-6 h-6" />
-            <span>초록 랭킹</span>
+            <Crown className="w-6 h-6" style={{ color: '#FFFF00' }} />
+            <span>CHO_LOCK 랭킹</span>
           </h1>
           <div className="w-10" />
         </div>
 
-        <div className="bg-white/20 backdrop-blur rounded-xl p-4">
-          <p className="text-sm text-yellow-100 mb-2">실시간 인기</p>
-          <p className="text-xs text-yellow-50">
-            초록 사용자들이 지금 가장 많이 읽는 책을 확인하세요
+        <div className="rounded-xl p-4" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
+          <p className="text-sm mb-2" style={{ color: '#FFFF00' }}>실시간 인기</p>
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+            CHO_LOCK 독서러들이 지금 가장 많이 읽는 책을 확인하세요
           </p>
         </div>
       </header>

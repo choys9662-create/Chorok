@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowLeft, BookMarked, Star, Heart, Settings, Share2, Award, Brain } from 'lucide-react';
 import { Book, Screen } from '../App';
 import { mockBooks } from '../data/mockData';
+import { ComingSoonToast } from './ComingSoonToast';
 
 interface MyPageProps {
   onBookSelect: (book: Book) => void;
@@ -11,6 +12,13 @@ interface MyPageProps {
 
 export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
   const [activeTab, setActiveTab] = useState<'reading' | 'want' | 'completed'>('reading');
+  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [comingSoonMessage, setComingSoonMessage] = useState('');
+
+  const showComingSoonToast = (message: string) => {
+    setComingSoonMessage(message);
+    setShowComingSoon(true);
+  };
 
   const readingBooks = mockBooks.filter(b => b.status === 'reading');
   const wantToReadBooks = mockBooks.filter(b => b.status === 'want-to-read');
@@ -29,7 +37,7 @@ export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
             <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
               <ArrowLeft className="w-6 h-6" style={{ color: '#00FF00' }} />
             </button>
-            <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+            <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" onClick={() => showComingSoonToast('설정 기능을 열심히 만들고 있어요!')}>
               <Settings className="w-6 h-6" style={{ color: '#00FF00' }} />
             </button>
           </div>
@@ -42,7 +50,7 @@ export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
             <div className="flex-1">
               <h2 className="text-2xl mb-1 text-white">독서러버</h2>
               <p className="text-sm mb-2" style={{ color: 'rgba(0, 255, 0, 0.7)' }}>레벨 42 · 나이테 89개</p>
-              <button className="text-sm px-3 py-1 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)', color: '#00FF00' }}>
+              <button className="text-sm px-3 py-1 rounded-full" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)', color: '#00FF00' }} onClick={() => showComingSoonToast('프로필 수정 기능을 준비하고 있어요!')}>
                 프로필 수정
               </button>
             </div>
@@ -252,7 +260,7 @@ export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
                   <div className="text-sm mb-1 text-white">{name}</div>
                   <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>레벨 {35 + idx * 5} · 취향 일치 {85 + idx}%</div>
                 </div>
-                <button className="text-sm hover:underline" style={{ color: '#00FF00' }}>팔로우</button>
+                <button className="text-sm hover:underline" style={{ color: '#00FF00' }} onClick={() => showComingSoonToast('팔로우 기능 곧 찾아올게요!')}>팔로우</button>
               </div>
             ))}
           </div>
@@ -271,14 +279,14 @@ export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
             </div>
             <span style={{ color: 'rgba(255, 255, 255, 0.8)' }}>›</span>
           </button>
-          <button className="w-full rounded-xl p-4 flex items-center justify-between hover:shadow-sm transition-all card-minimal" style={{ borderColor: 'var(--border-subtle)' }}>
+          <button className="w-full rounded-xl p-4 flex items-center justify-between hover:shadow-sm transition-all card-minimal" style={{ borderColor: 'var(--border-subtle)' }} onClick={() => showComingSoonToast('내가 좋아요 한 초서를 곧 볼 수 있어요!')}>
             <div className="flex items-center gap-3">
               <Heart className="w-5 h-5" style={{ color: '#FF00FF' }} />
               <span className="text-sm text-white">내가 좋아요 한 초서</span>
             </div>
             <span style={{ color: 'var(--text-tertiary)' }}>›</span>
           </button>
-          <button className="w-full rounded-xl p-4 flex items-center justify-between hover:shadow-sm transition-all card-minimal" style={{ borderColor: 'var(--border-subtle)' }}>
+          <button className="w-full rounded-xl p-4 flex items-center justify-between hover:shadow-sm transition-all card-minimal" style={{ borderColor: 'var(--border-subtle)' }} onClick={() => showComingSoonToast('내가 쓴 글 모아보기 기능 준비 중!')}>
             <div className="flex items-center gap-3">
               <Share2 className="w-5 h-5" style={{ color: '#00FFFF' }} />
               <span className="text-sm text-white">내가 쓴 글</span>
@@ -298,6 +306,14 @@ export function MyPage({ onBookSelect, onNavigate, onBack }: MyPageProps) {
           </button>
         </div>
       </div>
+
+      {/* Coming Soon Toast */}
+      {showComingSoon && (
+        <ComingSoonToast
+          message={comingSoonMessage}
+          onClose={() => setShowComingSoon(false)}
+        />
+      )}
     </div>
   );
 }

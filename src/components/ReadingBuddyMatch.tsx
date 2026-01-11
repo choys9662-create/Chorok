@@ -1,4 +1,4 @@
-import { Users, BookOpen, Heart, TrendingUp, ArrowRight } from 'lucide-react';
+import { Users, BookOpen, Heart, TrendingUp, ArrowRight, Trees, Network } from 'lucide-react';
 import { mockNeighbors } from '../data/mockData';
 
 interface ReadingBuddy {
@@ -8,7 +8,7 @@ interface ReadingBuddy {
     title: string;
     cover: string;
   };
-  matchScore: number;
+  matchScore: number; // 뿌리 얽힘 정도
   currentPage: number;
   totalPages: number;
 }
@@ -53,21 +53,29 @@ export function ReadingBuddyMatch({ currentBook, onViewNeighbor }: ReadingBuddyM
     return null;
   }
 
+  // 뿌리 얽힘 정도를 텍스트로 변환
+  const getRootEntanglementText = (score: number) => {
+    if (score >= 90) return '깊이 얽힌 뿌리';
+    if (score >= 80) return '단단히 얽힌 뿌리';
+    if (score >= 70) return '얽힌 뿌리';
+    return '뿌리가 닿음';
+  };
+
   return (
     <div className="mb-10">
       <div className="flex items-center justify-between mb-4 px-1">
         <div className="flex items-center gap-2">
-          <Users className="w-5 h-5" style={{ color: '#00FF00' }} />
-          <h2 className="text-h2 text-white">함께 읽는 이웃</h2>
+          <Trees className="w-5 h-5" style={{ color: '#00FF00' }} />
+          <h2 className="text-h2 text-white">뿌리가 닿은 독서러</h2>
         </div>
         <span className="text-caption" style={{ color: 'var(--text-tertiary)' }}>{readingBuddies.length}명</span>
       </div>
 
       <div className="card-minimal p-5 shadow-neon">
         <div className="flex items-center gap-2 mb-4">
-          <BookOpen className="w-5 h-5" style={{ color: '#00FF00' }} />
+          <Network className="w-5 h-5" style={{ color: '#00FF00' }} />
           <p className="text-body-s" style={{ color: 'var(--text-secondary)' }}>
-            <span className="font-bold" style={{ color: '#00FF00' }}>{readingBuddies.length}명의 이웃</span>이 같은 책을 읽고 있어요
+            <span className="font-bold" style={{ color: '#00FF00' }}>{readingBuddies.length}명의 독서러</span>와 뿌리가 얽혔어요
           </p>
         </div>
 
@@ -101,22 +109,22 @@ export function ReadingBuddyMatch({ currentBook, onViewNeighbor }: ReadingBuddyM
                         {buddy.currentPage}/{buddy.totalPages}p ({progress}%)
                       </span>
                       {isAhead ? (
-                        <span className="text-caption px-1.5 py-0.5 rounded-full font-bold" style={{ background: 'rgba(0, 255, 0, 0.1)', color: '#00FF00' }}>
-                          앞서 읽는 중
+                        <span className="text-caption px-1.5 py-0.5 rounded-full font-bold flex items-center gap-1" style={{ background: 'rgba(0, 255, 255, 0.1)', color: '#00FFFF' }}>
+                          🌲 뿌리가 더 깊어요
                         </span>
                       ) : (
-                        <span className="text-caption px-1.5 py-0.5 rounded-full font-bold" style={{ background: 'rgba(0, 255, 0, 0.1)', color: '#00FF00' }}>
-                          비슷한 진도
+                        <span className="text-caption px-1.5 py-0.5 rounded-full font-bold flex items-center gap-1" style={{ background: 'rgba(0, 255, 0, 0.1)', color: '#00FF00' }}>
+                          🌿 뿌리가 얽혔어요
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex items-center gap-1 text-caption">
-                      <Heart className="w-3 h-3 fill-current" style={{ color: '#00FF00' }} />
+                      <Trees className="w-3.5 h-3.5" style={{ color: '#00FF00' }} />
                       <span className="font-bold" style={{ color: '#00FF00' }}>{buddy.matchScore}%</span>
                     </div>
-                    <span className="text-caption" style={{ color: 'var(--text-tertiary)' }}>취향 유사도</span>
+                    <span className="text-caption" style={{ color: 'var(--text-tertiary)' }}>뿌리 얽힘</span>
                   </div>
                 </div>
 
@@ -145,7 +153,7 @@ export function ReadingBuddyMatch({ currentBook, onViewNeighbor }: ReadingBuddyM
             // Navigate to neighbors reading the same book
           }}
         >
-          <span className="font-bold text-body-s">모든 독서 친구 보기</span>
+          <span className="font-bold text-body-s">뿌리가 닿은 모든 독서러 보기</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </button>
       </div>

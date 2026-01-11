@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Calendar, TrendingUp, Book, Clock, Flame, Target, ChevronRight, Sparkles, PieChart as PieChartIcon, Heart, Award, Users, BookOpen, BarChart3, Sunrise, Sunset, Moon } from 'lucide-react';
+import { ArrowLeft, Calendar, TrendingUp, Book, Clock, Flame, Target, ChevronRight, Sparkles, PieChart as PieChartIcon, Heart, Award, Users, BookOpen, BarChart3, Sunrise, Sunset, Moon, Trees } from 'lucide-react';
 import { mockSessions, mockBooks, mockChosus } from '../data/mockData';
 import { ExceptionalBadge } from './ExceptionalBadge';
 import { ExceptionalType } from './ExceptionalChoseoToast';
@@ -334,7 +334,7 @@ export function Analytics({ onBack }: AnalyticsProps) {
             <div className="card-minimal rounded-3xl p-6 shadow-neon">
               <div className="flex items-center gap-2 mb-4">
                 <Book className="w-5 h-5" style={{ color: '#FF00FF' }} />
-                <h2 className="text-h2 text-white">이번 주 가장 많이 읽은 책</h2>
+                <h2 className="text-h2 text-white">이번 주 가장 집중한 책</h2>
               </div>
               <div className="flex items-center gap-4 p-4 rounded-2xl" style={{ background: 'rgba(255, 0, 255, 0.1)', border: '1px solid rgba(255, 0, 255, 0.2)' }}>
                 <div className="w-16 h-20 rounded-lg flex items-center justify-center text-3xl" style={{ background: 'rgba(0, 255, 0, 0.2)' }}>
@@ -351,11 +351,11 @@ export function Analytics({ onBack }: AnalyticsProps) {
               </div>
             </div>
 
-            {/* Daily Focus Score */}
+            {/* Daily Focus Score → Reading Depth */}
             <div className="card-minimal rounded-3xl p-6 shadow-neon">
               <div className="flex items-center gap-2 mb-4">
-                <Target className="w-5 h-5" style={{ color: '#00FFFF' }} />
-                <h2 className="text-h2 text-white">집중도 추이</h2>
+                <Trees className="w-5 h-5" style={{ color: '#00FF00' }} />
+                <h2 className="text-h2 text-white">독서의 뿌리 깊이</h2>
               </div>
               <div className="h-40 w-full" style={{ minHeight: '160px' }}>
                 <ResponsiveContainer width="100%" height={160}>
@@ -371,6 +371,7 @@ export function Analytics({ onBack }: AnalyticsProps) {
                       tick={{ fontSize: 11, fill: 'var(--text-secondary)' }} 
                       axisLine={false} 
                       tickLine={false} 
+                      hide
                     />
                     <Tooltip 
                       contentStyle={{ 
@@ -379,30 +380,39 @@ export function Analytics({ onBack }: AnalyticsProps) {
                         background: 'var(--surface-2)',
                         color: 'white'
                       }}
+                      formatter={(value: number) => {
+                        if (value >= 95) return ['완전한 몰입 🌊', '깊이'];
+                        if (value >= 85) return ['깊은 뿌리 🌲', '깊이'];
+                        if (value >= 75) return ['뿌리 성장 중 🌱', '깊이'];
+                        return ['가벼운 독서 ☁️', '깊이'];
+                      }}
                     />
                     <Line 
                       type="monotone" 
                       dataKey="focus" 
-                      stroke="#00FFFF" 
-                      strokeWidth={2}
-                      dot={{ fill: '#00FFFF', r: 3 }}
-                      activeDot={{ r: 5 }}
+                      stroke="#00FF00" 
+                      strokeWidth={3}
+                      dot={{ fill: '#00FF00', r: 4, strokeWidth: 2, stroke: '#000' }}
+                      activeDot={{ r: 6, strokeWidth: 2, stroke: '#00FF00' }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
               <div className="grid grid-cols-3 gap-3 mt-4">
-                <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(0, 255, 255, 0.1)' }}>
-                  <div className="text-caption mb-1" style={{ color: 'var(--text-secondary)' }}>평균</div>
-                  <div className="text-h3 font-bold" style={{ color: '#00FFFF' }}>89%</div>
-                </div>
                 <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(0, 255, 0, 0.1)' }}>
-                  <div className="text-caption mb-1" style={{ color: 'var(--text-secondary)' }}>최고</div>
-                  <div className="text-h3 font-bold" style={{ color: '#00FF00' }}>98%</div>
+                  <div className="text-caption mb-1" style={{ color: 'var(--text-secondary)' }}>이번 주</div>
+                  <div className="text-h3 font-bold" style={{ color: '#00FF00' }}>깊은 뿌리</div>
+                  <div className="text-caption mt-0.5" style={{ color: '#00FF00', opacity: 0.7 }}>🌲</div>
+                </div>
+                <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(0, 255, 255, 0.1)' }}>
+                  <div className="text-caption mb-1" style={{ color: 'var(--text-secondary)' }}>가장 깊은 날</div>
+                  <div className="text-h3 font-bold" style={{ color: '#00FFFF' }}>11/25</div>
+                  <div className="text-caption mt-0.5" style={{ color: '#00FFFF', opacity: 0.7 }}>완전한 몰입</div>
                 </div>
                 <div className="text-center p-3 rounded-xl" style={{ background: 'var(--surface-2)' }}>
-                  <div className="text-caption mb-1" style={{ color: 'var(--text-secondary)' }}>최저</div>
-                  <div className="text-h3 font-bold text-white">78%</div>
+                  <div className="text-caption mb-1" style={{ color: 'var(--text-secondary)' }}>나이테 밀도</div>
+                  <div className="text-h3 font-bold text-white">6/7</div>
+                  <div className="text-caption mt-0.5" style={{ color: 'var(--text-tertiary)' }}>단단한 링</div>
                 </div>
               </div>
             </div>
