@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { ArrowLeft, Calendar, TrendingUp, Book, Clock, Flame, Target, ChevronRight, Sparkles, PieChart as PieChartIcon, Heart, Award, Users, BookOpen, BarChart3, Sunrise, Sunset, Moon, Trees } from 'lucide-react';
 import { mockSessions, mockBooks, mockChosus } from '../data/mockData';
 import { ExceptionalBadge } from './ExceptionalBadge';
@@ -119,6 +119,7 @@ const monthlyTrendData = [
 
 export function Analytics({ onBack }: AnalyticsProps) {
   const [timeRange, setTimeRange] = useState<'7' | '30' | 'all'>('7');
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Filter sessions based on timeRange
   const filteredSessions = useMemo(() => {
@@ -214,9 +215,9 @@ export function Analytics({ onBack }: AnalyticsProps) {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-black text-white">
+    <div className="max-w-md mx-auto min-h-screen bg-black text-white flex flex-col">
       {/* Header - Dark Theme */}
-      <header className="sticky top-0 z-30 bg-black/90 backdrop-blur-md" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+      <header className="sticky top-0 z-30 bg-black/90 backdrop-blur-md flex-shrink-0" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="p-4 flex items-center justify-between">
           <button onClick={onBack} className="p-2 hover:bg-white/5 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" style={{ color: '#00FF00' }} />
@@ -231,7 +232,13 @@ export function Analytics({ onBack }: AnalyticsProps) {
             {(['7', '30', 'all'] as const).map((range) => (
               <button
                 key={range}
-                onClick={() => setTimeRange(range)}
+                onClick={() => {
+                  setTimeRange(range);
+                  window.scrollTo(0, 0);
+                  if (contentRef.current) {
+                    contentRef.current.scrollTop = 0;
+                  }
+                }}
                 className={`flex-1 py-1.5 text-body-s font-medium rounded-lg transition-all z-10`}
                 style={{
                   background: timeRange === range ? 'var(--surface-elevated)' : 'transparent',
@@ -246,8 +253,8 @@ export function Analytics({ onBack }: AnalyticsProps) {
         </div>
       </header>
 
-      {/* Content */}
-      <div className="p-6 space-y-6 pb-20 animate-fade-in">
+      {/* Content - Scrollable */}
+      <div key={timeRange} className="flex-1 overflow-y-auto p-6 space-y-6 pb-20" ref={contentRef} style={{ animation: 'fadeSlideUp 0.4s ease-out' }}>
         {/* Streak Card - Always Visible */}
         <div className="card-minimal rounded-3xl p-6 text-white relative overflow-hidden shadow-neon">
           <div className="bg-gradient-neon-radial absolute inset-0 opacity-30"></div>

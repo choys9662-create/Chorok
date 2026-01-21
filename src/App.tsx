@@ -57,6 +57,11 @@ export default function App() {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
 
+  // Scroll to top when screen changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentScreen]);
+
   const navigateToTimer = (book: Book) => {
     setSelectedBook(book);
     setCurrentScreen('timer');
@@ -142,8 +147,8 @@ export default function App() {
       {/* Bottom Navigation - Changes based on section */}
       {currentScreen !== 'timer' && currentScreen !== 'forest' && (
         /* Main Navigation - Neon Black Theme */
-        <nav className="fixed bottom-6 left-0 right-0 z-50 px-4">
-          <div className="max-w-md mx-auto backdrop-blur-lg rounded-full shadow-neon" style={{ background: 'rgba(10, 10, 10, 0.9)', border: '1px solid rgba(0, 255, 0, 0.2)' }}>
+        <nav className="fixed bottom-0 left-0 right-0 z-50">
+          <div className="max-w-md mx-auto backdrop-blur-lg shadow-neon" style={{ background: 'rgba(10, 10, 10, 0.9)', borderTop: '1px solid rgba(0, 255, 0, 0.2)' }}>
             <div className="grid grid-cols-5 items-center h-16 relative px-2">
               <button
                 onClick={() => setCurrentScreen('main')}

@@ -695,10 +695,6 @@
     bottom: calc(var(--spacing) * 24);
   }
 
-  .bottom-32 {
-    bottom: calc(var(--spacing) * 32);
-  }
-
   .bottom-40 {
     bottom: calc(var(--spacing) * 40);
   }
@@ -1423,6 +1419,10 @@
     gap: calc(var(--spacing) * 2);
   }
 
+  .gap-2\.5 {
+    gap: calc(var(--spacing) * 2.5);
+  }
+
   .gap-3 {
     gap: calc(var(--spacing) * 3);
   }
@@ -1465,10 +1465,22 @@
     margin-block-end: calc(calc(var(--spacing) * 6) * calc(1 - var(--tw-space-y-reverse)));
   }
 
+  :where(.-space-x-1 > :not(:last-child)) {
+    --tw-space-x-reverse: 0;
+    margin-inline-start: calc(calc(var(--spacing) * -1) * var(--tw-space-x-reverse));
+    margin-inline-end: calc(calc(var(--spacing) * -1) * calc(1 - var(--tw-space-x-reverse)));
+  }
+
   :where(.-space-x-2 > :not(:last-child)) {
     --tw-space-x-reverse: 0;
     margin-inline-start: calc(calc(var(--spacing) * -2) * var(--tw-space-x-reverse));
     margin-inline-end: calc(calc(var(--spacing) * -2) * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  :where(.-space-x-3 > :not(:last-child)) {
+    --tw-space-x-reverse: 0;
+    margin-inline-start: calc(calc(var(--spacing) * -3) * var(--tw-space-x-reverse));
+    margin-inline-end: calc(calc(var(--spacing) * -3) * calc(1 - var(--tw-space-x-reverse)));
   }
 
   .truncate {
@@ -2771,6 +2783,10 @@
     opacity: .4;
   }
 
+  .opacity-60 {
+    opacity: .6;
+  }
+
   .opacity-75 {
     opacity: .75;
   }
@@ -3090,8 +3106,30 @@
   }
 
   @media (hover: hover) {
+    .group-hover\:scale-125:is(:where(.group):hover *) {
+      --tw-scale-x: 125%;
+      --tw-scale-y: 125%;
+      --tw-scale-z: 125%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+
+  @media (hover: hover) {
+    .group-hover\:animate-pulse:is(:where(.group):hover *) {
+      animation: var(--animate-pulse);
+    }
+  }
+
+  @media (hover: hover) {
     .group-hover\:bg-\[rgba\(0\,255\,0\,0\.15\)\]:is(:where(.group):hover *) {
       background-color: #00ff0026;
+    }
+  }
+
+  @media (hover: hover) {
+    .group-hover\:font-bold:is(:where(.group):hover *) {
+      --tw-font-weight: var(--font-weight-bold);
+      font-weight: var(--font-weight-bold);
     }
   }
 
@@ -3156,6 +3194,15 @@
       --tw-scale-x: 105%;
       --tw-scale-y: 105%;
       --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:scale-110:hover {
+      --tw-scale-x: 110%;
+      --tw-scale-y: 110%;
+      --tw-scale-z: 110%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
@@ -3661,6 +3708,18 @@ html {
 
 .animate-fade-in {
   animation: .3s ease-out fade-in;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse-glow {

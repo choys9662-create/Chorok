@@ -174,37 +174,37 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
             </div>
           </div>
 
-          {/* Clan stats overlay card */}
-          <div className="absolute bottom-32 left-6 right-6 z-40">
-            <div className="backdrop-blur-md rounded-3xl p-5 shadow-xl border card-minimal" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 0 30px rgba(0, 255, 0, 0.2)' }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(to bottom right, #00FF00, #00FFFF)' }}>
-                  <TreePine className="w-6 h-6 text-black" />
+          {/* Clan stats overlay card - MOVED TO TOP */}
+          <div className="absolute top-20 left-4 right-4 z-40">
+            <div className="backdrop-blur-md rounded-2xl p-4 shadow-lg border card-minimal" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 0 20px rgba(0, 255, 0, 0.15)' }}>
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(to bottom right, #00FF00, #00FFFF)' }}>
+                  <TreePine className="w-5 h-5 text-black" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-white">책벌레 클랜</h3>
+                  <h3 className="font-bold text-white text-sm">책벌레 클랜</h3>
                   <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Lv.{clanStats.level} • {clanStats.activeMembers}명 독서중</p>
                 </div>
-                <button className="p-2 rounded-full transition-colors hover:bg-white/5">
-                  <Sparkles className="w-5 h-5" style={{ color: '#FFFF00' }} />
+                <button className="p-1.5 rounded-full transition-colors hover:bg-white/5">
+                  <Sparkles className="w-4 h-4" style={{ color: '#FFFF00' }} />
                 </button>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 rounded-2xl border" style={{ background: 'rgba(0, 255, 0, 0.1)', borderColor: 'rgba(0, 255, 0, 0.3)' }}>
-                  <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>레벨</div>
-                  <div className="text-xl font-bold" style={{ color: '#00FF00' }}>{clanStats.level}</div>
-                  <div className="text-[10px] mt-0.5" style={{ color: '#00FF00' }}>시간</div>
+              <div className="grid grid-cols-3 gap-2 mt-3">
+                <div className="text-center p-2 rounded-xl border" style={{ background: 'rgba(0, 255, 0, 0.1)', borderColor: 'rgba(0, 255, 0, 0.3)' }}>
+                  <div className="text-xs mb-0.5" style={{ color: 'var(--text-secondary)' }}>레벨</div>
+                  <div className="text-lg font-bold" style={{ color: '#00FF00' }}>{clanStats.level}</div>
+                  <div className="text-[9px]" style={{ color: '#00FF00' }}>시간</div>
                 </div>
-                <div className="text-center p-3 rounded-2xl border" style={{ background: 'rgba(0, 255, 255, 0.1)', borderColor: 'rgba(0, 255, 255, 0.3)' }}>
-                  <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>영역</div>
-                  <div className="text-xl font-bold" style={{ color: '#00FFFF' }}>{clanStats.area}</div>
-                  <div className="text-[10px] mt-0.5" style={{ color: '#00FFFF' }}>완독</div>
+                <div className="text-center p-2 rounded-xl border" style={{ background: 'rgba(0, 255, 255, 0.1)', borderColor: 'rgba(0, 255, 255, 0.3)' }}>
+                  <div className="text-xs mb-0.5" style={{ color: 'var(--text-secondary)' }}>영역</div>
+                  <div className="text-lg font-bold" style={{ color: '#00FFFF' }}>{clanStats.area}</div>
+                  <div className="text-[9px]" style={{ color: '#00FFFF' }}>완독</div>
                 </div>
-                <div className="text-center p-3 rounded-2xl border" style={{ background: 'rgba(255, 0, 255, 0.1)', borderColor: 'rgba(255, 0, 255, 0.3)' }}>
-                  <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>밀도</div>
-                  <div className="text-xl font-bold" style={{ color: '#FF00FF' }}>{clanStats.density}</div>
-                  <div className="text-[10px] mt-0.5" style={{ color: '#FF00FF' }}>초서</div>
+                <div className="text-center p-2 rounded-xl border" style={{ background: 'rgba(255, 0, 255, 0.1)', borderColor: 'rgba(255, 0, 255, 0.3)' }}>
+                  <div className="text-xs mb-0.5" style={{ color: 'var(--text-secondary)' }}>밀도</div>
+                  <div className="text-lg font-bold" style={{ color: '#FF00FF' }}>{clanStats.density}</div>
+                  <div className="text-[9px]" style={{ color: '#FF00FF' }}>초서</div>
                 </div>
               </div>
             </div>
@@ -775,11 +775,11 @@ export function Forest({ onBack, onNavigate }: ForestProps) {
           <div className="flex justify-between items-center h-16 px-2">
             <button 
               onClick={onBack}
-              className="flex flex-col items-center gap-1 transition-colors px-2"
-              style={{ color: 'var(--text-tertiary)' }}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-white/5 active:scale-95"
+              style={{ color: '#00FF00', border: '1px solid rgba(0, 255, 0, 0.3)', background: 'rgba(0, 255, 0, 0.05)' }}
+              aria-label="나가기"
             >
-              <ArrowLeft className="w-6 h-6" />
-              <span className="text-[10px] font-medium">나가기</span>
+              <ArrowLeft className="w-5 h-5" />
             </button>
             
             <button 

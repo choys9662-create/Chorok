@@ -273,6 +273,77 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
           />
         </div>
         
+        {/* Choseo Overlap Discovery Card - NEW */}
+        <div className="mb-10">
+          <div 
+            className="card-minimal relative overflow-hidden shadow-neon cursor-pointer hover:shadow-neon-lg transition-all duration-300 group"
+            onClick={() => onNavigate('choseo-overlap')}
+          >
+            {/* Background gradient */}
+            <div className="absolute inset-0 opacity-60">
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 50%, rgba(0, 255, 0, 0.15), transparent 50%), radial-gradient(circle at 70% 50%, rgba(0, 255, 255, 0.1), transparent 50%)' }}></div>
+            </div>
+
+            <div className="relative z-10 p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-md" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)' }}>
+                    <Users className="w-5 h-5" style={{ color: '#00FF00' }} />
+                  </div>
+                  <div>
+                    <h3 className="text-h3 text-white">초서 겹침 발견</h3>
+                    <p className="text-caption" style={{ color: 'var(--text-secondary)' }}>같은 구절을 선택한 독자들을 만나보세요</p>
+                  </div>
+                </div>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" style={{ color: '#00FF00' }} />
+              </div>
+
+              {/* Mini preview of overlapping users */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex -space-x-3">
+                  {overlappingChoseos.slice(0, 4).map((overlap, i) => (
+                    <div 
+                      key={i} 
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-md" 
+                      style={{ 
+                        background: 'var(--surface-2)', 
+                        border: '2px solid var(--surface-1)',
+                        zIndex: 4 - i
+                      }}
+                    >
+                      {overlap.user.avatar}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <p className="text-body-s font-bold text-white">{overlappingChoseos.length}명의 독자</p>
+                  <p className="text-caption" style={{ color: '#00FF00' }}>같은 순간을 기록했어요</p>
+                </div>
+              </div>
+
+              {/* Sample quote preview */}
+              <div className="rounded-xl p-4 backdrop-blur-sm" style={{ background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(0, 255, 0, 0.2)' }}>
+                <p className="text-caption font-serif italic line-clamp-2 mb-2" style={{ color: 'var(--text-secondary)' }}>
+                  "새는 알에서 나오려고 투쟁한다. 알은 세계이다."
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="badge-neon">데미안</span>
+                  <span className="text-caption" style={{ color: 'var(--text-tertiary)' }}>헤르만 헤세</span>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-body-s font-bold" style={{ color: '#00FF00' }}>내 초서 겹침 보기</span>
+                <div className="flex items-center gap-1">
+                  <Sparkles className="w-4 h-4" style={{ color: '#00FF00' }} />
+                  <span className="text-caption" style={{ color: '#00FF00' }}>NEW</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         {/* Current Reading Section */}
         {primaryBook ? (
           <div className="mb-12">
