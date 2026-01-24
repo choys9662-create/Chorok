@@ -123,7 +123,6 @@ export function Analytics({ onBack }: AnalyticsProps) {
 
   // Filter sessions based on timeRange
   const filteredSessions = useMemo(() => {
-    const today = new Date();
     const mockToday = new Date('2025-11-26');
     
     return mockSessions.filter(session => {

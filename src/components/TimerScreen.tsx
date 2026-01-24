@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Book, SessionChoseo, SessionData } from '../App';
 import { mockBooks } from '../data/mockData';
-import { Camera, PenTool, FileText, Pause, Play, Lock, ArrowLeft, Plus, Check, Trees, Sparkles, Users } from 'lucide-react';
+import { PenTool, Pause, Play, Lock, ArrowLeft, Plus, Trees, Sparkles, Users } from 'lucide-react';
 import { ExceptionalType } from './ExceptionalChoseoToast';
 
 // Live reading activity data

@@ -431,12 +431,12 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         )}
 
         {/* Choseo Time Capsule */}
-        <ChoseoTimeCapsule onViewDetail={(id) => console.log('View choseo:', id)} />
+        <ChoseoTimeCapsule onViewDetail={() => {}} />
         
         {/* Reading Buddy Match */}
         <ReadingBuddyMatch
           currentBook={primaryBook ? { id: primaryBook.id, title: primaryBook.title, cover: primaryBook.cover } : undefined}
-          onViewNeighbor={(id) => console.log('View neighbor:', id)}
+          onViewNeighbor={() => {}}
         />
 
         {/* Social Feed (Neighbors' Chosu) */}

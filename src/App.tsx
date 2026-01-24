@@ -12,7 +12,7 @@ import { ChoseoOverlap } from './components/ChoseoOverlap';
 import { ChoseoCluster } from './components/ChoseoCluster';
 import { SessionChoseoSummary } from './components/SessionChoseoSummary';
 import { ChoseoInsights } from './components/ChoseoInsights';
-import { Home, TreePine, Search as SearchIcon, User, BarChart3, ArrowLeft, MapPin, Users, TrendingUp, Compass, Timer } from 'lucide-react';
+import { Home, TreePine, User, BarChart3, Timer } from 'lucide-react';
 import { ExceptionalType } from './components/ExceptionalChoseoToast';
 import { loadThree } from './components/ui/three-loader';
 
@@ -71,9 +71,6 @@ export default function App() {
     setSelectedBook(book);
     setCurrentScreen('book-detail');
   };
-
-  // Check if we're in the Forest section
-  const isInForestSection = currentScreen === 'forest';
 
   const renderScreen = () => {
     switch (currentScreen) {
