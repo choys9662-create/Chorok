@@ -152,15 +152,21 @@ export function TimerScreen({ book, onComplete, onBack, onBookSelect }: TimerScr
             
             {/* Add New Book Placeholder */}
             <button
-              className="w-full flex items-center justify-center gap-3 bg-[#1a1a1a] border border-neutral-800 border-dashed rounded-xl p-6 hover:bg-[#222222] transition-all"
+              className="w-full flex items-center justify-center gap-3 bg-[#1a1a1a] border border-neutral-800 border-dashed rounded-xl p-6 hover:bg-[#222222] transition-all group active:scale-[0.98] active:bg-[#1f1f1f]"
               style={{ borderColor: 'rgb(38, 38, 38)' }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.3)'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgb(38, 38, 38)'}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(0, 255, 0, 0.5)';
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 255, 0, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgb(38, 38, 38)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
-              <div className="w-12 h-12 rounded-full bg-[#121212] border border-neutral-700 flex items-center justify-center">
-                <Plus className="w-6 h-6 text-neutral-400" />
+              <div className="w-12 h-12 rounded-full bg-[#121212] border border-neutral-700 flex items-center justify-center group-hover:border-[#00FF00]/50 group-active:scale-95 transition-all" style={{ transitionDuration: '300ms' }}>
+                <Plus className="w-6 h-6 text-neutral-400 group-hover:text-[#00FF00] transition-colors" />
               </div>
-              <span className="text-body-s text-neutral-400">새 책 추가하기</span>
+              <span className="text-body-s text-neutral-400 group-hover:text-white transition-colors">새 책 추가하기</span>
             </button>
           </div>
         </div>

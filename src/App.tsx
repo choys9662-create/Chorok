@@ -56,6 +56,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('main');
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
 
   // Scroll to top when screen changes
   useEffect(() => {
@@ -64,12 +65,21 @@ export default function App() {
 
   const navigateToTimer = (book: Book) => {
     setSelectedBook(book);
+    setPreviousScreen('main'); // Default to main when starting from MainHome
     setCurrentScreen('timer');
   };
 
   const navigateToBookDetail = (book: Book) => {
     setSelectedBook(book);
     setCurrentScreen('book-detail');
+  };
+  
+  // Custom navigation handler for Forest to track return path
+  const navigateFromForest = (screen: Screen) => {
+    if (screen === 'timer') {
+      setPreviousScreen('forest');
+    }
+    setCurrentScreen(screen);
   };
 
   // Check if we're in the Forest section
@@ -87,7 +97,7 @@ export default function App() {
               setSessionData(data);
               setCurrentScreen('session-summary');
             }} 
-            onBack={() => setCurrentScreen('main')} 
+            onBack={() => setCurrentScreen(previousScreen === 'forest' ? 'forest' : 'main')} 
             onBookSelect={setSelectedBook} 
           />
         );
@@ -95,7 +105,7 @@ export default function App() {
         return <BookDetail book={selectedBook} onStartReading={navigateToTimer} onBack={() => setCurrentScreen('main')} />;
       case 'forest':
         return <Suspense fallback={<div>Loading...</div>}>
-          <Forest onBack={() => setCurrentScreen('main')} onNavigate={setCurrentScreen} />
+          <Forest onBack={() => setCurrentScreen('main')} onNavigate={navigateFromForest} />
         </Suspense>;
       case 'search':
         return <Search onBookSelect={navigateToBookDetail} onBack={() => setCurrentScreen('main')} />;

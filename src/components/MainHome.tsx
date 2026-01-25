@@ -233,7 +233,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
       <div className="px-6 pb-24 pt-28">
         
         {/* Reading Trend Recap */}
-        <div className="mb-10">
+        <div className="mb-6">
           <div className="card-minimal relative overflow-hidden shadow-neon">
             <div className="bg-gradient-neon-radial absolute inset-0"></div>
             
@@ -265,7 +265,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
         
         {/* Reading Streak */}
-        <div className="mb-10">
+        <div className="mb-6">
           <ReadingStreak
             currentStreak={6}
             longestStreak={12}
@@ -274,7 +274,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
         
         {/* Choseo Overlap Discovery Card - NEW */}
-        <div className="mb-10">
+        <div className="mb-6">
           <div 
             className="card-minimal relative overflow-hidden shadow-neon cursor-pointer hover:shadow-neon-lg transition-all duration-300 group"
             onClick={() => onNavigate('choseo-overlap')}
@@ -346,7 +346,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         
         {/* Current Reading Section */}
         {primaryBook ? (
-          <div className="mb-12">
+          <div className="mb-8">
             <div className="card-minimal overflow-hidden hover:border-accent transition-all duration-500 shadow-neon">
               <div className="flex gap-6 p-7">
                 <img
@@ -412,7 +412,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
             </div>
           </div>
         ) : (
-          <div className="mb-12">
+          <div className="mb-8">
             <h2 className="text-h2 text-white mb-4 px-1">지금 읽는 책</h2>
             <div className="card-minimal p-8 text-center py-12 shadow-neon">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--surface-2)' }}>
@@ -440,7 +440,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         />
 
         {/* Social Feed (Neighbors' Chosu) */}
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="space-y-6">
             {socialFeed.slice(0, 1).map((feed) => (
               <div key={feed.id} className="card-minimal p-6 hover:scale-[1.01] transition-all duration-300 shadow-neon">
@@ -537,7 +537,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
 
         {/* Exceptional Choseos Section */}
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="flex items-center justify-between mb-4 px-1">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5" style={{ color: '#00FF00' }} />

@@ -3121,6 +3121,12 @@
   }
 
   @media (hover: hover) {
+    .group-hover\:border-\[\#00FF00\]\/50:is(:where(.group):hover *) {
+      border-color: oklab(86.644% -.233888 .179499 / .5);
+    }
+  }
+
+  @media (hover: hover) {
     .group-hover\:bg-\[rgba\(0\,255\,0\,0\.15\)\]:is(:where(.group):hover *) {
       background-color: #00ff0026;
     }
@@ -3130,6 +3136,12 @@
     .group-hover\:font-bold:is(:where(.group):hover *) {
       --tw-font-weight: var(--font-weight-bold);
       font-weight: var(--font-weight-bold);
+    }
+  }
+
+  @media (hover: hover) {
+    .group-hover\:text-\[\#00FF00\]:is(:where(.group):hover *) {
+      color: #0f0;
     }
   }
 
@@ -3158,6 +3170,12 @@
   }
 
   @media (hover: hover) {
+    .group-hover\:text-white:is(:where(.group):hover *) {
+      color: var(--color-white);
+    }
+  }
+
+  @media (hover: hover) {
     .group-hover\:opacity-100:is(:where(.group):hover *) {
       opacity: 1;
     }
@@ -3168,6 +3186,13 @@
       --tw-translate-x: calc(var(--spacing) * 1);
       translate: var(--tw-translate-x) var(--tw-translate-y);
     }
+  }
+
+  .group-active\:scale-95:is(:where(.group):active *) {
+    --tw-scale-x: 95%;
+    --tw-scale-y: 95%;
+    --tw-scale-z: 95%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
   }
 
   .group-active\:bg-\[\#222222\]:is(:where(.group):active *) {
@@ -3415,6 +3440,10 @@
 
   .active\:scale-\[0\.98\]:active {
     scale: .98;
+  }
+
+  .active\:bg-\[\#1f1f1f\]:active {
+    background-color: #1f1f1f;
   }
 
   .disabled\:opacity-30:disabled {
