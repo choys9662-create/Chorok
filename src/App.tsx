@@ -148,7 +148,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       {/* Main Content */}
       <div className="pb-20">
         {renderScreen()}
@@ -156,14 +156,14 @@ export default function App() {
 
       {/* Bottom Navigation - Changes based on section */}
       {currentScreen !== 'timer' && currentScreen !== 'forest' && (
-        /* Main Navigation - Neon Black Theme */
+        /* Main Navigation - card style */
         <nav className="fixed bottom-0 left-0 right-0 z-50">
-          <div className="max-w-md mx-auto backdrop-blur-lg shadow-neon" style={{ background: 'rgba(10, 10, 10, 0.9)', borderTop: '1px solid rgba(0, 255, 0, 0.2)' }}>
-            <div className="grid grid-cols-5 items-center h-16 relative px-2">
+          <div className="max-w-md mx-auto px-4 pb-4">
+            <div className="grid grid-cols-5 items-center h-[4.5rem] relative px-3 rounded-[1.75rem] backdrop-blur-xl shadow-neon" style={{ background: 'rgba(22, 26, 34, 0.92)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <button
                 onClick={() => setCurrentScreen('main')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'main' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
+                  currentScreen === 'main' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
                 <Home className="w-6 h-6" strokeWidth={2} />
@@ -172,7 +172,7 @@ export default function App() {
               <button
                 onClick={() => setCurrentScreen('forest')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'forest' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
+                  currentScreen === 'forest' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
                 <TreePine className="w-6 h-6" strokeWidth={2} />
@@ -182,7 +182,7 @@ export default function App() {
               {/* Center placeholder for CHOLOCK button */}
               <div className="flex justify-center relative">
                 {/* CHOLOCK - Protruding circular button */}
-                <div className="absolute -top-8 rounded-full p-1.5 shadow-neon-lg" style={{ background: '#0a0a0a', border: '2px solid rgba(0, 255, 0, 0.3)' }}>
+                <div className="absolute -top-7 rounded-full p-1.5 shadow-neon-lg" style={{ background: '#161a22', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
                   <button
                     onClick={() => setCurrentScreen('timer')}
                     className="w-14 h-14 rounded-full shadow-neon-lg flex items-center justify-center text-black hover:shadow-neon-lg hover:scale-105 transition-all active:scale-95"
@@ -197,7 +197,7 @@ export default function App() {
               <button
                 onClick={() => setCurrentScreen('analytics')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'analytics' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
+                  currentScreen === 'analytics' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
                 <BarChart3 className="w-6 h-6" strokeWidth={2} />
@@ -206,7 +206,7 @@ export default function App() {
               <button
                 onClick={() => setCurrentScreen('mypage')}
                 className={`flex flex-col items-center gap-1 transition-colors ${
-                  currentScreen === 'mypage' ? 'text-[#00FF00]' : 'text-neutral-600 hover:text-[#00FF00]'
+                  currentScreen === 'mypage' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
                 <User className="w-6 h-6" strokeWidth={2} />
