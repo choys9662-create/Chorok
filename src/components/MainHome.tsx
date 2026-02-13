@@ -201,7 +201,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
   return (
     <div className="max-w-md mx-auto min-h-screen bg-background relative">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 max-w-md mx-auto px-6 pt-6 pb-4 flex items-center justify-between bg-[rgba(15,17,21,0.78)] backdrop-blur-xl z-40 border-b border-white/5">
+      <header className="sticky top-0 px-6 pt-6 pb-4 flex items-center justify-between bg-[rgba(15,17,21,0.78)] backdrop-blur-xl z-30 border-b border-white/5">
         <div>
           <h1 className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-neon" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)' }}>
@@ -230,7 +230,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
       </header>
 
       {/* Main Content */}
-      <div className="px-6 pb-28 pt-28 space-y-5">
+      <div className="px-6 pb-28 pt-6 space-y-5">
         
         {/* Reading Trend Recap */}
         <div>

@@ -150,15 +150,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background">
       {/* Main Content */}
-      <div className="pb-20">
+      <div className={currentScreen !== 'timer' && currentScreen !== 'forest' ? 'pb-32' : 'pb-0'}>
         {renderScreen()}
       </div>
 
       {/* Bottom Navigation - Changes based on section */}
       {currentScreen !== 'timer' && currentScreen !== 'forest' && (
         /* Main Navigation - card style */
-        <nav className="fixed bottom-0 left-0 right-0 z-50">
-          <div className="max-w-md mx-auto px-4 pb-4">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+          <div className="max-w-md mx-auto px-4 pb-5 pointer-events-auto">
             <div className="grid grid-cols-5 items-center h-[4.5rem] relative px-3 rounded-[1.75rem] backdrop-blur-xl shadow-neon" style={{ background: 'rgba(22, 26, 34, 0.92)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <button
                 onClick={() => setCurrentScreen('main')}
