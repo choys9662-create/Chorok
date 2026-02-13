@@ -199,9 +199,9 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
   const TrendIcon = readingTrend.icon;
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-black relative">
+    <div className="max-w-md mx-auto min-h-screen bg-background relative">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 max-w-md mx-auto px-6 pt-8 pb-4 flex items-center justify-between bg-black/90 backdrop-blur-md z-40">
+      <header className="sticky top-0 px-6 pt-6 pb-4 flex items-center justify-between bg-[rgba(15,17,21,0.78)] backdrop-blur-xl z-30 border-b border-white/5">
         <div>
           <h1 className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-neon" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)' }}>
@@ -213,7 +213,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setShowNotifications(true)}
-            className="relative p-2 hover:bg-white/5 rounded-lg transition-colors"
+            className="relative p-2.5 hover:bg-white/5 rounded-xl transition-colors"
           >
             <Bell className="w-5 h-5" style={{ color: '#00FF00' }} />
             {mockNotifications.filter(n => !n.isRead).length > 0 && (
@@ -222,7 +222,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
           </button>
           <button
             onClick={() => onNavigate('search')}
-            className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+            className="p-2.5 hover:bg-white/5 rounded-xl transition-colors"
           >
             <Search className="w-5 h-5" style={{ color: '#00FF00' }} />
           </button>
@@ -230,10 +230,10 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
       </header>
 
       {/* Main Content */}
-      <div className="px-6 pb-24 pt-28">
+      <div className="px-6 pb-28 pt-6 space-y-5">
         
         {/* Reading Trend Recap */}
-        <div className="mb-6">
+        <div>
           <div className="card-minimal relative overflow-hidden shadow-neon">
             <div className="bg-gradient-neon-radial absolute inset-0"></div>
             
@@ -265,7 +265,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
         
         {/* Reading Streak */}
-        <div className="mb-6">
+        <div>
           <ReadingStreak
             currentStreak={6}
             longestStreak={12}
@@ -274,7 +274,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
         
         {/* Choseo Overlap Discovery Card - NEW */}
-        <div className="mb-6">
+        <div>
           <div 
             className="card-minimal relative overflow-hidden shadow-neon cursor-pointer hover:shadow-neon-lg transition-all duration-300 group"
             onClick={() => onNavigate('choseo-overlap')}
