@@ -31,14 +31,14 @@ export function ChoseoTimeCapsule({ onViewDetail }: ChoseoTimeCapsuleProps) {
   }
 
   return (
-    <div className="mb-10">
-      <div className="flex items-center gap-2 mb-4 px-1">
+    <div>
+      <div className="flex items-center gap-2 mb-3 px-1">
         <Calendar className="w-5 h-5" style={{ color: '#00FF00' }} />
         <h2 className="text-h2 text-white">초서 타임캡슐</h2>
         <Sparkles className="w-4 h-4" style={{ color: '#00FF00' }} />
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-3">
         {timeCapsuleChoseos.map((choseo) => (
           <div
             key={choseo.id}

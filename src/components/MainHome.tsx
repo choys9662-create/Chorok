@@ -230,15 +230,15 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
       </header>
 
       {/* Main Content */}
-      <div className="px-6 pb-28 pt-6 space-y-5">
+      <div className="px-5 pb-28 pt-4 space-y-3">
         
         {/* Reading Trend Recap */}
         <div>
           <div className="card-minimal relative overflow-hidden shadow-neon">
             <div className="bg-gradient-neon-radial absolute inset-0"></div>
             
-            <div className="relative z-10 p-6">
-              <div className="flex items-start gap-4">
+            <div className="relative z-10 p-5">
+              <div className="flex items-start gap-3">
                 {readingTrend.totalDays > 0 && (
                   <div className="backdrop-blur-sm rounded-lg px-3 py-2.5 flex-shrink-0" style={{ background: 'rgba(0, 255, 0, 0.1)', border: '1px solid rgba(0, 255, 0, 0.2)' }}>
                     <p className="text-display leading-none mb-1" style={{ color: '#00FF00' }}>{readingTrend.totalDays}</p>
@@ -284,11 +284,11 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
               <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 50%, rgba(0, 255, 0, 0.15), transparent 50%), radial-gradient(circle at 70% 50%, rgba(0, 255, 255, 0.1), transparent 50%)' }}></div>
             </div>
 
-            <div className="relative z-10 p-6">
-              <div className="flex items-start justify-between mb-4">
+            <div className="relative z-10 p-5">
+              <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-md" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)' }}>
-                    <Users className="w-5 h-5" style={{ color: '#00FF00' }} />
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center shadow-md" style={{ background: 'rgba(0, 255, 0, 0.2)', border: '1px solid rgba(0, 255, 0, 0.3)' }}>
+                    <Users className="w-4.5 h-4.5" style={{ color: '#00FF00' }} />
                   </div>
                   <div>
                     <h3 className="text-h3 text-white">초서 겹침 발견</h3>
@@ -299,7 +299,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
               </div>
 
               {/* Mini preview of overlapping users */}
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-3">
                 <div className="flex -space-x-3">
                   {overlappingChoseos.slice(0, 4).map((overlap, i) => (
                     <div 
@@ -346,9 +346,9 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         
         {/* Current Reading Section */}
         {primaryBook ? (
-          <div className="mb-8">
+          <div>
             <div className="card-minimal overflow-hidden hover:border-accent transition-all duration-500 shadow-neon">
-              <div className="flex gap-6 p-7">
+              <div className="flex gap-5 p-5">
                 <img
                   src={primaryBook.cover}
                   alt={primaryBook.title}
@@ -412,9 +412,9 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
             </div>
           </div>
         ) : (
-          <div className="mb-8">
-            <h2 className="text-h2 text-white mb-4 px-1">지금 읽는 책</h2>
-            <div className="card-minimal p-8 text-center py-12 shadow-neon">
+          <div>
+            <h2 className="text-h2 text-white mb-3 px-1">지금 읽는 책</h2>
+            <div className="card-minimal p-6 text-center py-10 shadow-neon">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--surface-2)' }}>
                 <BookOpen className="w-8 h-8" style={{ color: 'var(--text-tertiary)' }} strokeWidth={1.5} />
               </div>
@@ -440,10 +440,10 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         />
 
         {/* Social Feed (Neighbors' Chosu) */}
-        <div className="mb-8">
-          <div className="space-y-6">
+        <div>
+          <div className="space-y-3">
             {socialFeed.slice(0, 1).map((feed) => (
-              <div key={feed.id} className="card-minimal p-6 hover:scale-[1.01] transition-all duration-300 shadow-neon">
+              <div key={feed.id} className="card-minimal p-5 hover:scale-[1.01] transition-all duration-300 shadow-neon">
                 {/* Overlap Indicator */}
                 <div className="flex items-center justify-between mb-4 pb-3" style={{ borderBottom: '1px solid var(--border-accent)' }}>
                   <div className="flex items-center gap-2">
@@ -537,8 +537,8 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
 
         {/* Exceptional Choseos Section */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4 px-1">
+        <div>
+          <div className="flex items-center justify-between mb-3 px-1">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5" style={{ color: '#00FF00' }} />
               <h2 className="text-h2 text-white">특별한 순간들</h2>
@@ -546,11 +546,11 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
             <span className="text-caption" style={{ color: 'var(--text-tertiary)' }}>{mockExceptionalChoseos.length}개</span>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             {mockExceptionalChoseos.map((choseo) => (
-              <div 
+              <div
                 key={choseo.id}
-                className="card-minimal p-6 hover:scale-[1.01] transition-all duration-300 relative group shadow-neon"
+                className="card-minimal p-5 hover:scale-[1.01] transition-all duration-300 relative group shadow-neon"
               >
                 <div className="absolute top-6 right-6 z-10">
                   <ExceptionalBadge type={choseo.exceptional.type} count={choseo.exceptional.count} />
@@ -583,7 +583,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
 
         {/* Quick Actions - Grid */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-3">
           <button
             onClick={() => onNavigate('search')}
             className="card-minimal aspect-square rounded-2xl flex flex-col items-center justify-center gap-3 hover:shadow-neon hover:-translate-y-1 transition-all duration-300 group"

@@ -62,8 +62,8 @@ export function ReadingBuddyMatch({ currentBook, onViewNeighbor }: ReadingBuddyM
   };
 
   return (
-    <div className="mb-10">
-      <div className="flex items-center justify-between mb-4 px-1">
+    <div>
+      <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
           <Trees className="w-5 h-5" style={{ color: '#00FF00' }} />
           <h2 className="text-h2 text-white">뿌리가 닿은 독서러</h2>
