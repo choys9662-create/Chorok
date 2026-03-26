@@ -212,6 +212,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
         </div>
         <div className="flex items-center gap-3">
           <button 
+            aria-label="알림"
             onClick={() => setShowNotifications(true)}
             className="relative p-2.5 hover:bg-white/5 rounded-xl transition-colors"
           >
@@ -221,6 +222,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
             )}
           </button>
           <button
+            aria-label="검색"
             onClick={() => onNavigate('search')}
             className="p-2.5 hover:bg-white/5 rounded-xl transition-colors"
           >
@@ -623,6 +625,7 @@ export function MainHome({ onStartTimer, onNavigate }: MainHomeProps) {
             <div className="p-5 flex items-center justify-between backdrop-blur z-10 pt-12" style={{ borderBottom: '1px solid var(--border-subtle)', background: 'var(--surface-1)' }}>
               <h2 className="text-h2 text-white">알림</h2>
               <button 
+                aria-label="닫기"
                 onClick={() => setShowNotifications(false)}
                 className="p-2 rounded-full transition-colors hover:bg-white/5"
                 style={{ color: 'var(--text-tertiary)' }}

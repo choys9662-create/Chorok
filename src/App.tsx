@@ -193,6 +193,7 @@ export default function App() {
                 {/* CHOLOCK - Protruding circular button */}
                 <div className="absolute -top-7 rounded-full p-1.5 shadow-neon-lg" style={{ background: '#161a22', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
                   <button
+                    aria-label="타이머"
                     onClick={() => setCurrentScreen('timer')}
                     className="w-14 h-14 rounded-full shadow-neon-lg flex items-center justify-center text-black hover:shadow-neon-lg hover:scale-105 transition-all active:scale-95"
                     style={{ background: '#00FF00' }}
