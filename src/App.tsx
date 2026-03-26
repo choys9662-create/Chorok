@@ -167,11 +167,11 @@ export default function App() {
       {currentScreen !== 'timer' && currentScreen !== 'forest' && (
         /* Main Navigation - card style */
         <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
-          <div className="max-w-md mx-auto px-4 pb-5 pointer-events-auto">
+          <div className="max-w-md mx-auto px-4 pb-6 pointer-events-auto">
             <div className="grid grid-cols-5 items-center h-[4.5rem] relative px-3 rounded-[1.75rem] backdrop-blur-xl shadow-neon" style={{ background: 'rgba(22, 26, 34, 0.92)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <button
                 onClick={() => setCurrentScreen('main')}
-                className={`flex flex-col items-center gap-1 transition-colors ${
+                className={`flex flex-col items-center gap-1.5 transition-colors ${
                   currentScreen === 'main' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
@@ -180,7 +180,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setCurrentScreen('forest')}
-                className={`flex flex-col items-center gap-1 transition-colors ${
+                className={`flex flex-col items-center gap-1.5 transition-colors ${
                   currentScreen === 'forest' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
@@ -191,7 +191,7 @@ export default function App() {
               {/* Center placeholder for CHOLOCK button */}
               <div className="flex justify-center relative">
                 {/* CHOLOCK - Protruding circular button */}
-                <div className="absolute -top-7 rounded-full p-1.5 shadow-neon-lg" style={{ background: '#161a22', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                <div className="absolute -top-8 rounded-full p-1.5 shadow-neon-lg" style={{ background: '#161a22', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
                   <button
                     onClick={() => setCurrentScreen('timer')}
                     className="w-14 h-14 rounded-full shadow-neon-lg flex items-center justify-center text-black hover:shadow-neon-lg hover:scale-105 transition-all active:scale-95"
@@ -205,7 +205,7 @@ export default function App() {
               
               <button
                 onClick={() => setCurrentScreen('analytics')}
-                className={`flex flex-col items-center gap-1 transition-colors ${
+                className={`flex flex-col items-center gap-1.5 transition-colors ${
                   currentScreen === 'analytics' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
@@ -214,7 +214,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setCurrentScreen('mypage')}
-                className={`flex flex-col items-center gap-1 transition-colors ${
+                className={`flex flex-col items-center gap-1.5 transition-colors ${
                   currentScreen === 'mypage' ? 'text-[#00FF00]' : 'text-[#7a8597] hover:text-[#00FF00]'
                 }`}
               >
